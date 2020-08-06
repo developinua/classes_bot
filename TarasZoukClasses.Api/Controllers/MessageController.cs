@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using TarasZoukClasses.TelegramBotModels;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace TarasZoukClasses.Controllers
+namespace TarasZoukClasses.Api.Controllers
 {
     [Route("api/v1")]
     public class MessageController : Controller

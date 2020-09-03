@@ -1,26 +1,27 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
-using TarasZoukClasses.TelegramBotModels;
-using Telegram.Bot;
-
-namespace TarasZoukClasses.Configurations
+﻿namespace TarasZoukClasses.Api.Configurations
 {
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using System.Threading.Tasks;
+    using TarasZoukClasses.Api.TelegramBotModels;
+    using Telegram.Bot;
+
     public static class TelegramBotConfiguration
     {
         public static async Task UseTelegramBotWebHooks(this IServiceCollection services, IConfiguration configuration)
         {
-            var telegramBotSettings = new BotSettings();
-            configuration.GetSection(BotSettings.AppSettingsName)
+            var telegramBotSettings = new TelegramBotSettings();
+
+            configuration.GetSection(TelegramBotSettings.AppSettingsName)
                 .Bind(telegramBotSettings);
 
-            var botClient = new TelegramBotClient(telegramBotSettings.Token);
+            var telegramBotClient = new TelegramBotClient(telegramBotSettings.Token);
             var hook = string.Concat(telegramBotSettings.Url, telegramBotSettings.UpdateRoute);
 
-            services.AddSingleton(botClient);
+            services.AddSingleton(telegramBotClient);
             services.AddScoped<TelegramBot>();
 
-            await botClient.SetWebhookAsync(hook);
+            await telegramBotClient.SetWebhookAsync(hook);
         }
     }
 }

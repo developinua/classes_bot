@@ -1,6 +1,6 @@
-﻿namespace TarasZoukClasses.TelegramBotModels
+﻿namespace TarasZoukClasses.Api.TelegramBotModels
 {
-    public class BotSettings
+    public class TelegramBotSettings
     {
         public const string AppSettingsName = "TelegramBot";
 

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-
-namespace TarasZoukClasses.TelegramBotModels.Commands
+﻿namespace TarasZoukClasses.Api.TelegramBotModels.Commands
 {
+    using System.Threading.Tasks;
+    using Telegram.Bot;
+    using Telegram.Bot.Types;
+
     public interface ICommand
     {
         string Name { get; }

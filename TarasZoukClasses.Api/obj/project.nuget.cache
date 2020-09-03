@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "B7MYkVKEKiy2v6g83e0uNZu2ybTzXmC/wZjea93Zi389QLa9PAH1VK4DN3VtfNWW22F7Rwup3iUpHgpFwvSOFw==",
+  "dgSpecHash": "L2K0X6b4etO6unYXo/eb9CNcu8NoaoXnPe9N6nDrEXhP2FcCqEWXANtH3Zyswe6An7lIPgL6CdzGXwkds5auoA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Api\\TarasZoukClasses.Api.csproj",
   "expectedPackageFiles": [
@@ -84,7 +84,8 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\Nazik\\.nuget\\packages\\telegram.bot\\15.7.1\\telegram.bot.15.7.1.nupkg.sha512"
+    "C:\\Users\\Nazik\\.nuget\\packages\\telegram.bot\\15.7.1\\telegram.bot.15.7.1.nupkg.sha512",
+    "C:\\Users\\Nazik\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
   ],
   "logs": []
 }

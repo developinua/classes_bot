@@ -26,7 +26,6 @@ C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses\obj\Debug\netco
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.genruntimeconfig.cache
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\appsettings.json
-C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Api.exe
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Api.deps.json
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Api.runtimeconfig.json
@@ -38,7 +37,6 @@ C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\n
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Telegram.Bot.dll
-C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csprojAssemblyReference.cache
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.AssemblyInfoInputs.cache
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.AssemblyInfo.cs
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csproj.CoreCompileInputs.cache
@@ -50,3 +48,4 @@ C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\n
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.dll
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.pdb
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.genruntimeconfig.cache
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csprojAssemblyReference.cache

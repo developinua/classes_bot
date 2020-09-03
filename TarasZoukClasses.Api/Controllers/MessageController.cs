@@ -1,14 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using TarasZoukClasses.TelegramBotModels;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-
-namespace TarasZoukClasses.Api.Controllers
+﻿namespace TarasZoukClasses.Api.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using TarasZoukClasses.Api.TelegramBotModels;
+    using Telegram.Bot;
+    using Telegram.Bot.Types;
+
     [Route("api/v1")]
     public class MessageController : Controller
     {
@@ -35,10 +35,7 @@ namespace TarasZoukClasses.Api.Controllers
                 return BadRequest();
             }
 
-            Logger.LogInformation($"Trying to get active commands start. {DateTime.UtcNow}.");
-            var commands = (await TelegramBot.GetActiveCommandsAsync()).ToList();
-            Logger.LogInformation($"Trying to get active commands finished. {DateTime.UtcNow}.");
-
+            var commands = await TelegramBot.GetActiveCommandsAsync(Logger);
             var message = update.Message;
 
             foreach (var command in commands.Where(command => command.Contains(message)))

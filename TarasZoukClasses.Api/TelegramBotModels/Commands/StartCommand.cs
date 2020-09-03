@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
-
-namespace TarasZoukClasses.TelegramBotModels.Commands
+﻿namespace TarasZoukClasses.Api.TelegramBotModels.Commands
 {
+    using System;
+    using System.Threading.Tasks;
+    using Telegram.Bot;
+    using Telegram.Bot.Types;
+    using Telegram.Bot.Types.Enums;
+
     public class StartCommand : ICommand
     {
         public string Name => @"/start";

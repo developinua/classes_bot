@@ -5011,23 +5011,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Nazik\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\nazik\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Api\\TarasZoukClasses.Api.csproj",
+      "projectUniqueName": "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Api\\TarasZoukClasses.Api.csproj",
       "projectName": "TarasZoukClasses.Api",
-      "projectPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Api\\TarasZoukClasses.Api.csproj",
-      "packagesPath": "C:\\Users\\Nazik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Api\\obj\\",
+      "projectPath": "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Api\\TarasZoukClasses.Api.csproj",
+      "packagesPath": "C:\\Users\\nazik\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Api\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Nazik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\nazik\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5039,13 +5035,12 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj": {
-              "projectPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj"
+            "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj": {
+              "projectPath": "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj"
             },
-            "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj": {
-              "projectPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj"
+            "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj": {
+              "projectPath": "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj"
             }
           }
         }
@@ -5058,7 +5053,6 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
             "target": "Package",
@@ -5079,12 +5073,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[3.1.2, 3.1.2]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -5093,7 +5081,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-rc.1.20452.10\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

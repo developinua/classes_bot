@@ -30,7 +30,14 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj": {
+                "projectPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj"
+              },
+              "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj": {
+                "projectPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -45,7 +52,7 @@
           "dependencies": {
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
-              "version": "[3.1.6, )"
+              "version": "[3.1.8, )"
             },
             "Telegram.Bot": {
               "target": "Package",
@@ -76,7 +83,159 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-preview.8.20417.9\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-rc.1.20452.10\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj",
+        "projectName": "TarasZoukClasses.Domain",
+        "projectPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj",
+        "packagesPath": "C:\\Users\\Nazik\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Nazik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {
+              "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj": {
+                "projectPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "Telegram.Bot": {
+              "target": "Package",
+              "version": "[15.7.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-rc.1.20452.10\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj",
+        "projectName": "TarasZoukClasses.Models",
+        "projectPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj",
+        "packagesPath": "C:\\Users\\Nazik\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Nazik\\source\\repos\\TarasZoukClassesBot\\TarasZoukClasses.Models\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Nazik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "Telegram.Bot": {
+              "target": "Package",
+              "version": "[15.7.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-rc.1.20452.10\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,4 +1,4 @@
-﻿namespace TarasZoukClasses.Api.TelegramBotModels
+﻿namespace TarasZoukClasses.Models.TelegramBotModels
 {
     public class TelegramBotSettings
     {

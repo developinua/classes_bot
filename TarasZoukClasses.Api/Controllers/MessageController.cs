@@ -1,13 +1,15 @@
 ﻿namespace TarasZoukClasses.Api.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using TarasZoukClasses.Api.TelegramBotModels;
+    using System;
+    using System.Threading.Tasks;
+    using TarasZoukClasses.Domain.Extensions;
+    using TarasZoukClasses.Domain.Handlers;
+    using TarasZoukClasses.Domain.Handlers.Message;
     using Telegram.Bot;
     using Telegram.Bot.Types;
+    using Telegram.Bot.Types.Enums;
 
     [Route("api/v1")]
     public class MessageController : Controller
@@ -16,32 +18,51 @@
 
         private TelegramBotClient TelegramBotClient { get; }
 
-        private TelegramBot TelegramBot { get; }
+        private IUpdateHandler UpdateHandler { get; set; }
 
-        public MessageController(ILogger<MessageController> logger, TelegramBotClient telegramBotClient, TelegramBot telegramBot)
+        private UpdateHandlerResponse UpdateHandlerResponse { get; set; }
+
+        public MessageController(ILogger<MessageController> logger, TelegramBotClient telegramBotClient)
         {
             Logger = logger;
             TelegramBotClient = telegramBotClient;
-            TelegramBot = telegramBot;
         }
 
         [HttpPost]
         [Route("message/update")]
         public async Task<IActionResult> MessageUpdate([FromBody] Update update)
         {
-            if (update == null)
+            UpdateHandler = update.Type switch
             {
-                Logger.LogError($"Message update is null. {DateTime.UtcNow}.");
-                return BadRequest();
+                UpdateType.Message => new MessageUpdateHandler(TelegramBotClient),
+                UpdateType.CallbackQuery => new CallbackQueryUpdateHandler(TelegramBotClient),
+                UpdateType.Unknown => throw new NotImplementedException(),
+                UpdateType.InlineQuery => throw new NotImplementedException(),
+                UpdateType.ChosenInlineResult => throw new NotImplementedException(),
+                UpdateType.EditedMessage => throw new NotImplementedException(),
+                UpdateType.ChannelPost => throw new NotImplementedException(),
+                UpdateType.EditedChannelPost => throw new NotImplementedException(),
+                UpdateType.ShippingQuery => throw new NotImplementedException(),
+                UpdateType.PreCheckoutQuery => throw new NotImplementedException(),
+                UpdateType.Poll => throw new NotImplementedException(),
+                UpdateType.PollAnswer => throw new NotImplementedException(),
+                _ => throw new NotImplementedException()
+            };
+
+            try
+            {
+                UpdateHandlerResponse = await UpdateHandler.Handle(update);
+            }
+            catch (Exception exception)
+            {
+                Logger.LogError(exception.Message, exception);
+                return BadRequest(exception.Message);
             }
 
-            var commands = await TelegramBot.GetActiveCommandsAsync(Logger);
-            var message = update.Message;
-
-            foreach (var command in commands.Where(command => command.Contains(message)))
+            if (UpdateHandlerResponse.ResponseType.IsError())
             {
-                await command.Execute(message, TelegramBotClient);
-                break;
+                Logger.LogError(UpdateHandlerResponse.Message);
+                return BadRequest(UpdateHandlerResponse.Message);
             }
 
             Logger.LogInformation($"Successful response. {DateTime.UtcNow}.");

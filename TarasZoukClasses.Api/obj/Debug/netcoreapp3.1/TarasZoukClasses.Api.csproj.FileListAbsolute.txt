@@ -49,3 +49,13 @@ C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\n
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.pdb
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.genruntimeconfig.cache
 C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csprojAssemblyReference.cache
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.dll
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Models.dll
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Models.pdb
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Domain.dll
+C:\Users\Nazik\source\repos\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Domain.pdb

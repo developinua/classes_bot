@@ -1,9 +1,9 @@
-﻿namespace TarasZoukClasses.Api.Configurations
+﻿namespace TarasZoukClasses.Models.Configurations
 {
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using System.Threading.Tasks;
-    using TarasZoukClasses.Api.TelegramBotModels;
+    using TarasZoukClasses.Models.TelegramBotModels;
     using Telegram.Bot;
 
     public static class TelegramBotConfiguration

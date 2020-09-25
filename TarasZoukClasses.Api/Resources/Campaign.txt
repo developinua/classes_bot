@@ -1,0 +1,9 @@
+Тестовые API ключи:
+
+public_key — sandbox_i8631724070
+private_key — sandbox_OOMgDnJ8CKxSKjYvy2p3elwUf23omw88uXrhhVKP
+
+API ключи:
+
+public_key — i79200447071
+private_key — x02SO1nGua1qVmVUISjH5EAM0WMVf26ntT1CfiUC

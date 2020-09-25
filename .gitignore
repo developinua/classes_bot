@@ -3,3 +3,11 @@ TarasZoukClasses.sln
 TarasZoukClasses.sln.DotSettings
 TarasZoukClasses/bin
 TarasZoukClasses/obj
+TarasZoukClasses.Api/bin
+TarasZoukClasses.Api/obj
+TarasZoukClasses.Data/bin
+TarasZoukClasses.Data/obj
+TarasZoukClasses.Domain/bin
+TarasZoukClasses.Domain/obj
+TarasZoukClasses.Models/bin
+TarasZoukClasses.Models/obj

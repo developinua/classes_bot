@@ -7,3 +7,6 @@ API ключи:
 
 public_key — i79200447071
 private_key — x02SO1nGua1qVmVUISjH5EAM0WMVf26ntT1CfiUC
+
+//await botClient.AnswerCallbackQueryAsync(callbackQuery.Id); // отсылаем пустое, чтобы убрать "часики" на кнопке
+//await botClient.SendTextMessageAsync(message.Chat.Id, $"You have choosen: {cultureName}", replyToMessageId: message.MessageId); //To reply for message

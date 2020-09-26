@@ -1,0 +1,5 @@
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\bin\Debug\netstandard2.0\Utils.deps.json
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\bin\Debug\netstandard2.0\Utils.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\obj\Debug\netstandard2.0\Utils.csprojAssemblyReference.cache
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\obj\Debug\netstandard2.0\Utils.AssemblyInfoInputs.cache
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\obj\Debug\netstandard2.0\Utils.AssemblyInfo.cs

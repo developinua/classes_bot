@@ -1,12 +1,12 @@
 ﻿namespace TarasZoukClasses.Api.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
     using System;
     using System.Threading.Tasks;
-    using TarasZoukClasses.Domain.Extensions;
-    using TarasZoukClasses.Domain.Handlers;
-    using TarasZoukClasses.Domain.Handlers.Message;
+    using Domain.Handlers.UpdateHandler;
+    using Domain.Handlers.UpdateHandler.UpdateHandlerContract;
+    using Domain.Handlers.UpdateHandlerResponse;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;

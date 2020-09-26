@@ -1,12 +1,11 @@
 namespace TarasZoukClasses.Api
 {
+    using Configurations;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using TarasZoukClasses.Models.Configurations;
-    using TarasZoukClasses.Models.TelegramBotModels;
 
     public class Startup
     {
@@ -22,8 +21,6 @@ namespace TarasZoukClasses.Api
         {
             services.AddControllers()
                 .AddNewtonsoftJson();
-
-            services.AddScoped<TelegramBot>();
 
             services.UseTelegramBotWebHooks(Configuration).Wait();
         }

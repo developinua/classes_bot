@@ -41,18 +41,6 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Configuration/3.1.8": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "3.1.8"
-        },
-        "compile": {
-          "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.dll": {}
-        },
-        "runtime": {
-          "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.dll": {}
-        }
-      },
       "Microsoft.Extensions.Configuration.Abstractions/3.1.8": {
         "type": "package",
         "dependencies": {
@@ -63,18 +51,6 @@
         },
         "runtime": {
           "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll": {}
-        }
-      },
-      "Microsoft.Extensions.Configuration.Binder/3.1.8": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration": "3.1.8"
-        },
-        "compile": {
-          "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.dll": {}
-        },
-        "runtime": {
-          "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.dll": {}
         }
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions/3.1.8": {
@@ -1373,12 +1349,27 @@
           "lib/netstandard1.1/Telegram.Bot.dll": {}
         }
       },
+      "TarasZoukClasses.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "TarasZoukClasses.Utils": "1.0.0",
+          "Telegram.Bot": "15.7.1"
+        },
+        "compile": {
+          "bin/placeholder/TarasZoukClasses.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TarasZoukClasses.Data.dll": {}
+        }
+      },
       "TarasZoukClasses.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "3.1.8",
-          "TarasZoukClasses.Models": "1.0.0",
+          "TarasZoukClasses.Data": "1.0.0",
+          "TarasZoukClasses.Utils": "1.0.0",
           "Telegram.Bot": "15.7.1"
         },
         "compile": {
@@ -1388,21 +1379,19 @@
           "bin/placeholder/TarasZoukClasses.Domain.dll": {}
         }
       },
-      "TarasZoukClasses.Models/1.0.0": {
+      "TarasZoukClasses.Utils/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "3.1.8",
-          "Microsoft.Extensions.Configuration.Binder": "3.1.8",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.8",
-          "Microsoft.Extensions.Logging.Abstractions": "3.1.8",
           "Telegram.Bot": "15.7.1"
         },
         "compile": {
-          "bin/placeholder/TarasZoukClasses.Models.dll": {}
+          "bin/placeholder/TarasZoukClasses.Utils.dll": {}
         },
         "runtime": {
-          "bin/placeholder/TarasZoukClasses.Models.dll": {}
+          "bin/placeholder/TarasZoukClasses.Utils.dll": {}
         }
       }
     }
@@ -1507,22 +1496,6 @@
         "version.txt"
       ]
     },
-    "Microsoft.Extensions.Configuration/3.1.8": {
-      "sha512": "xWvtu/ra8xDOy62ZXzQj1ElmmH3GpZBSKvw4LbfNXKCy+PaziS5Uh0gQ47D4H4w3u+PJfhNWCCGCp9ORNEzkRw==",
-      "type": "package",
-      "path": "microsoft.extensions.configuration/3.1.8",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.dll",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.xml",
-        "microsoft.extensions.configuration.3.1.8.nupkg.sha512",
-        "microsoft.extensions.configuration.nuspec"
-      ]
-    },
     "Microsoft.Extensions.Configuration.Abstractions/3.1.8": {
       "sha512": "0qbNyxGpuNP/fuQ3FLHesm1Vn/83qYcAgVsi1UQCQN1peY4YH1uiizOh4xbYkQyxiVMD/c/zhiYYv94G0DXSSA==",
       "type": "package",
@@ -1537,22 +1510,6 @@
         "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.xml",
         "microsoft.extensions.configuration.abstractions.3.1.8.nupkg.sha512",
         "microsoft.extensions.configuration.abstractions.nuspec"
-      ]
-    },
-    "Microsoft.Extensions.Configuration.Binder/3.1.8": {
-      "sha512": "l/oqIWRM4YF62mlCOrIKGUOCemsaID/lngK2SZEtpYI8LrktpjPd4QzvENWj5GebbLbqOtsFhF6Ko6dgzmUnBw==",
-      "type": "package",
-      "path": "microsoft.extensions.configuration.binder/3.1.8",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.dll",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Binder.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Binder.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Binder.xml",
-        "microsoft.extensions.configuration.binder.3.1.8.nupkg.sha512",
-        "microsoft.extensions.configuration.binder.nuspec"
       ]
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/3.1.8": {
@@ -4991,22 +4948,26 @@
         "telegram.bot.nuspec"
       ]
     },
+    "TarasZoukClasses.Data/1.0.0": {
+      "type": "project",
+      "path": "../TarasZoukClasses.Data/TarasZoukClasses.Data.csproj",
+      "msbuildProject": "../TarasZoukClasses.Data/TarasZoukClasses.Data.csproj"
+    },
     "TarasZoukClasses.Domain/1.0.0": {
       "type": "project",
       "path": "../TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj",
       "msbuildProject": "../TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj"
     },
-    "TarasZoukClasses.Models/1.0.0": {
+    "TarasZoukClasses.Utils/1.0.0": {
       "type": "project",
-      "path": "../TarasZoukClasses.Models/TarasZoukClasses.Models.csproj",
-      "msbuildProject": "../TarasZoukClasses.Models/TarasZoukClasses.Models.csproj"
+      "path": "../Utils/TarasZoukClasses.Utils.csproj",
+      "msbuildProject": "../Utils/TarasZoukClasses.Utils.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.8",
       "TarasZoukClasses.Domain >= 1.0.0",
-      "TarasZoukClasses.Models >= 1.0.0",
       "Telegram.Bot >= 15.7.1"
     ]
   },
@@ -5038,9 +4999,6 @@
           "projectReferences": {
             "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj": {
               "projectPath": "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Domain\\TarasZoukClasses.Domain.csproj"
-            },
-            "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj": {
-              "projectPath": "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Models\\TarasZoukClasses.Models.csproj"
             }
           }
         }

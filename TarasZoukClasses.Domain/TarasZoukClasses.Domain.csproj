@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TarasZoukClasses.Models\TarasZoukClasses.Models.csproj" />
+    <ProjectReference Include="..\TarasZoukClasses.Data\TarasZoukClasses.Data.csproj" />
+    <ProjectReference Include="..\Utils\TarasZoukClasses.Utils.csproj" />
   </ItemGroup>
 
 </Project>

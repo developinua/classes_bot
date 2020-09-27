@@ -4,20 +4,20 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Context;
-    using Models;
+    using Models.MongoDb;
     using MongoDB.Bson;
     using MongoDB.Driver;
 
     public abstract class MongoDbRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseMongoDbModel
     {
-        protected readonly IMongoDbContext MongoContext;
+        private readonly IMongoDbContext _mongoContext;
 
-        protected IMongoCollection<TEntity> DbCollection;
+        private IMongoCollection<TEntity> _dbCollection;
 
         protected MongoDbRepository(IMongoDbContext context)
         {
-            MongoContext = context;
-            DbCollection = MongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
+            _mongoContext = context;
+            _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
         public async Task Add(TEntity entity)
@@ -27,8 +27,8 @@
                 throw new ArgumentNullException(typeof(TEntity).Name + " object is null.");
             }
 
-            DbCollection = MongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
-            await DbCollection.InsertOneAsync(entity);
+            _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
+            await _dbCollection.InsertOneAsync(entity);
         }
 
         public async Task Delete(int id)
@@ -36,13 +36,13 @@
             //ex. 5dc1039a1521eaa36835e541
 
             var objectId = new ObjectId(id.ToString());
-            await DbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
+            await _dbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
         }
 
         public virtual async Task Update(TEntity entity)
         {
             //return Task.CompletedTask;
-            await DbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", entity.Id), entity);
+            await _dbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", entity.Id), entity);
         }
 
         public async Task<TEntity> Get(int id)
@@ -51,17 +51,17 @@
 
             var objectId = new ObjectId(id.ToString());
 
-            FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Eq("_id", objectId);
+            var filter = Builders<TEntity>.Filter.Eq("_id", objectId);
 
-            DbCollection = MongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
+            _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
 
-            return await DbCollection.FindAsync(filter).Result.FirstOrDefaultAsync();
+            return await _dbCollection.FindAsync(filter).Result.FirstOrDefaultAsync();
 
         }
 
         public async Task<IEnumerable<TEntity>> GetAll()
         {
-            var all = await DbCollection.FindAsync(Builders<TEntity>.Filter.Empty);
+            var all = await _dbCollection.FindAsync(Builders<TEntity>.Filter.Empty);
             return await all.ToListAsync();
         }
     }

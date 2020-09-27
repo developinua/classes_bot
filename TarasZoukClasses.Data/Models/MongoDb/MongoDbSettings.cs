@@ -1,6 +1,4 @@
-﻿using MongoDB.Driver;
-
-namespace TarasZoukClasses.Data.Models
+﻿namespace TarasZoukClasses.Data.Models.MongoDb
 {
     public class MongoDbSettings
     {

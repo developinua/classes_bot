@@ -1,7 +1,7 @@
 ﻿namespace TarasZoukClasses.Data.Context
 {
     using System;
-    using Models;
+    using Models.MongoDb;
     using MongoDB.Driver;
 
     public class MongoDbContext : IMongoDbContext

@@ -1,4 +1,4 @@
-﻿namespace TarasZoukClasses.Data.Models
+﻿namespace TarasZoukClasses.Data.Models.MongoDb
 {
     using MongoDB.Bson;
     using MongoDB.Bson.Serialization.Attributes;

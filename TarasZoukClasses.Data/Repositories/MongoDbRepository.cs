@@ -4,10 +4,11 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Context;
+    using Models;
     using MongoDB.Bson;
     using MongoDB.Driver;
 
-    public abstract class MongoDbRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public abstract class MongoDbRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseMongoDbModel
     {
         protected readonly IMongoDbContext MongoContext;
 
@@ -38,10 +39,10 @@
             await DbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
         }
 
-        public virtual Task Update(TEntity entity)
+        public virtual async Task Update(TEntity entity)
         {
-            return Task.CompletedTask;
-            //await DbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", entity.GetId()), entity);
+            //return Task.CompletedTask;
+            await DbCollection.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", entity.Id), entity);
         }
 
         public async Task<TEntity> Get(int id)

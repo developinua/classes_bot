@@ -70,7 +70,6 @@ C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\De
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Api.pdb
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
-C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
@@ -92,9 +91,7 @@ C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\De
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.pdb
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.genruntimeconfig.cache
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Data.dll
-C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Utils.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Data.pdb
-C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Utils.pdb
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\DnsClient.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\MongoDB.Bson.dll

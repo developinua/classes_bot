@@ -50,18 +50,6 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Configuration.Abstractions/3.1.8": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Primitives": "3.1.8"
-        },
-        "compile": {
-          "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll": {}
-        }
-      },
       "Microsoft.Extensions.DependencyInjection.Abstractions/3.1.8": {
         "type": "package",
         "compile": {
@@ -1488,7 +1476,6 @@
         "dependencies": {
           "Microsoft.Extensions.Options": "3.1.8",
           "MongoDB.Driver": "2.11.2",
-          "TarasZoukClasses.Utils": "1.0.0",
           "Telegram.Bot": "15.7.1"
         },
         "compile": {
@@ -1504,7 +1491,6 @@
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "3.1.8",
           "TarasZoukClasses.Data": "1.0.0",
-          "TarasZoukClasses.Utils": "1.0.0",
           "Telegram.Bot": "15.7.1"
         },
         "compile": {
@@ -1512,21 +1498,6 @@
         },
         "runtime": {
           "bin/placeholder/TarasZoukClasses.Domain.dll": {}
-        }
-      },
-      "TarasZoukClasses.Utils/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "3.1.8",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.8",
-          "Telegram.Bot": "15.7.1"
-        },
-        "compile": {
-          "bin/placeholder/TarasZoukClasses.Utils.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TarasZoukClasses.Utils.dll": {}
         }
       }
     }
@@ -1651,22 +1622,6 @@
         "ref/xamarinwatchos10/_._",
         "useSharedDesignerContext.txt",
         "version.txt"
-      ]
-    },
-    "Microsoft.Extensions.Configuration.Abstractions/3.1.8": {
-      "sha512": "0qbNyxGpuNP/fuQ3FLHesm1Vn/83qYcAgVsi1UQCQN1peY4YH1uiizOh4xbYkQyxiVMD/c/zhiYYv94G0DXSSA==",
-      "type": "package",
-      "path": "microsoft.extensions.configuration.abstractions/3.1.8",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.dll",
-        "lib/netcoreapp3.1/Microsoft.Extensions.Configuration.Abstractions.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Abstractions.xml",
-        "microsoft.extensions.configuration.abstractions.3.1.8.nupkg.sha512",
-        "microsoft.extensions.configuration.abstractions.nuspec"
       ]
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/3.1.8": {
@@ -5308,11 +5263,6 @@
       "type": "project",
       "path": "../TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj",
       "msbuildProject": "../TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj"
-    },
-    "TarasZoukClasses.Utils/1.0.0": {
-      "type": "project",
-      "path": "../Utils/TarasZoukClasses.Utils.csproj",
-      "msbuildProject": "../Utils/TarasZoukClasses.Utils.csproj"
     }
   },
   "projectFileDependencyGroups": {

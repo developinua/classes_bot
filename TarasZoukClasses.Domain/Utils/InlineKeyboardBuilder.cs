@@ -1,4 +1,4 @@
-﻿namespace TarasZoukClasses.Models.TelegramBotModels
+﻿namespace TarasZoukClasses.Domain.Utils
 {
     using System.Collections.Generic;
     using Telegram.Bot.Types.ReplyMarkups;
@@ -11,15 +11,11 @@
 
         private List<InlineKeyboardButton> Rows { get; set; }
 
-        private long ChatId { get; set; }
-
-        private string Text { get; set; }
-
         #endregion
 
         #region Constructor
 
-        public InlineKeyboardBuilder()
+        private InlineKeyboardBuilder()
         {
             Keyboard = new List<List<InlineKeyboardButton>>();
             Rows = new List<InlineKeyboardButton>();
@@ -44,13 +40,11 @@
 
         public InlineKeyboardBuilder SetChatId(long chatId)
         {
-            ChatId = chatId;
             return this;
         }
 
         public InlineKeyboardBuilder SetText(string text)
         {
-            Text = text;
             return this;
         }
 

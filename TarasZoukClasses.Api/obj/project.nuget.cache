@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "oDkYOYF5CmGO5VCcvBZsHOK5IPBln5R2fUmdtR1QnbZLNhD2f1ysabWL3PoawkyjyflmST0tWp9IZQOpm4/MoQ==",
+  "dgSpecHash": "3edXKmd1cdFC0km0Q+IfLj8pgrKRU+DogBGv95JbBPJ8F2pMdl4FbiCGot6T8gpFWZCzbxlQWxiljrePj6GSXQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\nazik\\Documents\\Sources\\TarasZoukClassesBot\\TarasZoukClasses.Api\\TarasZoukClasses.Api.csproj",
   "expectedPackageFiles": [
@@ -8,7 +8,6 @@
     "C:\\Users\\nazik\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.8\\microsoft.aspnetcore.jsonpatch.3.1.8.nupkg.sha512",
     "C:\\Users\\nazik\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.8\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.8.nupkg.sha512",
     "C:\\Users\\nazik\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
-    "C:\\Users\\nazik\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.1.8\\microsoft.extensions.configuration.abstractions.3.1.8.nupkg.sha512",
     "C:\\Users\\nazik\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.1.8\\microsoft.extensions.dependencyinjection.abstractions.3.1.8.nupkg.sha512",
     "C:\\Users\\nazik\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\3.1.8\\microsoft.extensions.logging.abstractions.3.1.8.nupkg.sha512",
     "C:\\Users\\nazik\\.nuget\\packages\\microsoft.extensions.options\\3.1.8\\microsoft.extensions.options.3.1.8.nupkg.sha512",

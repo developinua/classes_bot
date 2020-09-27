@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TarasZoukClasses.Data", "Ta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TarasZoukClasses.Domain", "TarasZoukClasses.Domain\TarasZoukClasses.Domain.csproj", "{722BD947-A68D-449D-9E91-E7431A0494B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TarasZoukClasses.Utils", "Utils\TarasZoukClasses.Utils.csproj", "{FE937018-6B1B-4216-8153-851CBDEE034D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{722BD947-A68D-449D-9E91-E7431A0494B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{722BD947-A68D-449D-9E91-E7431A0494B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{722BD947-A68D-449D-9E91-E7431A0494B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE937018-6B1B-4216-8153-851CBDEE034D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE937018-6B1B-4216-8153-851CBDEE034D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE937018-6B1B-4216-8153-851CBDEE034D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE937018-6B1B-4216-8153-851CBDEE034D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

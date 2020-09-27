@@ -95,3 +95,13 @@ C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\De
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Utils.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Data.pdb
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\TarasZoukClasses.Utils.pdb
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\DnsClient.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\MongoDB.Bson.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\MongoDB.Driver.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\MongoDB.Driver.Core.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\MongoDB.Libmongocrypt.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\SharpCompress.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\runtimes\win\native\libzstd.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\runtimes\win\native\snappy32.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\runtimes\win\native\snappy64.dll

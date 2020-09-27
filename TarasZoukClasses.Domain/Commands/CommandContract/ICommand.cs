@@ -6,7 +6,7 @@
 
     public interface ICommand
     {
-        string CommandName { get; }
+        string Name { get; }
 
         string CallbackQueryPattern { get; }
 

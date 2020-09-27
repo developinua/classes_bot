@@ -31,6 +31,7 @@
                 };
             }
 
+            // TODO: Change it.
             var commands = await TelegramBot.GetActiveCommandsAsync();
 
             foreach (var command in commands.Where(command => command.Contains(message)))

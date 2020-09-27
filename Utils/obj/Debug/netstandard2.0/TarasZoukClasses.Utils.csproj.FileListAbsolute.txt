@@ -1,7 +1,6 @@
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\bin\Debug\netstandard2.0\TarasZoukClasses.Utils.deps.json
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\bin\Debug\netstandard2.0\TarasZoukClasses.Utils.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\bin\Debug\netstandard2.0\TarasZoukClasses.Utils.pdb
-C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\obj\Debug\netstandard2.0\TarasZoukClasses.Utils.csprojAssemblyReference.cache
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\obj\Debug\netstandard2.0\TarasZoukClasses.Utils.AssemblyInfoInputs.cache
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\obj\Debug\netstandard2.0\TarasZoukClasses.Utils.AssemblyInfo.cs
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\Utils\obj\Debug\netstandard2.0\TarasZoukClasses.Utils.dll

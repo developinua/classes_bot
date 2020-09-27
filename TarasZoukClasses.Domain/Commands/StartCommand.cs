@@ -11,7 +11,7 @@
 
     public class StartCommand : ICommand
     {
-        public string CommandName => @"/start";
+        public string Name => @"/start";
 
         public string CallbackQueryPattern => @"(?<query>\w+):(?<data>\w{2}-\w{2})";
 
@@ -22,7 +22,7 @@
 
         public bool Contains(Message message)
         {
-            return message.Type == MessageType.Text && message.Text.Contains(CommandName);
+            return message.Type == MessageType.Text && message.Text.Contains(Name);
         }
 
         public bool Contains(string callbackQueryData)

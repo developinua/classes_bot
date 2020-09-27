@@ -7,7 +7,7 @@
 
     public class CreateSubscriptionCommand : ICommand
     {
-        public string CommandName => throw new System.NotImplementedException();
+        public string Name => throw new System.NotImplementedException();
 
         public string CallbackQueryPattern => throw new System.NotImplementedException();
 

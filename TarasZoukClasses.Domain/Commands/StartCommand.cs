@@ -3,11 +3,12 @@
     using System;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-    using CommandContract;
-    using Utils;
+    using Contract;
+    using Service.BaseService;
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
+    using Utils;
 
     public class StartCommand : ICommand
     {
@@ -30,7 +31,7 @@
             return new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
         }
 
-        public async Task Execute(Message message, TelegramBotClient botClient)
+        public async Task Execute(Message message, TelegramBotClient botClient, IUnitOfWork services)
         {
             if (botClient == null)
             {
@@ -59,7 +60,7 @@
                 replyMarkup: replyKeyboardMarkup);
         }
 
-        public async Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient)
+        public async Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient, IUnitOfWork services)
         {
             // TODO: Save user information (ChatId, CultureName, UserName)
             var chatId = callbackQuery.From.Id;

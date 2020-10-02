@@ -21,7 +21,7 @@ namespace TarasZoukClasses.Api
         {
             services.AddRepository();
             services.AddControllers()
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson(options => options.UseMemberCasing());
 
             services.UseTelegramBotWebHooks(Configuration).Wait();
         }

@@ -1,6 +1,7 @@
-﻿namespace TarasZoukClasses.Domain.Commands.CommandContract
+﻿namespace TarasZoukClasses.Domain.Commands.Contract
 {
     using System.Threading.Tasks;
+    using Service.BaseService;
     using Telegram.Bot;
     using Telegram.Bot.Types;
 
@@ -12,9 +13,9 @@
 
         string ResponseMessage { get; set; }
 
-        Task Execute(Message message, TelegramBotClient client);
+        Task Execute(Message message, TelegramBotClient client, IUnitOfWork services);
 
-        Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient);
+        Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient, IUnitOfWork services);
 
         bool Contains(Message message);
 

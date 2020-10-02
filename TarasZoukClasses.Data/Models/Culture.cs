@@ -2,10 +2,10 @@
 {
     using MongoDb;
 
-    public class Command : Document
+    public class Culture : Document
     {
         public string Name { get; set; }
 
-        public bool IsActive { get; set; }
+        public string LanguageCode { get; set; }
     }
 }

@@ -1,7 +1,8 @@
 ﻿namespace TarasZoukClasses.Domain.Commands
 {
     using System.Threading.Tasks;
-    using CommandContract;
+    using Contract;
+    using Service.BaseService;
     using Telegram.Bot;
     using Telegram.Bot.Types;
 
@@ -23,12 +24,12 @@
             throw new System.NotImplementedException();
         }
 
-        public Task Execute(Message message, TelegramBotClient client)
+        public Task Execute(Message message, TelegramBotClient client, IUnitOfWork services)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient)
+        public Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient, IUnitOfWork services)
         {
             throw new System.NotImplementedException();
         }

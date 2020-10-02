@@ -5,6 +5,7 @@
     using Domain.Handlers.UpdateHandler;
     using Domain.Handlers.UpdateHandler.UpdateHandlerContract;
     using Domain.Handlers.UpdateHandlerResponse;
+    using Domain.Service.BaseService;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Telegram.Bot;
@@ -14,6 +15,8 @@
     [Route("api/v1")]
     public class MessageController : Controller
     {
+        private IUnitOfWork Services { get; }
+
         private ILogger<MessageController> Logger { get; }
 
         private TelegramBotClient TelegramBotClient { get; }
@@ -22,10 +25,11 @@
 
         private UpdateHandlerResponse UpdateHandlerResponse { get; set; }
 
-        public MessageController(ILogger<MessageController> logger, TelegramBotClient telegramBotClient)
+        public MessageController(TelegramBotClient telegramBotClient, IUnitOfWork services, ILogger<MessageController> logger)
         {
-            Logger = logger;
             TelegramBotClient = telegramBotClient;
+            Services = services;
+            Logger = logger;
         }
 
         [HttpPost]
@@ -34,8 +38,8 @@
         {
             UpdateHandler = update.Type switch
             {
-                UpdateType.Message => new MessageUpdateHandler(TelegramBotClient),
-                UpdateType.CallbackQuery => new CallbackQueryUpdateHandler(TelegramBotClient),
+                UpdateType.Message => new MessageUpdateHandler(TelegramBotClient, Services),
+                UpdateType.CallbackQuery => new CallbackQueryUpdateHandler(TelegramBotClient, Services),
                 UpdateType.Unknown => throw new NotImplementedException(),
                 UpdateType.InlineQuery => throw new NotImplementedException(),
                 UpdateType.ChosenInlineResult => throw new NotImplementedException(),
@@ -67,6 +71,13 @@
 
             Logger.LogInformation($"Successful response. {DateTime.UtcNow}.");
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("{controller}/{action}")]
+        public ActionResult Index()
+        {
+            return Ok("Hi there!");
         }
     }
 }

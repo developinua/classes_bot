@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using Service;
+    using Service.BaseService;
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using UpdateHandlerContract;
@@ -13,9 +13,12 @@
     {
         private TelegramBotClient TelegramBotClient { get; }
 
-        public CallbackQueryUpdateHandler(TelegramBotClient telegramBotClient)
+        private IUnitOfWork Services { get; }
+
+        public CallbackQueryUpdateHandler(TelegramBotClient telegramBotClient, IUnitOfWork services)
         {
             TelegramBotClient = telegramBotClient;
+            Services = services;
         }
 
         public async Task<UpdateHandlerResponse> Handle(Update update)
@@ -31,12 +34,11 @@
                 };
             }
 
-            // TODO: Change it.
-            var commands = await TelegramBot.GetActiveCommandsAsync();
+            var commands = await Services.Commands.GetActiveCommandsAsync();
 
             foreach (var command in commands.Where(command => command.Contains(callbackQuery.Data)))
             {
-                await command.Execute(callbackQuery, TelegramBotClient);
+                await command.Execute(callbackQuery, TelegramBotClient, Services);
                 break;
             }
 

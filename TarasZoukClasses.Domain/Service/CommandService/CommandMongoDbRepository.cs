@@ -2,42 +2,27 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Commands;
+    using Commands.Contract;
+    using Data.Context;
     using Data.Models;
+    using Data.Repositories;
 
-    public class CommandMongoDbRepository : ICommandRepository
+    public class CommandMongoDbRepository : MongoDbRepository<Command>, ICommandRepository
     {
-        public async Task<Command> Get(int id)
+        public CommandMongoDbRepository(IMongoDbContext context) : base(context) { }
+
+        public async Task<IEnumerable<ICommand>> GetActiveCommandsAsync()
         {
             //logger.LogInformation($"Trying to get active commands start. {DateTime.UtcNow}.");
             // TODO: Add possibility to get active commands from db and via reflection return active commands.
-            //var commands = await Task.Run(() => new List<ICommand>
-            //{
-            //    new StartCommand()
-            //});
+            var commands = await Task.Run(() => new List<ICommand>
+            {
+                new StartCommand()
+            });
             //logger.LogInformation($"Trying to get active commands finished. {DateTime.UtcNow}.");
 
-            //return commands;
-            return await Task.Run(() => new Command());
-        }
-
-        public Task<IEnumerable<Command>> GetAll()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Add(Command entity)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Update(Command entity)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Delete(int id)
-        {
-            throw new System.NotImplementedException();
+            return commands;
         }
     }
 }

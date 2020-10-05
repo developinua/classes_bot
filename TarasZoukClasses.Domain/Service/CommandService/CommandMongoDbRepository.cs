@@ -18,7 +18,9 @@
             // TODO: Add possibility to get active commands from db and via reflection return active commands.
             var commands = await Task.Run(() => new List<ICommand>
             {
-                new StartCommand()
+                new StartCommand(),
+                new CreateSubscriptionCommand(),
+                new CheckInCommand()
             });
             //logger.LogInformation($"Trying to get active commands finished. {DateTime.UtcNow}.");
 

@@ -1,10 +1,10 @@
 ﻿namespace TarasZoukClasses.Data.Models
 {
-    using MongoDb;
+    using Base;
 
     public class UserAdditionalInformation : Document
     {
-        public Culture CultureId { get; set; }
+        public Culture Culture { get; set; }
 
         public string FirstName { get; set; }
 

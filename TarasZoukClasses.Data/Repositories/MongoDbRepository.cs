@@ -6,7 +6,7 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Context;
-    using Models.MongoDb;
+    using Models.Base;
     using MongoDB.Bson;
     using MongoDB.Driver;
 
@@ -14,7 +14,7 @@
     {
         #region Properties: Private
 
-        private readonly IMongoCollection<TEntity> _dbCollection;
+        protected readonly IMongoCollection<TEntity> DbCollection;
 
         #endregion
 
@@ -22,7 +22,7 @@
 
         protected MongoDbRepository(IMongoDbContext context)
         {
-            _dbCollection = context.GetCollection<TEntity>(typeof(TEntity).Name);
+            DbCollection = context.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
         #endregion
@@ -33,20 +33,20 @@
 
         public IQueryable<TEntity> AsQueryable()
         {
-            return _dbCollection.AsQueryable();
+            return DbCollection.AsQueryable();
         }
 
         public async Task<IEnumerable<TEntity>> FilterBy(
             Expression<Func<TEntity, bool>> filterExpression)
         {
-            return (await _dbCollection.FindAsync(filterExpression)).ToEnumerable();
+            return (await DbCollection.FindAsync(filterExpression)).ToEnumerable();
         }
 
         public IEnumerable<TProjected> FilterBy<TProjected>(
             Expression<Func<TEntity, bool>> filterExpression,
             Expression<Func<TEntity, TProjected>> projectionExpression)
         {
-            return _dbCollection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
+            return DbCollection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
         }
 
         #endregion
@@ -57,7 +57,7 @@
         {
             var objectId = new ObjectId(id);
             var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
-            var filteredDocument = _dbCollection.Find(filter);
+            var filteredDocument = DbCollection.Find(filter);
 
             return filteredDocument.SingleOrDefault();
         }
@@ -66,30 +66,30 @@
         {
             var objectId = new ObjectId(id);
             var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
-            var filteredDocument = await _dbCollection.FindAsync(filter);
+            var filteredDocument = await DbCollection.FindAsync(filter);
 
             return await filteredDocument.SingleOrDefaultAsync();
         }
 
         public TEntity FindOne(Expression<Func<TEntity, bool>> filterExpression)
         {
-            return _dbCollection.Find(filterExpression).FirstOrDefault();
+            return DbCollection.Find(filterExpression).FirstOrDefault();
         }
 
         public async Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression)
         {
-            return await _dbCollection.Find(filterExpression).FirstOrDefaultAsync();
+            return await DbCollection.Find(filterExpression).FirstOrDefaultAsync();
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            var allDocs = _dbCollection.Find(Builders<TEntity>.Filter.Empty);
+            var allDocs = DbCollection.Find(Builders<TEntity>.Filter.Empty);
             return allDocs.ToList();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            var allDocs = await _dbCollection.FindAsync(Builders<TEntity>.Filter.Empty);
+            var allDocs = await DbCollection.FindAsync(Builders<TEntity>.Filter.Empty);
             return await allDocs.ToListAsync();
         }
 
@@ -99,22 +99,22 @@
 
         public void Insert(TEntity document)
         {
-            _dbCollection.InsertOne(document);
+            DbCollection.InsertOne(document);
         }
 
         public async Task InsertAsync(TEntity document)
         {
-            await _dbCollection.InsertOneAsync(document);
+            await DbCollection.InsertOneAsync(document);
         }
 
         public void InsertMany(IEnumerable<TEntity> documents)
         {
-            _dbCollection.InsertMany(documents);
+            DbCollection.InsertMany(documents);
         }
 
         public async Task InsertManyAsync(IEnumerable<TEntity> documents)
         {
-            await _dbCollection.InsertManyAsync(documents);
+            await DbCollection.InsertManyAsync(documents);
         }
 
         #endregion
@@ -124,13 +124,13 @@
         public TEntity Replace(TEntity document)
         {
             var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, document.Id);
-            return _dbCollection.FindOneAndReplace(filter, document);
+            return DbCollection.FindOneAndReplace(filter, document);
         }
 
         public async Task<TEntity> ReplaceAsync(TEntity document)
         {
             var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, document.Id);
-            return await _dbCollection.FindOneAndReplaceAsync(filter, document);
+            return await DbCollection.FindOneAndReplaceAsync(filter, document);
         }
 
         #endregion
@@ -142,12 +142,12 @@
             var objectId = new ObjectId(id);
             var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
 
-            return _dbCollection.FindOneAndDelete(filter);
+            return DbCollection.FindOneAndDelete(filter);
         }
 
         public TEntity Delete(Expression<Func<TEntity, bool>> filterExpression)
         {
-            return _dbCollection.FindOneAndDelete(filterExpression);
+            return DbCollection.FindOneAndDelete(filterExpression);
         }
 
         public async Task<TEntity> DeleteAsync(string id)
@@ -155,22 +155,22 @@
             var objectId = new ObjectId(id);
             var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
 
-            return await _dbCollection.FindOneAndDeleteAsync(filter);
+            return await DbCollection.FindOneAndDeleteAsync(filter);
         }
 
         public async Task<TEntity> DeleteAsync(Expression<Func<TEntity, bool>> filterExpression)
         {
-            return await _dbCollection.FindOneAndDeleteAsync(filterExpression);
+            return await DbCollection.FindOneAndDeleteAsync(filterExpression);
         }
 
         public DeleteResult DeleteMany(Expression<Func<TEntity, bool>> filterExpression)
         {
-            return _dbCollection.DeleteMany(filterExpression);
+            return DbCollection.DeleteMany(filterExpression);
         }
 
         public async Task<DeleteResult> DeleteManyAsync(Expression<Func<TEntity, bool>> filterExpression)
         {
-            return await _dbCollection.DeleteManyAsync(filterExpression);
+            return await DbCollection.DeleteManyAsync(filterExpression);
         }
 
         #endregion

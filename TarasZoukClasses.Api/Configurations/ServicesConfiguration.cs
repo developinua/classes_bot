@@ -3,6 +3,7 @@
     using Data.Context;
     using Domain.Service.BaseService;
     using Domain.Service.CommandService;
+    using Domain.Service.CultureService;
     using Domain.Service.PaymentService;
     using Domain.Service.UserPaymentService;
     using Domain.Service.UserService;
@@ -14,9 +15,10 @@
         {
             services.AddTransient<IMongoDbContext, MongoDbContext>();
 
-            services.AddTransient<IUserRepository, UserMongoDbRepository>();
+            services.AddTransient<IZoukUserRepository, ZoukUserMongoDbRepository>();
             services.AddTransient<IPaymentRepository, PaymentMongoDbRepository>();
             services.AddTransient<IUserPaymentRepository, UserPaymentMongoDbRepository>();
+            services.AddTransient<ICultureRepository, CultureMongoDbRepository>();
             services.AddTransient<ICommandRepository, CommandMongoDbRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();

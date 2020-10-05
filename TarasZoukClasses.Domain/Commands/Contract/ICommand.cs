@@ -11,8 +11,6 @@
 
         string CallbackQueryPattern { get; }
 
-        string ResponseMessage { get; set; }
-
         Task Execute(Message message, TelegramBotClient client, IUnitOfWork services);
 
         Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient, IUnitOfWork services);

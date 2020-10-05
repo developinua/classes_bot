@@ -1,4 +1,4 @@
-﻿namespace TarasZoukClasses.Data.Models.MongoDb
+﻿namespace TarasZoukClasses.Data.Models.Base
 {
     using System;
     using MongoDB.Bson;

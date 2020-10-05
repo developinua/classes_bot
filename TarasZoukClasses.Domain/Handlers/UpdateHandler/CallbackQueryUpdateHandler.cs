@@ -35,12 +35,18 @@
             }
 
             var commands = await Services.Commands.GetActiveCommandsAsync();
+            var userCommand = commands.SingleOrDefault(command => command.Contains(callbackQuery.Data));
 
-            foreach (var command in commands.Where(command => command.Contains(callbackQuery.Data)))
+            if (userCommand == null)
             {
-                await command.Execute(callbackQuery, TelegramBotClient, Services);
-                break;
+                return new UpdateHandlerResponse
+                {
+                    Message = $"This bot can't process callback query: {callbackQuery.Data}.",
+                    ResponseType = UpdateHandlerResponseType.Error
+                };
             }
+
+            await userCommand.Execute(callbackQuery, TelegramBotClient, Services);
 
             return new UpdateHandlerResponse
             {

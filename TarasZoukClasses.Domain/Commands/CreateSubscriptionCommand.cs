@@ -1,27 +1,29 @@
 ﻿namespace TarasZoukClasses.Domain.Commands
 {
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using Contract;
     using Service.BaseService;
     using Telegram.Bot;
     using Telegram.Bot.Types;
+    using Telegram.Bot.Types.Enums;
 
     public class CreateSubscriptionCommand : ICommand
     {
-        public string Name => throw new System.NotImplementedException();
+        public string Name => @"/createSubscription";
 
-        public string CallbackQueryPattern => throw new System.NotImplementedException();
+        public string CallbackQueryPattern => @"(?i)(?<query>createSubscription)";
 
-        public string ResponseMessage { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        private const string ResponseMessage = "";
 
         public bool Contains(Message message)
         {
-            throw new System.NotImplementedException();
+            return message.Type == MessageType.Text && message.Text.Contains(Name);
         }
 
         public bool Contains(string callbackQueryData)
         {
-            throw new System.NotImplementedException();
+            return new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
         }
 
         public Task Execute(Message message, TelegramBotClient client, IUnitOfWork services)

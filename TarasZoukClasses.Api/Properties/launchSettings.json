@@ -4,8 +4,9 @@
       "commandName": "Project",
       "launchUrl": "api/v1/message",
       "environmentVariables": {
-        "MongoDbConnectionString": "mongodb://mongozoukapi:YdkPQwYpGHJ2UEbjQHtfeIBatmlPEKggOHyjhVenHpeH64860ZJXa3rFKyrJj5ml9y7IDLf5OoM3bhXaCQnGDg==@mongozoukapi.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@mongozoukapi@",
-        "MongoDbDatabaseName": "mongozoukapi",
+        "MongoConnectionString": "mongodb://mongozoukapi:YdkPQwYpGHJ2UEbjQHtfeIBatmlPEKggOHyjhVenHpeH64860ZJXa3rFKyrJj5ml9y7IDLf5OoM3bhXaCQnGDg==@mongozoukapi.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@mongozoukapi@",
+        "MongoDbConnectionString": "mongodb+srv://nazar:2cjBwz50qpHvXSJ0@classes.zo9id.azure.mongodb.net/TarasZoukClasses?authSource=admin&readPreference=primary&ssl=true",
+        "MongoDbDatabaseName": "TarasZoukClasses",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"

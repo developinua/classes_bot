@@ -1,7 +1,7 @@
 ﻿namespace TarasZoukClasses.Data.Models
 {
     using System;
-    using MongoDb;
+    using Base;
 
     public class Payment : Document
     {

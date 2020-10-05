@@ -35,12 +35,18 @@
             }
 
             var commands = await Services.Commands.GetActiveCommandsAsync();
+            var userCommand = commands.SingleOrDefault(command => command.Contains(message));
 
-            foreach (var command in commands.Where(command => command.Contains(message)))
+            if (userCommand == null)
             {
-                await command.Execute(message, TelegramBotClient, Services);
-                break;
+                return new UpdateHandlerResponse
+                {
+                    Message = $"Can't process message {message}",
+                    ResponseType = UpdateHandlerResponseType.Error
+                };
             }
+
+            await userCommand.Execute(message, TelegramBotClient, Services);
 
             return new UpdateHandlerResponse
             {

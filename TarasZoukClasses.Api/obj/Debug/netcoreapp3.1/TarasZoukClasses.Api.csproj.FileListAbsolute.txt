@@ -81,8 +81,6 @@ C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\De
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csprojAssemblyReference.cache
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.AssemblyInfoInputs.cache
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.AssemblyInfo.cs
-C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csproj.CoreCompileInputs.cache
-C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.RazorTargetAssemblyInfo.cache
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csproj.CopyComplete
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\staticwebassets\TarasZoukClasses.Api.StaticWebAssets.Manifest.cache
@@ -102,3 +100,5 @@ C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\De
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\runtimes\win\native\libzstd.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\runtimes\win\native\snappy32.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\runtimes\win\native\snappy64.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csproj.CoreCompileInputs.cache
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.MvcApplicationPartsAssemblyInfo.cache

@@ -1,6 +1,6 @@
 ﻿namespace TarasZoukClasses.Data.Models
 {
-    using MongoDb;
+    using Base;
 
     public class Command : Document
     {

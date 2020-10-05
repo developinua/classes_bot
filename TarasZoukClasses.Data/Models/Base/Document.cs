@@ -1,4 +1,4 @@
-﻿namespace TarasZoukClasses.Data.Models.MongoDb
+﻿namespace TarasZoukClasses.Data.Models.Base
 {
     using System;
     using MongoDB.Bson;
@@ -6,7 +6,7 @@
 
     public abstract class Document : IDocument
     {
-        public ObjectId Id { get; set; }
+        public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
         public DateTime CreatedAt => Id.CreationTime;
 

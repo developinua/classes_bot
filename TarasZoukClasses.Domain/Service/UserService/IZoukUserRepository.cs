@@ -3,5 +3,5 @@
     using Data.Models;
     using Data.Repositories;
 
-    public interface IUserRepository : IGenericRepository<User> {}
+    public interface IZoukUserRepository : IGenericRepository<ZoukUser> {}
 }

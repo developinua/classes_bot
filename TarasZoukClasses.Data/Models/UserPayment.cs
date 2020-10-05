@@ -1,10 +1,10 @@
 ﻿namespace TarasZoukClasses.Data.Models
 {
-    using MongoDb;
+    using Base;
 
     public class UserPayment : Document
     {
-        public User UserId { get; set; }
+        public ZoukUser UserId { get; set; }
 
         public Payment PaymentId { get; set; }
     }

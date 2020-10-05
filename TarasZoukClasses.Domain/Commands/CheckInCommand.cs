@@ -5,18 +5,17 @@
     using System.Threading.Tasks;
     using Contract;
     using Data.Models;
-    using MongoDB.Driver;
     using Service.BaseService;
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
     using Utils;
 
-    public class StartCommand : ICommand
+    public class CheckInCommand : ICommand
     {
-        public string Name => @"/start";
+        public string Name => @"/checkIn";
 
-        public string CallbackQueryPattern => @"(?i)(?<query>language):(?<data>\w{2}-\w{2})";
+        public string CallbackQueryPattern => @"(?i)(?<query>checkin)";
 
         private const string ResponseMessage = "Привіт! 😊\n\n" +
                                                "Якою мовою ти бажаєш спілкуватися?\n" +
@@ -81,12 +80,12 @@
 
             var replyKeyboardMarkup = InlineKeyboardBuilder.Create(chatId)
                 .SetText(ResponseCallbackQueryMessage)
-                .AddButton("Class subscription", "createSubscription")
-                .AddButton("Class check in", "checkIn")
+                .AddButton("Get my class subscription", "createSubscription")
+                .AddButton("Class check in", "language:ru-RU")
                 .Build();
 
             await botClient.SendTextMessageAsync(chatId,
-                ResponseCallbackQueryMessage,
+                ResponseMessage,
                 parseMode: ParseMode.Markdown,
                 replyMarkup: replyKeyboardMarkup);
         }
@@ -95,29 +94,23 @@
         {
             var cultureName = GetCultureNameFromCallbackQuery(callbackQuery);
             var culture = await services.Cultures.GetCultureByCodeAsync(cultureName);
+
+            // TODO: Save data
             var userAdditionalInfo = new UserAdditionalInformation
             {
                 Culture = culture,
-                FirstName = callbackQuery.Message.Chat.FirstName,
-                SecondName = callbackQuery.Message.Chat.LastName
+                FirstName = callbackQuery.Message.Chat.Username,
+                SecondName = "",
+                TelephoneNumber = ""
             };
 
-            var dbUser = await services.Users.FindOneAsync(x =>
-                x.NickName == callbackQuery.Message.Chat.Username);
+            var user = new ZoukUser
+            {
+                NickName = callbackQuery.Message.Chat.Username,
+                UserAdditionalInformation = userAdditionalInfo
+            };
 
-            if (dbUser == null)
-            {
-                await services.Users.InsertAsync(new ZoukUser
-                {
-                    NickName = callbackQuery.Message.Chat.Username,
-                    UserAdditionalInformation = userAdditionalInfo
-                });
-            }
-            else
-            {
-                dbUser.UserAdditionalInformation = userAdditionalInfo;
-                await services.Users.ReplaceAsync(dbUser);
-            }
+            await services.Users.InsertAsync(user);
         }
 
         private string GetCultureNameFromCallbackQuery(CallbackQuery callbackQuery)

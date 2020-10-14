@@ -5,33 +5,51 @@
     using CultureService;
     using Data.Context;
     using PaymentService;
-    using UserPaymentService;
-    using UserService;
+    using SubscriptionService;
+    using ZoukUserAdditionalInformationService;
+    using ZoukUserPaymentService;
+    using ZoukUserService;
+    using ZoukUserSubscription;
 
     public class UnitOfWork : IUnitOfWork
     {
         private IMongoDbContext Context { get; }
 
-        public IZoukUserRepository Users { get; set; }
+        public IZoukUserRepository ZoukUsers { get; set; }
+
+        public IZoukUserAdditionalInformationRepository ZoukUsersAdditionalInformation { get; set; }
 
         public IPaymentRepository Payments { get; set; }
 
-        public IUserPaymentRepository UsersPayments { get; set; }
+        public IZoukUserPaymentRepository ZoukUsersPayments { get; set; }
+
+        public ISubscriptionRepository Subscriptions { get; set; }
+
+        public IZoukUserSubscriptionRepository ZoukUsersSubscriptions { get; set; }
 
         public ICultureRepository Cultures { get; set; }
 
         public ICommandRepository Commands { get; set; }
 
-        public UnitOfWork(IMongoDbContext context, IZoukUserRepository userRepository,
-            IPaymentRepository paymentRepository, IUserPaymentRepository userPaymentRepository,
-            ICommandRepository commandRepository, ICultureRepository cultures)
+        public UnitOfWork(IMongoDbContext context,
+            IZoukUserRepository zoukUsersRepository,
+            IZoukUserAdditionalInformationRepository zoukUsersAdditionalInformation,
+            IPaymentRepository paymentRepository,
+            IZoukUserPaymentRepository zoukUsersPayments,
+            ISubscriptionRepository subscriptions,
+            IZoukUserSubscriptionRepository zoukUsersSubscriptions,
+            ICultureRepository cultures,
+            ICommandRepository commandRepository)
         {
             Context = context;
-            Users = userRepository;
+            ZoukUsers = zoukUsersRepository;
+            ZoukUsersAdditionalInformation = zoukUsersAdditionalInformation;
             Payments = paymentRepository;
-            UsersPayments = userPaymentRepository;
-            Commands = commandRepository;
+            ZoukUsersPayments = zoukUsersPayments;
+            Subscriptions = subscriptions;
+            ZoukUsersSubscriptions = zoukUsersSubscriptions;
             Cultures = cultures;
+            Commands = commandRepository;
         }
 
         public async Task<int> SaveChanges()

@@ -15,21 +15,22 @@
     [Route("api/v1")]
     public class MessageController : Controller
     {
+        private IUpdateHandler UpdateHandler { get; set; }
+
         private IUnitOfWork Services { get; }
 
         private ILogger<MessageController> Logger { get; }
 
         private TelegramBotClient TelegramBotClient { get; }
 
-        private IUpdateHandler UpdateHandler { get; set; }
-
-        private UpdateHandlerResponse UpdateHandlerResponse { get; set; }
+        private UpdateHandlerResponse UpdateHandlerResponse { get; }
 
         public MessageController(TelegramBotClient telegramBotClient, IUnitOfWork services, ILogger<MessageController> logger)
         {
             TelegramBotClient = telegramBotClient;
             Services = services;
             Logger = logger;
+            UpdateHandlerResponse = new UpdateHandlerResponse();
         }
 
         [HttpPost]
@@ -40,22 +41,22 @@
             {
                 UpdateType.Message => new MessageUpdateHandler(TelegramBotClient, Services),
                 UpdateType.CallbackQuery => new CallbackQueryUpdateHandler(TelegramBotClient, Services),
-                UpdateType.Unknown => throw new NotImplementedException(),
-                UpdateType.InlineQuery => throw new NotImplementedException(),
-                UpdateType.ChosenInlineResult => throw new NotImplementedException(),
-                UpdateType.EditedMessage => throw new NotImplementedException(),
-                UpdateType.ChannelPost => throw new NotImplementedException(),
-                UpdateType.EditedChannelPost => throw new NotImplementedException(),
-                UpdateType.ShippingQuery => throw new NotImplementedException(),
-                UpdateType.PreCheckoutQuery => throw new NotImplementedException(),
-                UpdateType.Poll => throw new NotImplementedException(),
-                UpdateType.PollAnswer => throw new NotImplementedException(),
-                _ => throw new NotImplementedException()
+                UpdateType.Unknown => null,
+                UpdateType.InlineQuery => null,
+                UpdateType.ChosenInlineResult => null,
+                UpdateType.EditedMessage => null,
+                UpdateType.ChannelPost => null,
+                UpdateType.EditedChannelPost => null,
+                UpdateType.ShippingQuery => null,
+                UpdateType.PreCheckoutQuery => null,
+                UpdateType.Poll => null,
+                UpdateType.PollAnswer => null,
+                _ => null
             };
 
             try
             {
-                UpdateHandlerResponse = await UpdateHandler.Handle(update);
+                if (UpdateHandler != null) await UpdateHandler.Handle(update);
             }
             catch (Exception exception)
             {
@@ -71,13 +72,6 @@
 
             Logger.LogInformation($"Successful response. {DateTime.UtcNow}.");
             return Ok();
-        }
-
-        [HttpGet]
-        [Route("{controller}/{action}")]
-        public ActionResult Index()
-        {
-            return Ok("Hi there!");
         }
     }
 }

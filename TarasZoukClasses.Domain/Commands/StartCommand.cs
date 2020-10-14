@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
     using Contract;
     using Data.Models;
-    using MongoDB.Driver;
     using Service.BaseService;
     using Telegram.Bot;
     using Telegram.Bot.Types;
@@ -18,120 +17,103 @@
 
         public string CallbackQueryPattern => @"(?i)(?<query>language):(?<data>\w{2}-\w{2})";
 
-        private const string ResponseMessage = "Привіт! 😊\n\n" +
-                                               "Якою мовою ти бажаєш спілкуватися?\n" +
-                                               "What language do you want to communicate in?\n" +
-                                               "На каком языке ты хочешь общаться?";
+        public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
 
-        private const string ResponseCallbackQueryMessage = "What do you want to do next?";
+        public bool Contains(string callbackQueryData) => new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
 
-        public bool Contains(Message message)
+        public async Task Execute(Message message, TelegramBotClient client, IUnitOfWork services)
         {
-            return message.Type == MessageType.Text && message.Text.Contains(Name);
-        }
-
-        public bool Contains(string callbackQueryData)
-        {
-            return new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
-        }
-
-        public async Task Execute(Message message, TelegramBotClient botClient, IUnitOfWork services)
-        {
-            if (botClient == null)
-            {
+            if (client == null)
                 throw new ArgumentNullException(nameof(TelegramBotClient));
-            }
 
             if (message == null)
-            {
                 throw new ArgumentNullException(nameof(Message));
-            }
 
-            var chatId = (message.Chat?.Id).GetValueOrDefault();
+            var chatId = message.Chat.Id;
+            const string responseMessage = "*😊 Hi!\n\n*What language do you want to communicate in?";
 
-            await botClient.SendChatActionAsync(chatId, ChatAction.Typing);
+            await client.SendChatActionAsync(chatId, ChatAction.Typing);
 
-            var replyKeyboardMarkup = InlineKeyboardBuilder.Create(chatId)
-                .SetText(ResponseMessage)
-                .AddButton("Ukrainian", "language:uk-UA")
-                .AddButton("Russian", "language:ru-RU")
+            var replyKeyboardMarkup = InlineKeyboardBuilder.Create()
                 .AddButton("English", "language:en-US")
                 .Build();
 
-            await botClient.SendTextMessageAsync(chatId,
-                ResponseMessage,
-                parseMode: ParseMode.Markdown,
-                replyMarkup: replyKeyboardMarkup);
+            await client.SendTextMessageAsync(chatId, responseMessage, ParseMode.Markdown, replyMarkup: replyKeyboardMarkup);
         }
 
-        public async Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient, IUnitOfWork services)
+        public async Task Execute(CallbackQuery callbackQuery, TelegramBotClient client, IUnitOfWork services)
         {
-            // TODO: Save user information (ChatId, CultureName, UserName)
-            var chatId = callbackQuery.From.Id;
-
-            if (callbackQuery.From.IsBot
-                || callbackQuery.Message.Chat.Type != ChatType.Private
-                || callbackQuery.Message.ForwardFromChat != null)
-            {
+            if (callbackQuery.Validate())
                 throw new NotSupportedException();
+
+            var chatId = callbackQuery.From.Id;
+            const string responseCallbackQueryMessage = "*😊Successfully!😊*\nPress /subscription to manage your class subscription.";
+
+            await client.SendChatActionAsync(chatId, ChatAction.Typing);
+            await StartCommandHelper.SaveUser(services, callbackQuery, CallbackQueryPattern);
+            await client.SendTextMessageAsync(chatId, responseCallbackQueryMessage, ParseMode.Markdown);
+        }
+
+        private static class StartCommandHelper
+        {
+            public static async Task SaveUser(IUnitOfWork services, CallbackQuery callbackQuery, string callbackQueryPattern)
+            {
+                var cultureName = GetCultureNameFromCallbackQuery(callbackQuery, callbackQueryPattern);
+                var culture = await services.Cultures.GetCultureByCodeAsync(cultureName);
+                var dbUser = await services.ZoukUsers.FindOneAsync(x =>
+                    x.NickName == callbackQuery.Message.Chat.Username);
+                var zoukUserAdditionalInfo = new ZoukUserAdditionalInformation
+                {
+                    Culture = culture,
+                    ChatId = callbackQuery.From.Id,
+                    FirstName = callbackQuery.Message.Chat.FirstName,
+                    SecondName = callbackQuery.Message.Chat.LastName
+                };
+
+                if (dbUser != null)
+                    await UpdateUser(services, dbUser, zoukUserAdditionalInfo);
+                else
+                    await CreateUser(services, callbackQuery.Message.Chat.Username, zoukUserAdditionalInfo);
             }
 
-            await botClient.SendChatActionAsync(chatId, ChatAction.Typing);
-            await SaveUser(callbackQuery, services);
-
-            var replyKeyboardMarkup = InlineKeyboardBuilder.Create(chatId)
-                .SetText(ResponseCallbackQueryMessage)
-                .AddButton("Class subscription", "createSubscription")
-                .AddButton("Class check in", "checkIn")
-                .Build();
-
-            await botClient.SendTextMessageAsync(chatId,
-                ResponseCallbackQueryMessage,
-                parseMode: ParseMode.Markdown,
-                replyMarkup: replyKeyboardMarkup);
-        }
-
-        private async Task SaveUser(CallbackQuery callbackQuery, IUnitOfWork services)
-        {
-            var cultureName = GetCultureNameFromCallbackQuery(callbackQuery);
-            var culture = await services.Cultures.GetCultureByCodeAsync(cultureName);
-            var userAdditionalInfo = new UserAdditionalInformation
+            private static async Task UpdateUser(IUnitOfWork services, ZoukUser zoukUser, ZoukUserAdditionalInformation zoukUserAdditionalInfo)
             {
-                Culture = culture,
-                FirstName = callbackQuery.Message.Chat.FirstName,
-                SecondName = callbackQuery.Message.Chat.LastName
-            };
+                var zoukUserInfoAlreadyStoredInDb = await services.ZoukUsersAdditionalInformation.FindOneAsync(x =>
+                    x.FirstName == zoukUserAdditionalInfo.FirstName
+                    && x.ChatId == zoukUserAdditionalInfo.ChatId);
 
-            var dbUser = await services.Users.FindOneAsync(x =>
-                x.NickName == callbackQuery.Message.Chat.Username);
+                if (zoukUserInfoAlreadyStoredInDb == null)
+                    await services.ZoukUsersAdditionalInformation.InsertAsync(zoukUserAdditionalInfo);
+                else
+                    await services.ZoukUsersAdditionalInformation.ReplaceAsync(zoukUserAdditionalInfo);
 
-            if (dbUser == null)
+                zoukUser.ZoukUserAdditionalInformation = zoukUserAdditionalInfo;
+                await services.ZoukUsers.ReplaceAsync(zoukUser);
+            }
+
+            private static async Task CreateUser(IUnitOfWork services, string username, ZoukUserAdditionalInformation zoukUserAdditionalInformation)
             {
-                await services.Users.InsertAsync(new ZoukUser
+                await services.ZoukUsersAdditionalInformation.InsertAsync(zoukUserAdditionalInformation);
+                await services.ZoukUsers.InsertAsync(new ZoukUser
                 {
-                    NickName = callbackQuery.Message.Chat.Username,
-                    UserAdditionalInformation = userAdditionalInfo
+                    NickName = username,
+                    ZoukUserAdditionalInformation = zoukUserAdditionalInformation
                 });
             }
-            else
+
+            private static string GetCultureNameFromCallbackQuery(CallbackQuery callbackQuery, string callbackQueryPattern)
             {
-                dbUser.UserAdditionalInformation = userAdditionalInfo;
-                await services.Users.ReplaceAsync(dbUser);
+                var cultureName = string.Empty;
+                var cultureMatch = Regex.Match(callbackQuery.Data, callbackQueryPattern);
+
+                if (cultureMatch.Success && cultureMatch.Groups["query"].Value.Equals("language"))
+                    cultureName = cultureMatch.Groups["data"].Value;
+
+                if (string.IsNullOrEmpty(cultureName))
+                    throw new ArgumentException("Culture name can't be parsed.");
+
+                return cultureName;
             }
-        }
-
-        private string GetCultureNameFromCallbackQuery(CallbackQuery callbackQuery)
-        {
-            var cultureName = string.Empty;
-            var cultureMatch = Regex.Match(callbackQuery.Data, CallbackQueryPattern);
-
-            if (cultureMatch.Success && cultureMatch.Groups["query"].Value == "language")
-                cultureName = cultureMatch.Groups["data"].Value;
-
-            if (string.IsNullOrEmpty(cultureName))
-                throw new ArgumentException("Culture name can't be parsed.");
-
-            return cultureName;
         }
     }
 }

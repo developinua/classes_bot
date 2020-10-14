@@ -30,30 +30,25 @@
             return new InlineKeyboardBuilder();
         }
 
-        public static InlineKeyboardBuilder Create(long chatId)
-        {
-            var builder = new InlineKeyboardBuilder();
-            builder.SetChatId(chatId);
-
-            return builder;
-        }
-
-        public InlineKeyboardBuilder SetChatId(long chatId)
-        {
-            return this;
-        }
-
-        public InlineKeyboardBuilder SetText(string text)
-        {
-            return this;
-        }
-
         public InlineKeyboardBuilder AddButton(string text, string callbackData)
         {
             Rows.Add(new InlineKeyboardButton
             {
                 Text = text,
                 CallbackData = callbackData
+            });
+
+            return this;
+        }
+
+        public InlineKeyboardBuilder AddUrlButton(string text, string callbackData, string url)
+        {
+            Rows.Add(new InlineKeyboardButton
+            {
+                Text = text,
+                CallbackData = callbackData,
+                Pay = true,
+                Url = url
             });
 
             return this;

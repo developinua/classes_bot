@@ -1,14 +1,13 @@
 ﻿namespace TarasZoukClasses.Data.Models
 {
-    using System;
     using Base;
 
     public class Payment : Document
     {
-        public decimal Amount { get; set; }
+        public ZoukUserSubscription ZoukUserSubscription { get; set; }
 
-        public bool IsSuccess { get; set; }
+        public bool Success { get; set; }
 
-        public DateTime? DateTimeProcessed { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

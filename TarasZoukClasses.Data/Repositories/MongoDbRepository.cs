@@ -53,15 +53,6 @@
 
         #region Get
 
-        public TEntity Get(string id)
-        {
-            var objectId = new ObjectId(id);
-            var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
-            var filteredDocument = DbCollection.Find(filter);
-
-            return filteredDocument.SingleOrDefault();
-        }
-
         public async Task<TEntity> GetAsync(string id)
         {
             var objectId = new ObjectId(id);
@@ -71,20 +62,9 @@
             return await filteredDocument.SingleOrDefaultAsync();
         }
 
-        public TEntity FindOne(Expression<Func<TEntity, bool>> filterExpression)
-        {
-            return DbCollection.Find(filterExpression).FirstOrDefault();
-        }
-
         public async Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression)
         {
             return await DbCollection.Find(filterExpression).FirstOrDefaultAsync();
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            var allDocs = DbCollection.Find(Builders<TEntity>.Filter.Empty);
-            return allDocs.ToList();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -97,19 +77,9 @@
 
         #region Insert
 
-        public void Insert(TEntity document)
-        {
-            DbCollection.InsertOne(document);
-        }
-
         public async Task InsertAsync(TEntity document)
         {
             await DbCollection.InsertOneAsync(document);
-        }
-
-        public void InsertMany(IEnumerable<TEntity> documents)
-        {
-            DbCollection.InsertMany(documents);
         }
 
         public async Task InsertManyAsync(IEnumerable<TEntity> documents)
@@ -121,12 +91,6 @@
 
         #region Update
 
-        public TEntity Replace(TEntity document)
-        {
-            var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, document.Id);
-            return DbCollection.FindOneAndReplace(filter, document);
-        }
-
         public async Task<TEntity> ReplaceAsync(TEntity document)
         {
             var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, document.Id);
@@ -136,19 +100,6 @@
         #endregion
 
         #region Delete
-
-        public TEntity Delete(string id)
-        {
-            var objectId = new ObjectId(id);
-            var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
-
-            return DbCollection.FindOneAndDelete(filter);
-        }
-
-        public TEntity Delete(Expression<Func<TEntity, bool>> filterExpression)
-        {
-            return DbCollection.FindOneAndDelete(filterExpression);
-        }
 
         public async Task<TEntity> DeleteAsync(string id)
         {
@@ -161,11 +112,6 @@
         public async Task<TEntity> DeleteAsync(Expression<Func<TEntity, bool>> filterExpression)
         {
             return await DbCollection.FindOneAndDeleteAsync(filterExpression);
-        }
-
-        public DeleteResult DeleteMany(Expression<Func<TEntity, bool>> filterExpression)
-        {
-            return DbCollection.DeleteMany(filterExpression);
         }
 
         public async Task<DeleteResult> DeleteManyAsync(Expression<Func<TEntity, bool>> filterExpression)

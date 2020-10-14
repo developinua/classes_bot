@@ -1,8 +1,8 @@
-﻿namespace TarasZoukClasses.Domain.Service.UserService
+﻿namespace TarasZoukClasses.Domain.Service.ZoukUserService
 {
     using Data.Context;
+    using Data.Models;
     using Data.Repositories;
-    using TarasZoukClasses.Data.Models;
 
     public class ZoukUserMongoDbRepository : MongoDbRepository<ZoukUser>, IZoukUserRepository
     {

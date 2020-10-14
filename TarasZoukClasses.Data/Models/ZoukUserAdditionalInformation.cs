@@ -2,9 +2,11 @@
 {
     using Base;
 
-    public class UserAdditionalInformation : Document
+    public class ZoukUserAdditionalInformation : Document
     {
         public Culture Culture { get; set; }
+
+        public int ChatId { get; set; }
 
         public string FirstName { get; set; }
 

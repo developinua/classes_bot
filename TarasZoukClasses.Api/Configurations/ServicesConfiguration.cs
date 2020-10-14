@@ -5,8 +5,11 @@
     using Domain.Service.CommandService;
     using Domain.Service.CultureService;
     using Domain.Service.PaymentService;
-    using Domain.Service.UserPaymentService;
-    using Domain.Service.UserService;
+    using Domain.Service.SubscriptionService;
+    using Domain.Service.ZoukUserAdditionalInformationService;
+    using Domain.Service.ZoukUserPaymentService;
+    using Domain.Service.ZoukUserService;
+    using Domain.Service.ZoukUserSubscription;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ServicesConfiguration
@@ -16,8 +19,11 @@
             services.AddTransient<IMongoDbContext, MongoDbContext>();
 
             services.AddTransient<IZoukUserRepository, ZoukUserMongoDbRepository>();
+            services.AddTransient<IZoukUserAdditionalInformationRepository, ZoukUserAdditionalInformationMongoDbRepository>();
             services.AddTransient<IPaymentRepository, PaymentMongoDbRepository>();
-            services.AddTransient<IUserPaymentRepository, UserPaymentMongoDbRepository>();
+            services.AddTransient<IZoukUserPaymentRepository, ZoukUserPaymentMongoDbRepository>();
+            services.AddTransient<ISubscriptionRepository, SubscriptionMongoDbRepository>();
+            services.AddTransient<IZoukUserSubscriptionRepository, ZoukUserSubscriptionMongoDbRepository>();
             services.AddTransient<ICultureRepository, CultureMongoDbRepository>();
             services.AddTransient<ICommandRepository, CommandMongoDbRepository>();
 

@@ -4,7 +4,7 @@
 
     public class ZoukUser : Document
     {
-        public UserAdditionalInformation UserAdditionalInformation { get; set; }
+        public ZoukUserAdditionalInformation ZoukUserAdditionalInformation { get; set; }
 
         public string NickName { get; set; }
     }

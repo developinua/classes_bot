@@ -25,15 +25,9 @@
 
         #region Get
 
-        //TEntity Get(string id);
-
         Task<TEntity> GetAsync(string id);
 
-        //TEntity FindOne(Expression<Func<TEntity, bool>> filterExpression);
-
         Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression);
-
-        //IEnumerable<TEntity> GetAll();
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 
@@ -41,11 +35,7 @@
 
         #region Insert
 
-        //void Insert(TEntity document);
-
         Task InsertAsync(TEntity document);
-
-        //void InsertMany(IEnumerable<TEntity> documents);
 
         Task InsertManyAsync(IEnumerable<TEntity> documents);
 
@@ -53,23 +43,15 @@
 
         #region Update
 
-        //TEntity Replace(TEntity document);
-
         Task<TEntity> ReplaceAsync(TEntity document);
 
         #endregion
 
         #region Delete
 
-        //TEntity Delete(string id);
-
-        //TEntity Delete(Expression<Func<TEntity, bool>> filterExpression);
-
         Task<TEntity> DeleteAsync(string id);
 
         Task<TEntity> DeleteAsync(Expression<Func<TEntity, bool>> filterExpression);
-
-        //DeleteResult DeleteMany(Expression<Func<TEntity, bool>> filterExpression);
 
         Task<DeleteResult> DeleteManyAsync(Expression<Func<TEntity, bool>> filterExpression);
 

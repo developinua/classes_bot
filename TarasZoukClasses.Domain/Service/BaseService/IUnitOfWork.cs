@@ -5,16 +5,25 @@
     using CommandService;
     using CultureService;
     using PaymentService;
-    using UserPaymentService;
-    using UserService;
+    using SubscriptionService;
+    using ZoukUserAdditionalInformationService;
+    using ZoukUserPaymentService;
+    using ZoukUserService;
+    using ZoukUserSubscription;
 
     public interface IUnitOfWork : IDisposable
     {
-        IZoukUserRepository Users { get; set; }
+        IZoukUserRepository ZoukUsers { get; set; }
+
+        IZoukUserAdditionalInformationRepository ZoukUsersAdditionalInformation { get; set; }
 
         IPaymentRepository Payments { get; set; }
 
-        IUserPaymentRepository UsersPayments { get; set; }
+        IZoukUserPaymentRepository ZoukUsersPayments { get; set; }
+
+        ISubscriptionRepository Subscriptions { get; set; }
+
+        IZoukUserSubscriptionRepository ZoukUsersSubscriptions { get; set; }
 
         ICultureRepository Cultures { get; set; }
 

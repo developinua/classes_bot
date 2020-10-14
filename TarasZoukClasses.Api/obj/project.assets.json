@@ -11,6 +11,18 @@
           "lib/netstandard2.1/DnsClient.dll": {}
         }
       },
+      "LiqPay/2020.6.2410.5129": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/LiqPay.SDK.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/LiqPay.SDK.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.JsonPatch/3.1.8": {
         "type": "package",
         "dependencies": {
@@ -1346,6 +1358,15 @@
           "ref/netstandard1.3/System.Text.Encoding.Extensions.dll": {}
         }
       },
+      "System.Text.Json/4.7.2": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.0/System.Text.Json.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/System.Text.Json.dll": {}
+        }
+      },
       "System.Text.RegularExpressions/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1477,6 +1498,7 @@
           "Microsoft.Extensions.Logging.Abstractions": "3.1.8",
           "Microsoft.Extensions.Options": "3.1.8",
           "MongoDB.Driver": "2.11.2",
+          "System.Text.Json": "4.7.2",
           "Telegram.Bot": "15.7.1"
         },
         "compile": {
@@ -1490,6 +1512,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
+          "LiqPay": "2020.6.2410.5129",
           "Microsoft.Extensions.Logging.Abstractions": "3.1.8",
           "TarasZoukClasses.Data": "1.0.0",
           "Telegram.Bot": "15.7.1"
@@ -1524,6 +1547,18 @@
         "lib/netstandard2.0/DnsClient.xml",
         "lib/netstandard2.1/DnsClient.dll",
         "lib/netstandard2.1/DnsClient.xml"
+      ]
+    },
+    "LiqPay/2020.6.2410.5129": {
+      "sha512": "jHgibIUB+FPVxDxkCFrFVkZjMlawI8YqDhjnUJpy1zTIFWWWiVD9mbpLlKgc34/2CsJmsJIPcbr1lMoBrYphFA==",
+      "type": "package",
+      "path": "liqpay/2020.6.2410.5129",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/LiqPay.SDK.dll",
+        "liqpay.2020.6.2410.5129.nupkg.sha512",
+        "liqpay.nuspec"
       ]
     },
     "Microsoft.AspNetCore.JsonPatch/3.1.8": {
@@ -4808,6 +4843,28 @@
         "ref/xamarinwatchos10/_._",
         "system.text.encoding.extensions.4.3.0.nupkg.sha512",
         "system.text.encoding.extensions.nuspec"
+      ]
+    },
+    "System.Text.Json/4.7.2": {
+      "sha512": "TcMd95wcrubm9nHvJEQs70rC0H/8omiSGGpU4FQ/ZA1URIqD4pjmFJh2Mfv1yH1eHgJDWTi2hMDXwTET+zOOyg==",
+      "type": "package",
+      "path": "system.text.json/4.7.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Text.Json.dll",
+        "lib/net461/System.Text.Json.xml",
+        "lib/netcoreapp3.0/System.Text.Json.dll",
+        "lib/netcoreapp3.0/System.Text.Json.xml",
+        "lib/netstandard2.0/System.Text.Json.dll",
+        "lib/netstandard2.0/System.Text.Json.xml",
+        "system.text.json.4.7.2.nupkg.sha512",
+        "system.text.json.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.Text.RegularExpressions/4.3.0": {

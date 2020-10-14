@@ -2,7 +2,7 @@
 {
     using Base;
 
-    public class UserPayment : Document
+    public class ZoukUserPayment : Document
     {
         public ZoukUser UserId { get; set; }
 

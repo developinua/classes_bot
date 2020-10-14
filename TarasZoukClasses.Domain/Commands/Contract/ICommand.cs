@@ -13,7 +13,7 @@
 
         Task Execute(Message message, TelegramBotClient client, IUnitOfWork services);
 
-        Task Execute(CallbackQuery callbackQuery, TelegramBotClient botClient, IUnitOfWork services);
+        Task Execute(CallbackQuery callbackQuery, TelegramBotClient client, IUnitOfWork services);
 
         bool Contains(Message message);
 

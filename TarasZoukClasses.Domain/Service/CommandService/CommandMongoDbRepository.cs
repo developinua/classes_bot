@@ -19,8 +19,9 @@
             var commands = await Task.Run(() => new List<ICommand>
             {
                 new StartCommand(),
-                new CreateSubscriptionCommand(),
-                new CheckInCommand()
+                new SubscriptionCommand(),
+                new CheckInCommand(),
+                new SeedCommand()
             });
             //logger.LogInformation($"Trying to get active commands finished. {DateTime.UtcNow}.");
 

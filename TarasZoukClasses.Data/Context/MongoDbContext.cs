@@ -7,7 +7,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;
-    using Models.MongoDb;
     using MongoDB.Driver;
 
     public class MongoDbContext : IMongoDbContext
@@ -25,19 +24,14 @@
         public MongoDbContext(ILogger<MongoDbContext> logger)
         {
             Logger = logger;
-            var mongoDbSettings = new MongoDbSettings
-            {
-                Connection = Environment.GetEnvironmentVariable("MongoDbConnectionString"),
-                DatabaseName = Environment.GetEnvironmentVariable("MongoDbDatabaseName")
-            };
-            var mongoClientSettings = MongoClientSettings.FromUrl(new MongoUrl(mongoDbSettings.Connection));
+            var mongoClientSettings = MongoClientSettings.FromUrl(new MongoUrl(Environment.GetEnvironmentVariable("MongoDbConnectionString")));
             mongoClientSettings.SslSettings = new SslSettings
             {
                 EnabledSslProtocols = SslProtocols.Tls12
             };
 
             MongoClient = new MongoClient(mongoClientSettings);
-            MongoDatabase = MongoClient.GetDatabase(mongoDbSettings.DatabaseName);
+            MongoDatabase = MongoClient.GetDatabase(Environment.GetEnvironmentVariable("MongoDbDatabaseName"));
             Commands = new List<Func<Task>>();
         }
 

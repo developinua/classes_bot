@@ -102,3 +102,5 @@ C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\De
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\runtimes\win\native\snappy64.dll
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.csproj.CoreCompileInputs.cache
 C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\obj\Debug\netcoreapp3.1\TarasZoukClasses.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\LiqPay.SDK.dll
+C:\Users\nazik\Documents\Sources\TarasZoukClassesBot\TarasZoukClasses.Api\bin\Debug\netcoreapp3.1\System.Text.Json.dll

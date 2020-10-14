@@ -1,4 +1,4 @@
-﻿namespace TarasZoukClasses.Domain.Service.UserService
+﻿namespace TarasZoukClasses.Domain.Service.ZoukUserService
 {
     using Data.Models;
     using Data.Repositories;

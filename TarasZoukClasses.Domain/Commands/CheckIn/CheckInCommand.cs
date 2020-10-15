@@ -1,7 +1,6 @@
 ﻿namespace TarasZoukClasses.Domain.Commands.CheckIn
 {
     using System;
-    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using Contract;
@@ -54,12 +53,17 @@
             await client.SendChatActionAsync(chatId, ChatAction.Typing);
 
             var zoukUserSubscriptionId = CheckInCommandHelper.GetZoukUserSubscriptionIdFromCallbackQuery(callbackQuery.Data, CallbackQueryPattern);
-            var zoukUserSubscriptions = (await services.ZoukUsersSubscriptions.GetAllAsync()).ToList();
             var zoukUserSubscription = await services.ZoukUsersSubscriptions.FindOneAsync(x => x.Id.Equals(zoukUserSubscriptionId));
 
             if (zoukUserSubscription == null)
             {
-                await client.SendTextMessageAsync(chatId, "Can't get user subscription from db. Please contact @nazikBro for details.", ParseMode.Markdown);
+                await client.SendTextMessageAsync(chatId, "Can't get user subscription from db. Please contact @nazikBro for details", ParseMode.Markdown);
+                return;
+            }
+
+            if (zoukUserSubscription.RemainingClassesCount == 0)
+            {
+                await client.SendTextMessageAsync(chatId, "You haven't any available classes. Press /mysubscriptions to manage your subscriptions", ParseMode.Markdown);
                 return;
             }
 

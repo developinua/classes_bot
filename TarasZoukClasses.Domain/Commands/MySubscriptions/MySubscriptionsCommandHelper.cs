@@ -49,15 +49,10 @@
 
         private static string RenderZoukUserSubscriptionInformationText(ZoukUserSubscription zoukUserSubscription)
         {
-            var priceText = zoukUserSubscription.Subscription.DiscountPercent == 0
-                ? $"Price: {zoukUserSubscription.Subscription.GetSummaryPrice()}\n"
-                : $"Price with discount: {zoukUserSubscription.Subscription.GetSummaryPrice()}\n";
-
             return $"Subscription: {zoukUserSubscription.Subscription.Name}\n" +
-                   $"{priceText}" +
                    $"Description: {zoukUserSubscription.Subscription.Description}\n" +
                    $"SubscriptionType: {zoukUserSubscription.Subscription.Type}\n" +
-                   $"Total Classes: {zoukUserSubscription.RemainingClassesCount}\n";
+                   $"Remaining Classes: {zoukUserSubscription.RemainingClassesCount}\n";
         }
 
         private static Func<Task<Message>> SendSubscriptionGroupTextMessage(int chatId, TelegramBotClient client, string callbackQueryData)
@@ -80,7 +75,7 @@
 
             var replyKeyboardMarkup = RenderBuySubscription(subscription.Id);
 
-            await client.SendTextMessageAsync(chatId, $"*Price: {subscription.GetSummaryPrice()}\n*P.S. Please send your nickname in comment", ParseMode.Markdown, replyMarkup: replyKeyboardMarkup);
+            await client.SendTextMessageAsync(chatId, $"*Price: {subscription.GetSummaryPrice()}\n*P.S. Please send your username and subscription type in comment", ParseMode.Markdown, replyMarkup: replyKeyboardMarkup);
             return async () => await client.SendTextMessageAsync(chatId, "*After your subscription will be approved by teacher\nYou will be able to /checkin on classes.*", ParseMode.Markdown);
         }
 

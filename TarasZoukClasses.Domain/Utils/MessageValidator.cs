@@ -7,8 +7,8 @@
     {
         public static bool ValidateMessageLocationData(this Message message)
         {
-            return message?.ReplyToMessage?.From?.Username == "TarasZoukClassesBot"
-                   && message.Type.Equals(MessageType.Location)
+            return //message?.ReplyToMessage?.From?.Username == "TarasZoukClassesBot" &&
+                   message.Type.Equals(MessageType.Location)
                    && message.Location != null;
         }
     }

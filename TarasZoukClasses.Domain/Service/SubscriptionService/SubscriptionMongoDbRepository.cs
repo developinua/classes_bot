@@ -2,6 +2,7 @@
 {
     using Data.Context;
     using Data.Models;
+    using Data.Models.Subscription;
     using Data.Repositories;
 
     public class SubscriptionMongoDbRepository : MongoDbRepository<Subscription>, ISubscriptionRepository

@@ -1,7 +1,6 @@
 ﻿namespace TarasZoukClasses.Api.Configurations
 {
     using System.Threading.Tasks;
-    using Domain.Models;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Telegram.Bot;

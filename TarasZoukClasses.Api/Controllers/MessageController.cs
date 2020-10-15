@@ -2,15 +2,18 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Domain.Handlers.UpdateHandler;
-    using Domain.Handlers.UpdateHandler.UpdateHandlerContract;
-    using Domain.Handlers.UpdateHandlerResponse;
     using Domain.Service.BaseService;
+    using Handlers.UpdateHandler;
+    using Handlers.UpdateHandlerResponse;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
+    using CallbackQueryUpdateHandler = Handlers.UpdateHandler.CallbackQueryUpdateHandler;
+    using IUpdateHandler = Handlers.UpdateHandler.UpdateHandlerContract.IUpdateHandler;
+    using MessageUpdateHandler = Handlers.UpdateHandler.MessageUpdateHandler;
+    using UpdateHandlerResponse = Handlers.UpdateHandlerResponse.UpdateHandlerResponse;
 
     [Route("api/v1")]
     public class MessageController : Controller
@@ -23,7 +26,7 @@
 
         private TelegramBotClient TelegramBotClient { get; }
 
-        private UpdateHandlerResponse UpdateHandlerResponse { get; }
+        private UpdateHandlerResponse UpdateHandlerResponse { get; set; }
 
         public MessageController(TelegramBotClient telegramBotClient, IUnitOfWork services, ILogger<MessageController> logger)
         {
@@ -37,37 +40,43 @@
         [Route("message/update")]
         public async Task<IActionResult> MessageUpdate([FromBody] Update update)
         {
-            UpdateHandler = update.Type switch
+            UpdateHandler = update switch
             {
-                UpdateType.Message => new MessageUpdateHandler(TelegramBotClient, Services),
-                UpdateType.CallbackQuery => new CallbackQueryUpdateHandler(TelegramBotClient, Services),
-                UpdateType.Unknown => null,
-                UpdateType.InlineQuery => null,
-                UpdateType.ChosenInlineResult => null,
-                UpdateType.EditedMessage => null,
-                UpdateType.ChannelPost => null,
-                UpdateType.EditedChannelPost => null,
-                UpdateType.ShippingQuery => null,
-                UpdateType.PreCheckoutQuery => null,
-                UpdateType.Poll => null,
-                UpdateType.PollAnswer => null,
+                { Type: UpdateType.Message, Message: { Type: MessageType.Location } } => new LocationUpdateHandler(TelegramBotClient, Services),
+                { Type: UpdateType.Message } => new MessageUpdateHandler(TelegramBotClient, Services),
+                { Type: UpdateType.CallbackQuery } => new CallbackQueryUpdateHandler(TelegramBotClient, Services),
+                { Type: UpdateType.Unknown } => null,
+                { Type: UpdateType.InlineQuery } => null,
+                { Type: UpdateType.ChosenInlineResult } => null,
+                { Type: UpdateType.EditedMessage } => null,
+                { Type: UpdateType.ChannelPost } => null,
+                { Type: UpdateType.EditedChannelPost } => null,
+                { Type: UpdateType.ShippingQuery } => null,
+                { Type: UpdateType.PreCheckoutQuery } => null,
+                { Type: UpdateType.Poll } => null,
+                { Type: UpdateType.PollAnswer } => null,
                 _ => null
             };
 
             try
             {
-                if (UpdateHandler != null) await UpdateHandler.Handle(update);
+                if (UpdateHandler != null)
+                    UpdateHandlerResponse = await UpdateHandler.Handle(update);
             }
             catch (Exception exception)
             {
-                Logger.LogError(exception.Message, exception);
-                return BadRequest(exception.Message);
+                UpdateHandlerResponse = new UpdateHandlerResponse
+                {
+                    Message = $"Exception:\n{exception}",
+                    ResponseType = UpdateHandlerResponseType.Error
+                };
             }
 
             if (UpdateHandlerResponse.ResponseType.IsError())
             {
-                Logger.LogError(UpdateHandlerResponse.Message);
-                return BadRequest(UpdateHandlerResponse.Message);
+                var chatId = update.Message?.Chat.Id ?? update.CallbackQuery.From.Id;
+                Logger.LogError($"Chat id:\n{chatId}\nError message:\n{UpdateHandlerResponse.Message}");
+                await TelegramBotClient.SendTextMessageAsync(chatId, "Can't process message.", ParseMode.Markdown);
             }
 
             Logger.LogInformation($"Successful response. {DateTime.UtcNow}.");

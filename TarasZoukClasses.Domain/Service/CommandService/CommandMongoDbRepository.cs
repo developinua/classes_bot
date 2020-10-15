@@ -2,8 +2,13 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Commands;
+    using Commands.Administration;
+    using Commands.Administration.Admin;
+    using Commands.Administration.Seed;
+    using Commands.CheckIn;
     using Commands.Contract;
+    using Commands.MySubscriptions;
+    using Commands.Start;
     using Data.Context;
     using Data.Models;
     using Data.Repositories;
@@ -19,9 +24,10 @@
             var commands = await Task.Run(() => new List<ICommand>
             {
                 new StartCommand(),
-                new SubscriptionCommand(),
+                new MySubscriptionsCommand(),
                 new CheckInCommand(),
-                new SeedCommand()
+                new SeedCommand(),
+                new AdminCommand()
             });
             //logger.LogInformation($"Trying to get active commands finished. {DateTime.UtcNow}.");
 

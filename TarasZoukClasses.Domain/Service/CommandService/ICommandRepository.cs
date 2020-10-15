@@ -6,7 +6,7 @@
     using Data.Models;
     using Data.Repositories;
 
-    public interface ICommandRepository : IGenericRepository<Command>
+    public interface ICommandRepository : IGenericReadonlyRepository<Command>
     {
         Task<IEnumerable<ICommand>> GetActiveCommandsAsync();
     }

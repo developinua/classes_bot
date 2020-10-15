@@ -2,6 +2,7 @@
 {
     using Data.Context;
     using Data.Models;
+    using Data.Models.ZoukUser;
     using Data.Repositories;
 
     public class ZoukUserAdditionalInformationMongoDbRepository : MongoDbRepository<ZoukUserAdditionalInformation>, IZoukUserAdditionalInformationRepository

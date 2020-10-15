@@ -4,9 +4,9 @@
 
     public class ZoukUserSubscription : Document
     {
-        public ZoukUser ZoukUser { get; set; }
+        public ZoukUser.ZoukUser ZoukUser { get; set; }
 
-        public Subscription Subscription { get; set; }
+        public Subscription.Subscription Subscription { get; set; }
 
         public int RemainingClassesCount { get; set; }
     }

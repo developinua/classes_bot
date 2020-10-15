@@ -4,10 +4,8 @@
     using CommandService;
     using CultureService;
     using Data.Context;
-    using PaymentService;
     using SubscriptionService;
     using ZoukUserAdditionalInformationService;
-    using ZoukUserPaymentService;
     using ZoukUserService;
     using ZoukUserSubscription;
 
@@ -18,10 +16,6 @@
         public IZoukUserRepository ZoukUsers { get; set; }
 
         public IZoukUserAdditionalInformationRepository ZoukUsersAdditionalInformation { get; set; }
-
-        public IPaymentRepository Payments { get; set; }
-
-        public IZoukUserPaymentRepository ZoukUsersPayments { get; set; }
 
         public ISubscriptionRepository Subscriptions { get; set; }
 
@@ -34,8 +28,6 @@
         public UnitOfWork(IMongoDbContext context,
             IZoukUserRepository zoukUsersRepository,
             IZoukUserAdditionalInformationRepository zoukUsersAdditionalInformation,
-            IPaymentRepository paymentRepository,
-            IZoukUserPaymentRepository zoukUsersPayments,
             ISubscriptionRepository subscriptions,
             IZoukUserSubscriptionRepository zoukUsersSubscriptions,
             ICultureRepository cultures,
@@ -44,8 +36,6 @@
             Context = context;
             ZoukUsers = zoukUsersRepository;
             ZoukUsersAdditionalInformation = zoukUsersAdditionalInformation;
-            Payments = paymentRepository;
-            ZoukUsersPayments = zoukUsersPayments;
             Subscriptions = subscriptions;
             ZoukUsersSubscriptions = zoukUsersSubscriptions;
             Cultures = cultures;

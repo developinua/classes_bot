@@ -15,7 +15,7 @@ public class CheckInCommand : IBotCommand
     public string Name => @"/checkin";
     public string CallbackQueryPattern => @"(?i)(?<query>check-in-subscription-id):(?<data>.*)";
 
-    public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
+    public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);
 
     public bool Contains(string callbackQueryData) => new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
 
@@ -51,7 +51,7 @@ public class CheckInCommand : IBotCommand
         await client.SendChatActionAsync(chatId, ChatAction.Typing);
 
         var userSubscriptionId = CheckInCommandHelper.GetUserSubscriptionIdFromCallbackQuery(
-            callbackQuery.Data, CallbackQueryPattern);
+            callbackQuery.Data!, CallbackQueryPattern);
         var userSubscription = await services.UsersSubscriptions.FindOneAsync(x => x.Id.Equals(userSubscriptionId));
 
         if (userSubscription == null)

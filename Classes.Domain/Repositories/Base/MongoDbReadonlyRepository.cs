@@ -40,7 +40,7 @@ public class MongoDbReadonlyRepository<TEntity> : IGenericReadonlyRepository<TEn
         return await filteredDocument.SingleOrDefaultAsync();
     }
 
-    public async Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression) => 
+    public async Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression) => 
         await _dbCollection.Find(filterExpression).FirstOrDefaultAsync();
 
     public async Task<IEnumerable<TEntity>> GetAllAsync()

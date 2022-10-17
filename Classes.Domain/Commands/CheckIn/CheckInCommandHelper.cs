@@ -19,7 +19,7 @@ public static class CheckInCommandHelper
 		Message message, ITelegramBotClient client, IUnitOfWork services)
 	{
 		var chatId = message.Chat.Id;
-		var userSubscriptions = await GetUserSubscriptions(services, message.From.Username);
+		var userSubscriptions = await GetUserSubscriptions(services, message.From!.Username!);
 		var replyMessage = RenderSubscriptionAvailabilityText(userSubscriptions);
 
 		await client.SendTextMessageAsync(

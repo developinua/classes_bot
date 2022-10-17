@@ -22,7 +22,7 @@ public class LocationUpdateHandler : IUpdateHandler
 
     public async Task<UpdateHandlerResponse> Handle(Update update)
     {
-        var isLocationDataValid = update.Message.ValidateMessageLocationData();
+        var isLocationDataValid = update.Message!.ValidateMessageLocationData();
 
         if (!isLocationDataValid)
         {
@@ -33,7 +33,7 @@ public class LocationUpdateHandler : IUpdateHandler
             };
         }
 
-        await new CheckInCommand().Execute(update.Message, TelegramBotClient, Services);
+        await new CheckInCommand().Execute(update.Message!, TelegramBotClient, Services);
 
         return new UpdateHandlerResponse
         {

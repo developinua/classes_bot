@@ -14,13 +14,13 @@ public class MySubscriptionsCommand : IBotCommand
     public string Name => @"/mysubscriptions";
     public string CallbackQueryPattern => @"(?i)(?<query>subs-group|subs-period)";
 
-    public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
+    public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);
 
     public bool Contains(string callbackQueryData) => new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
 
     public async Task Execute(Message message, ITelegramBotClient client, IUnitOfWork services)
     {
-        await client.SendChatActionAsync(message.From.Id, ChatAction.Typing);
+        await client.SendChatActionAsync(message.From!.Id, ChatAction.Typing);
         await MySubscriptionsCommandHelper.GetUserSubscriptionInformation(message, client, services);
     }
 

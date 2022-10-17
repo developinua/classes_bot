@@ -16,6 +16,6 @@ public interface IGenericReadonlyRepository<TEntity> : IDisposable where TEntity
         Expression<Func<TEntity, TProjected>> projectionExpression);
 
     Task<TEntity> GetAsync(string id);
-    Task<TEntity> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression);
+    Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> filterExpression);
     Task<IEnumerable<TEntity>> GetAllAsync();
 }

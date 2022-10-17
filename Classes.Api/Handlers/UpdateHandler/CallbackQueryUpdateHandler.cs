@@ -33,7 +33,7 @@ public class CallbackQueryUpdateHandler : IUpdateHandler
         }
 
         var commands = await Services.Commands.GetActiveCommandsAsync();
-        var userCommand = commands.SingleOrDefault(command => command.Contains(callbackQuery.Data));
+        var userCommand = commands.SingleOrDefault(command => command.Contains(callbackQuery.Data!));
 
         if (userCommand == null)
         {

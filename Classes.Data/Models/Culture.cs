@@ -2,6 +2,6 @@
 
 public class Culture : Document
 {
-    public string Name { get; set; }
-    public string LanguageCode { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string LanguageCode { get; set; } = string.Empty;
 }

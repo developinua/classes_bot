@@ -17,9 +17,6 @@
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/Newtonsoft.Json.Bson.dll
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/SharpCompress.dll
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/Telegram.Bot.dll
-/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/runtimes/win/native/libzstd.dll
-/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/runtimes/win/native/snappy32.dll
-/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/runtimes/win/native/snappy64.dll
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/Classes.Data.dll
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/Classes.Domain.dll
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/Classes.Domain.pdb
@@ -39,3 +36,8 @@
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/obj/Debug/net6.0/Classes.Api.pdb
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/obj/Debug/net6.0/Classes.Api.genruntimeconfig.cache
 /Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/obj/Debug/net6.0/ref/Classes.Api.dll
+/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/Snappier.dll
+/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/ZstdSharp.dll
+/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/runtimes/linux/native/libmongocrypt.so
+/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/runtimes/osx/native/libmongocrypt.dylib
+/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/bin/Debug/net6.0/runtimes/win/native/mongocrypt.dll

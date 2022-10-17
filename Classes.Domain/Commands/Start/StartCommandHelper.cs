@@ -15,19 +15,19 @@ public class StartCommandHelper
         var cultureName = GetCultureNameFromCallbackQuery(callbackQuery.Data, callbackQueryPattern);
         var culture = await services.Cultures.GetCultureByCodeAsync(cultureName);
         var dbUser = await services.Users.FindOneAsync(x =>
-            x.NickName == callbackQuery.Message.Chat.Username);
+            x.NickName == callbackQuery.Message!.Chat.Username);
         var userAdditionalInfo = new UserInformation
         {
-            Culture = culture,
+            Culture = culture!,
             ChatId = callbackQuery.From.Id,
-            FirstName = callbackQuery.Message.Chat.FirstName,
-            SecondName = callbackQuery.Message.Chat.LastName
+            FirstName = callbackQuery.Message!.Chat.FirstName!,
+            SecondName = callbackQuery.Message!.Chat.LastName!
         };
 
         if (dbUser != null)
             await UpdateUser(services, dbUser, userAdditionalInfo);
         else
-            await CreateUser(services, callbackQuery.Message.Chat.Username, userAdditionalInfo);
+            await CreateUser(services, callbackQuery.Message!.Chat.Username!, userAdditionalInfo);
     }
 
     private static async Task UpdateUser(IUnitOfWork services, User user, UserInformation userInformation)

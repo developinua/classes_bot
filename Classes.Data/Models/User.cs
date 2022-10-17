@@ -2,6 +2,6 @@
 
 public class User : Document
 {
-    public UserInformation UserInformation { get; set; }
-    public string NickName { get; set; }
+    public UserInformation UserInformation { get; set; } = new();
+    public string NickName { get; set; } = string.Empty;
 }

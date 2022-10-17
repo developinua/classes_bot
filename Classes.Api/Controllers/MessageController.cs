@@ -46,13 +46,13 @@ public class MessageController : Controller
 
         if (UpdateHandlerResponse.ResponseType.IsError())
         {
-            var chatId = update.Message?.Chat.Id ?? update.CallbackQuery.From.Id;
+            var chatId = update.Message?.Chat.Id ?? update.CallbackQuery!.From.Id;
             Logger.LogError("Chat id:\n{ChatId}\nError message:\n{ErrorMessage}",
                 chatId, UpdateHandlerResponse.Message);
             await TelegramBotClient.SendTextMessageAsync(chatId, "Can't process message.", ParseMode.Markdown);
         }
 
-        Logger.LogInformation("Successful response. {DateTime}.", DateTime.UtcNow);
+        Logger.LogInformation("Successful response. {DateTime}", DateTime.UtcNow);
         return Ok();
     }
 

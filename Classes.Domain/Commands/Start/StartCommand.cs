@@ -15,7 +15,7 @@ public class StartCommand : IBotCommand
 	public string Name => @"/start";
 	public string CallbackQueryPattern => @"(?i)(?<query>language):(?<data>\w{2}-\w{2})";
 
-	public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
+	public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);
 
 	public bool Contains(string callbackQueryData) => new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
 
@@ -23,7 +23,7 @@ public class StartCommand : IBotCommand
 	{
 		await client.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
 
-		if (string.IsNullOrEmpty(message.From.Username))
+		if (string.IsNullOrEmpty(message.From!.Username!))
 		{
 			await client.SendTextMessageAsync(
 				message.Chat.Id, "Fill in username and press /start again",

@@ -21,14 +21,14 @@ public static class MySubscriptionsCommandHelper
 	internal static async Task ParseSubscription(long chatId, CallbackQuery callbackQuery,
 		ITelegramBotClient client, IUnitOfWork services)
 	{
-		var subscriptionCallbackQueryType = GetSubscriptionCallbackQueryType(callbackQuery.Data);
+		var subscriptionCallbackQueryType = GetSubscriptionCallbackQueryType(callbackQuery.Data!);
 
 		var temp = subscriptionCallbackQueryType switch
 		{
 			MySubscriptionsCallbackQueryType.Group =>
-				SendSubscriptionGroupTextMessage(chatId, client, callbackQuery.Data),
+				SendSubscriptionGroupTextMessage(chatId, client, callbackQuery.Data!),
 			MySubscriptionsCallbackQueryType.Period =>
-				await SendSubscriptionPeriodTextMessage(chatId, client, services, callbackQuery.Data),
+				await SendSubscriptionPeriodTextMessage(chatId, client, services, callbackQuery.Data!),
 			_ => null
 		};
 
@@ -116,8 +116,8 @@ public static class MySubscriptionsCommandHelper
 	internal static async Task GetUserSubscriptionInformation(
 		Message message, ITelegramBotClient client, IUnitOfWork services)
 	{
-		var chatId = message.From.Id;
-		var userSubscriptions = (await GetUserSubscriptions(message.From.Username, services)).ToList();
+		var chatId = message.From!.Id;
+		var userSubscriptions = (await GetUserSubscriptions(message.From.Username!, services)).ToList();
 
 		if (!userSubscriptions.Any())
 		{

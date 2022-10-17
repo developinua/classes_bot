@@ -8,17 +8,16 @@ namespace Classes.Domain.Repositories;
 
 public interface ICultureRepository : IGenericReadonlyRepository<Culture>
 {
-    Task<Culture> GetCultureByCodeAsync(string languageCode);
+    Task<Culture?> GetCultureByCodeAsync(string languageCode);
 }
 
 public class CultureMongoDbRepository : MongoDbRepository<Culture>, ICultureRepository
 {
     public CultureMongoDbRepository(IMongoDbContext context) : base(context) {}
 
-    public async Task<Culture> GetCultureByCodeAsync(string languageCode)
+    public async Task<Culture?> GetCultureByCodeAsync(string languageCode)
     {
         var filter = Builders<Culture>.Filter.Eq(doc => doc.LanguageCode, languageCode);
-
         var filteredDocument = await DbCollection.FindAsync(filter);
 
         return await filteredDocument.SingleOrDefaultAsync();

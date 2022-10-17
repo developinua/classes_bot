@@ -44,15 +44,7 @@
           "dependencies": {
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
-              "version": "[3.1.8, )"
-            },
-            "Microsoft.Extensions.Logging.Abstractions": {
-              "target": "Package",
-              "version": "[3.1.8, )"
-            },
-            "Telegram.Bot": {
-              "target": "Package",
-              "version": "[15.7.1, )"
+              "version": "[6.0.10, )"
             }
           },
           "imports": [
@@ -112,25 +104,13 @@
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
           "dependencies": {
-            "Microsoft.Extensions.Logging.Abstractions": {
-              "target": "Package",
-              "version": "[3.1.8, )"
-            },
-            "Microsoft.Extensions.Options": {
-              "target": "Package",
-              "version": "[3.1.8, )"
-            },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[2.11.2, )"
-            },
-            "System.Text.Json": {
-              "target": "Package",
-              "version": "[4.7.2, )"
+              "version": "[2.18.0, )"
             },
             "Telegram.Bot": {
               "target": "Package",
-              "version": "[15.7.1, )"
+              "version": "[18.0.0, )"
             }
           },
           "imports": [
@@ -194,10 +174,6 @@
             "LiqPay": {
               "target": "Package",
               "version": "[2022.6.1812.5401, )"
-            },
-            "Microsoft.Extensions.Logging.Abstractions": {
-              "target": "Package",
-              "version": "[6.0.2, )"
             },
             "Telegram.Bot": {
               "target": "Package",

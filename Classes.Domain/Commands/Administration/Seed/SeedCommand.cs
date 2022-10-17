@@ -19,16 +19,16 @@ public class SeedCommand : IBotCommand
 
     public string CallbackQueryPattern => "Not implemented";
 
-    public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
+    public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);
 
     public bool Contains(string callbackQueryData) =>
         new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
 
     public async Task Execute(Message message, ITelegramBotClient client, IUnitOfWork services)
     {
-        var chatId = message.From.Id;
+        var chatId = message.From!.Id;
 
-        if (!AdministrationHelper.CanExecuteCommand(message.From.Username))
+        if (!AdministrationHelper.CanExecuteCommand(message.From.Username!))
         {
             await client.SendTextMessageAsync(chatId, "Access denied. You can't execute this command.");
             return;

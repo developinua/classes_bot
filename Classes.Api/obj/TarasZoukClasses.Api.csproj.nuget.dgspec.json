@@ -1,0 +1,244 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Api/TarasZoukClasses.Api.csproj": {}
+  },
+  "projects": {
+    "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Api/TarasZoukClasses.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Api/TarasZoukClasses.Api.csproj",
+        "projectName": "TarasZoukClasses.Api",
+        "projectPath": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Api/TarasZoukClasses.Api.csproj",
+        "packagesPath": "/Users/nzt/.nuget/packages/",
+        "outputPath": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Api/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/nzt/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj": {
+                "projectPath": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Telegram.Bot": {
+              "target": "Package",
+              "version": "[15.7.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-x64",
+              "version": "[3.1.29, 3.1.29]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Data/TarasZoukClasses.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Data/TarasZoukClasses.Data.csproj",
+        "projectName": "TarasZoukClasses.Data",
+        "projectPath": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Data/TarasZoukClasses.Data.csproj",
+        "packagesPath": "/Users/nzt/.nuget/packages/",
+        "outputPath": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Data/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/nzt/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.11.2, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[4.7.2, )"
+            },
+            "Telegram.Bot": {
+              "target": "Package",
+              "version": "[15.7.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj",
+        "projectName": "TarasZoukClasses.Domain",
+        "projectPath": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Domain/TarasZoukClasses.Domain.csproj",
+        "packagesPath": "/Users/nzt/.nuget/packages/",
+        "outputPath": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/nzt/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {
+              "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Data/TarasZoukClasses.Data.csproj": {
+                "projectPath": "/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/TarasZoukClasses.Data/TarasZoukClasses.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "LiqPay": {
+              "target": "Package",
+              "version": "[2020.6.2410.5129, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "Telegram.Bot": {
+              "target": "Package",
+              "version": "[15.7.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

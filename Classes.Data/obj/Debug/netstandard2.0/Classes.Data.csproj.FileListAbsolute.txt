@@ -1,0 +1,10 @@
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/bin/Debug/netstandard2.0/Classes.Data.deps.json
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/bin/Debug/netstandard2.0/Classes.Data.dll
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/bin/Debug/netstandard2.0/Classes.Data.pdb
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/obj/Debug/netstandard2.0/Classes.Data.csproj.AssemblyReference.cache
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/obj/Debug/netstandard2.0/Classes.Data.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/obj/Debug/netstandard2.0/Classes.Data.AssemblyInfoInputs.cache
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/obj/Debug/netstandard2.0/Classes.Data.AssemblyInfo.cs
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/obj/Debug/netstandard2.0/Classes.Data.csproj.CoreCompileInputs.cache
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/obj/Debug/netstandard2.0/Classes.Data.dll
+/Users/nzt/Documents/dev/classes-bot/TarasZoukClassesBot/Classes.Data/obj/Debug/netstandard2.0/Classes.Data.pdb

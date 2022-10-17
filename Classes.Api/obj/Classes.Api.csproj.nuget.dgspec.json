@@ -193,15 +193,15 @@
           "dependencies": {
             "LiqPay": {
               "target": "Package",
-              "version": "[2020.6.2410.5129, )"
+              "version": "[2022.6.1812.5401, )"
             },
             "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
-              "version": "[3.1.8, )"
+              "version": "[6.0.2, )"
             },
             "Telegram.Bot": {
               "target": "Package",
-              "version": "[15.7.1, )"
+              "version": "[18.0.0, )"
             }
           },
           "imports": [

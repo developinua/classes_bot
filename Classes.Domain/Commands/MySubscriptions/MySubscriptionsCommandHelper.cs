@@ -18,7 +18,7 @@ namespace Classes.Domain.Commands.MySubscriptions;
 
 public static class MySubscriptionsCommandHelper
 {
-	internal static async Task ParseSubscription(int chatId, CallbackQuery callbackQuery,
+	internal static async Task ParseSubscription(long chatId, CallbackQuery callbackQuery,
 		ITelegramBotClient client, IUnitOfWork services)
 	{
 		var subscriptionCallbackQueryType = GetSubscriptionCallbackQueryType(callbackQuery.Data);
@@ -55,7 +55,7 @@ public static class MySubscriptionsCommandHelper
 		$"SubscriptionType: {userSubscription.Subscription.Type}\n" +
 		$"Remaining Classes: {userSubscription.RemainingClassesCount}\n";
 
-	private static Func<Task<Message>> SendSubscriptionGroupTextMessage(int chatId, ITelegramBotClient client,
+	private static Func<Task<Message>> SendSubscriptionGroupTextMessage(long chatId, ITelegramBotClient client,
 		string callbackQueryData)
 	{
 		var replyKeyboardMarkup = RenderSubscriptionPeriods(callbackQueryData);
@@ -63,8 +63,8 @@ public static class MySubscriptionsCommandHelper
 			ParseMode.Markdown, replyMarkup: replyKeyboardMarkup);
 	}
 
-	private static async Task<Func<Task<Message>>> SendSubscriptionPeriodTextMessage(int chatId,
-		ITelegramBotClient client, IUnitOfWork services, string callbackQueryData)
+	private static async Task<Func<Task<Message>>> SendSubscriptionPeriodTextMessage(
+		long chatId, ITelegramBotClient client, IUnitOfWork services, string callbackQueryData)
 	{
 		Enum.TryParse(GetSubscriptionGroupDataFromCallbackQuery(callbackQueryData), out SubscriptionType subsgroup);
 		Enum.TryParse(GetSubscriptionPeriodDataFromCallbackQuery(callbackQueryData), out SubscriptionPeriod subsperiod);
@@ -136,7 +136,7 @@ public static class MySubscriptionsCommandHelper
 			&& x.Subscription.IsActive);
 
 	private static async Task GetExistingUserSubscriptionInformation(
-		ITelegramBotClient client, IReadOnlyCollection<UserSubscription> userSubscriptions, int chatId)
+		ITelegramBotClient client, IReadOnlyCollection<UserSubscription> userSubscriptions, long chatId)
 	{
 		var pluralEnding = userSubscriptions.Count > 1 ? "s" : "";
 		await client.SendTextMessageAsync(chatId, $"*Your subscription{pluralEnding}:*", ParseMode.Markdown);
@@ -148,7 +148,7 @@ public static class MySubscriptionsCommandHelper
 		await client.SendTextMessageAsync(chatId, "*Do you want to /checkin class?*", ParseMode.Markdown);
 	}
 
-	private static async Task GetNewUserSubscriptionInformation(ITelegramBotClient client, int chatId)
+	private static async Task GetNewUserSubscriptionInformation(ITelegramBotClient client, long chatId)
 	{
 		const string responseMessage = "*Which subscription do you want choose?\n*";
 		var replyKeyboardMarkup = RenderSubscriptionGroups();

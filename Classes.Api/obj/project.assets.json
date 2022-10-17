@@ -15,7 +15,7 @@
           }
         }
       },
-      "LiqPay/2020.6.2410.5129": {
+      "LiqPay/2022.6.1812.5401": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "11.0.2"
@@ -1671,9 +1671,9 @@
         "framework": ".NETStandard,Version=v2.1",
         "dependencies": {
           "Classes.Data": "1.0.0",
-          "LiqPay": "2020.6.2410.5129",
-          "Microsoft.Extensions.Logging.Abstractions": "3.1.8",
-          "Telegram.Bot": "15.7.1"
+          "LiqPay": "2022.6.1812.5401",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.2",
+          "Telegram.Bot": "18.0.0"
         },
         "compile": {
           "bin/placeholder/Classes.Domain.dll": {}
@@ -1707,15 +1707,15 @@
         "lib/netstandard2.1/DnsClient.xml"
       ]
     },
-    "LiqPay/2020.6.2410.5129": {
-      "sha512": "jHgibIUB+FPVxDxkCFrFVkZjMlawI8YqDhjnUJpy1zTIFWWWiVD9mbpLlKgc34/2CsJmsJIPcbr1lMoBrYphFA==",
+    "LiqPay/2022.6.1812.5401": {
+      "sha512": "SCxZQIQuYtXlTkY3eNjfWURB8wqqaVxmbwh0PEVinb60XHghKpY93yFUedlIqWwhrArWeDYTwIX5Lv4ppWtHFw==",
       "type": "package",
-      "path": "liqpay/2020.6.2410.5129",
+      "path": "liqpay/2022.6.1812.5401",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/netstandard2.0/LiqPay.SDK.dll",
-        "liqpay.2020.6.2410.5129.nupkg.sha512",
+        "liqpay.2022.6.1812.5401.nupkg.sha512",
         "liqpay.nuspec"
       ]
     },
@@ -5566,5 +5566,25 @@
         "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 6.0.2 to 3.1.8. Reference the package directly from the project to select a different version. \n Classes.Api -> Classes.Domain -> Microsoft.Extensions.Logging.Abstractions (>= 6.0.2) \n Classes.Api -> Microsoft.Extensions.Logging.Abstractions (>= 3.1.8)",
+      "libraryId": "Microsoft.Extensions.Logging.Abstractions",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Detected package downgrade: Telegram.Bot from 18.0.0 to 15.7.1. Reference the package directly from the project to select a different version. \n Classes.Api -> Classes.Domain -> Telegram.Bot (>= 18.0.0) \n Classes.Api -> Telegram.Bot (>= 15.7.1)",
+      "libraryId": "Telegram.Bot",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

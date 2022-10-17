@@ -55,10 +55,10 @@ public class StartCommandHelper
         });
     }
 
-    private static string GetCultureNameFromCallbackQuery(string callbackQueryData, string callbackQueryPattern)
+    private static string GetCultureNameFromCallbackQuery(string? callbackQueryData, string callbackQueryPattern)
     {
         var cultureName = string.Empty;
-        var cultureMatch = Regex.Match(callbackQueryData, callbackQueryPattern);
+        var cultureMatch = Regex.Match(callbackQueryData ?? "", callbackQueryPattern);
 
         if (cultureMatch.Success && cultureMatch.Groups["query"].Value.Equals("language"))
             cultureName = cultureMatch.Groups["data"].Value;

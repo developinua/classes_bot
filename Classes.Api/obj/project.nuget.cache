@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "CY3hMFiB+Iu2AmjMZe3Y+uWpWpOwVK1GcikuyVy8Oa6i4ETNkPPtsa5Eud5JkeJb17G0NjpVyoWaXfwCr+PEJA==",
-  "success": true,
+  "dgSpecHash": "phYfFpGuGk3gcg4j7z7z/Vh3dt4swttYbgSeDXaqhTyrdGLL9JsIlXz7m/Zj1WN8H/xvIcPTjh6+qpUQo+VMzA==",
+  "success": false,
   "projectFilePath": "/Users/nzt/Documents/dev/classes-bot/ClassesBot/Classes.Api/Classes.Api.csproj",
   "expectedPackageFiles": [
     "/Users/nzt/.nuget/packages/dnsclient/1.3.1/dnsclient.1.3.1.nupkg.sha512",
-    "/Users/nzt/.nuget/packages/liqpay/2020.6.2410.5129/liqpay.2020.6.2410.5129.nupkg.sha512",
+    "/Users/nzt/.nuget/packages/liqpay/2022.6.1812.5401/liqpay.2022.6.1812.5401.nupkg.sha512",
     "/Users/nzt/.nuget/packages/microsoft.aspnetcore.jsonpatch/3.1.8/microsoft.aspnetcore.jsonpatch.3.1.8.nupkg.sha512",
     "/Users/nzt/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/3.1.8/microsoft.aspnetcore.mvc.newtonsoftjson.3.1.8.nupkg.sha512",
     "/Users/nzt/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
@@ -100,5 +100,24 @@
     "/Users/nzt/.nuget/packages/system.xml.xdocument/4.3.0/system.xml.xdocument.4.3.0.nupkg.sha512",
     "/Users/nzt/.nuget/packages/telegram.bot/15.7.1/telegram.bot.15.7.1.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 6.0.2 to 3.1.8. Reference the package directly from the project to select a different version. \n Classes.Api -> Classes.Domain -> Microsoft.Extensions.Logging.Abstractions (>= 6.0.2) \n Classes.Api -> Microsoft.Extensions.Logging.Abstractions (>= 3.1.8)",
+      "libraryId": "Microsoft.Extensions.Logging.Abstractions",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Detected package downgrade: Telegram.Bot from 18.0.0 to 15.7.1. Reference the package directly from the project to select a different version. \n Classes.Api -> Classes.Domain -> Telegram.Bot (>= 18.0.0) \n Classes.Api -> Telegram.Bot (>= 15.7.1)",
+      "libraryId": "Telegram.Bot",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

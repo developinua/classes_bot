@@ -21,25 +21,19 @@ public class InlineKeyboardBuilder
 
     public InlineKeyboardBuilder AddButton(string text, string callbackData)
     {
-        Rows.Add(new InlineKeyboardButton
-        {
-            Text = text,
-            CallbackData = callbackData
-        });
-
+        Rows.Add(InlineKeyboardButton.WithCallbackData(callbackData));
         return this;
     }
 
     public InlineKeyboardBuilder AddUrlButton(string text, string callbackData, string url)
     {
-        Rows.Add(new InlineKeyboardButton
+        Rows.Add(new InlineKeyboardButton(text)
         {
-            Text = text,
             CallbackData = callbackData,
             Pay = true,
             Url = url
         });
-
+        
         return this;
     }
 

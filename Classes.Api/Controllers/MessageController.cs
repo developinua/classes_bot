@@ -32,10 +32,10 @@ public class MessageController : Controller
     [HttpPost("update")]
     public async Task<IActionResult> MessageUpdate([FromBody] Update update)
     {
+        UpdateHandler = GetUpdateHandler(update);
+
         try
         {
-            UpdateHandler = GetUpdateHandler(update);
-
             if (UpdateHandler is not null)
                 await UpdateHandler.Handle(update);
         }

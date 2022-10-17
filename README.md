@@ -1,2 +1,2 @@
-# TarasZoukClassesBot
-Telegram bot to manage a zouk classes attendance.
+# Classes Bot
+Telegram bot to manage a classes attendance.

@@ -10,7 +10,7 @@ namespace Classes.Domain.Commands.Administration.Admin;
 public class AdminCommand : IBotCommand
 {
     public string Name => "/admin";
-    public string CallbackQueryPattern => "Not Implemented";
+    public string CallbackQueryPattern => "Not implemented";
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
 
@@ -23,7 +23,7 @@ public class AdminCommand : IBotCommand
         if (AdministrationHelper.CanExecuteCommand(message.From.Username))
             await client.SendTextMessageAsync(chatId, "Access denied. You can't execute this command.");
 
-        var responseMessage = $"/seed /paymentlink /managesubscriptions";
+        var responseMessage = $"/seed /paymentlink /manage-subscriptions";
     }
 
     public Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, IUnitOfWork services)

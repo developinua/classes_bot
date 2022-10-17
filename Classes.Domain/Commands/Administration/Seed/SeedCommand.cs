@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ public class SeedCommand : IBotCommand
 {
     public string Name => "/seed";
 
-    public string CallbackQueryPattern => "Not Implemented";
+    public string CallbackQueryPattern => "Not implemented";
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
 
@@ -34,7 +35,7 @@ public class SeedCommand : IBotCommand
         }
 
         await ProcessSubscriptions(services);
-        await ProcessZoukUserSubscriptions(services);
+        await ProcessUserSubscriptions(services);
 
         await client.SendTextMessageAsync(chatId, "*Successfully seeded*", ParseMode.Markdown);
     }
@@ -479,22 +480,26 @@ public class SeedCommand : IBotCommand
         await services.Subscriptions.InsertManyAsync(subscriptions);
     }
 
-    private static async Task ProcessZoukUserSubscriptions(IUnitOfWork services)
+    private static async Task ProcessUserSubscriptions(IUnitOfWork services)
     {
-        var zoukUserNazar = await services.ZoukUsers.FindOneAsync(x => x.NickName.Equals("nazikBro"));
+        var userNazar = await services.Users.FindOneAsync(x => x.NickName.Equals("nazikBro"));
         var subscriptionPremiumMonth = await services.Subscriptions.FindOneAsync(x =>
             x.Type == SubscriptionType.Premium && x.Period == SubscriptionPeriod.Month);
-        var userSubscriptionPremiumMonth = new ZoukUserSubscription
+
+        if (userNazar is null || subscriptionPremiumMonth is null)
+            throw new Exception("Invalid admin subscriptions data in db.");
+        
+        var userSubscriptionPremiumMonth = new UserSubscription
         {
-            User = zoukUserNazar,
+            User = userNazar,
             Subscription = subscriptionPremiumMonth,
             RemainingClassesCount = subscriptionPremiumMonth.ClassesCount
         };
-        var premiumSubscriptionInDb = await services.ZoukUsersSubscriptions.FilterBy(x =>
+        var premiumSubscriptionInDb = await services.UsersSubscriptions.FilterBy(x =>
             x.User.NickName == userSubscriptionPremiumMonth.User.NickName
             && x.Subscription.Type == userSubscriptionPremiumMonth.Subscription.Type);
 
         if (!premiumSubscriptionInDb.Any())
-            await services.ZoukUsersSubscriptions.InsertAsync(userSubscriptionPremiumMonth);
+            await services.UsersSubscriptions.InsertAsync(userSubscriptionPremiumMonth);
     }
 }

@@ -4,9 +4,9 @@ using Classes.Domain.Repositories.Base;
 
 namespace Classes.Domain.Repositories;
 
-public interface IZoukUserSubscriptionRepository : IGenericRepository<ZoukUserSubscription> { }
+public interface IUserSubscriptionRepository : IGenericRepository<UserSubscription> { }
 
-public class ZoukUserSubscriptionMongoDbRepository : MongoDbRepository<ZoukUserSubscription>, IZoukUserSubscriptionRepository
+public class UserSubscriptionMongoDbRepository : MongoDbRepository<UserSubscription>, IUserSubscriptionRepository
 {
-    public ZoukUserSubscriptionMongoDbRepository(IMongoDbContext context) : base(context) { }
+    public UserSubscriptionMongoDbRepository(IMongoDbContext context) : base(context) { }
 }

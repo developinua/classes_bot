@@ -13,7 +13,7 @@ namespace Classes.Domain.Commands.CheckIn;
 public class CheckInCommand : IBotCommand
 {
     public string Name => @"/checkin";
-    public string CallbackQueryPattern => @"(?i)(?<query>checkinZoukUserSubscriptionId):(?<data>.*)";
+    public string CallbackQueryPattern => @"(?i)(?<query>check-in-subscription-id):(?<data>.*)";
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
 
@@ -28,7 +28,7 @@ public class CheckInCommand : IBotCommand
         if (isLocationMessage)
         {
             // TODO: Check location where classes can be executed
-            await CheckInCommandHelper.ShowZoukUserSubscriptionsInformation(message, client, services);
+            await CheckInCommandHelper.ShowUserSubscriptionsInformation(message, client, services);
             return;
         }
 
@@ -50,23 +50,28 @@ public class CheckInCommand : IBotCommand
         var chatId = callbackQuery.From.Id;
         await client.SendChatActionAsync(chatId, ChatAction.Typing);
 
-        var zoukUserSubscriptionId = CheckInCommandHelper.GetZoukUserSubscriptionIdFromCallbackQuery(callbackQuery.Data, CallbackQueryPattern);
-        var zoukUserSubscription = await services.ZoukUsersSubscriptions.FindOneAsync(x => x.Id.Equals(zoukUserSubscriptionId));
+        var userSubscriptionId = CheckInCommandHelper.GetUserSubscriptionIdFromCallbackQuery(
+            callbackQuery.Data, CallbackQueryPattern);
+        var userSubscription = await services.UsersSubscriptions.FindOneAsync(x => x.Id.Equals(userSubscriptionId));
 
-        if (zoukUserSubscription == null)
+        if (userSubscription == null)
         {
-            await client.SendTextMessageAsync(chatId, "Can't get user subscription from db. Please contact @nazikBro for details", ParseMode.Markdown);
+            await client.SendTextMessageAsync(chatId, 
+                "Can't get user subscription from db. Please contact @nazikBro for details", 
+                ParseMode.Markdown);
             return;
         }
 
-        if (zoukUserSubscription.RemainingClassesCount == 0)
+        if (userSubscription.RemainingClassesCount == 0)
         {
-            await client.SendTextMessageAsync(chatId, "You haven't any available classes. Press /mysubscriptions to manage your subscriptions", ParseMode.Markdown);
+            await client.SendTextMessageAsync(chatId, 
+                "You haven't any available classes. Press /mysubscriptions to manage your subscriptions", 
+                ParseMode.Markdown);
             return;
         }
 
-        zoukUserSubscription.RemainingClassesCount--;
-        await services.ZoukUsersSubscriptions.ReplaceAsync(zoukUserSubscription);
+        userSubscription.RemainingClassesCount--;
+        await services.UsersSubscriptions.ReplaceAsync(userSubscription);
 
         await client.SendTextMessageAsync(chatId, "*💚*", ParseMode.Markdown);
     }

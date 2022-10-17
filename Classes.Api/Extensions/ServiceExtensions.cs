@@ -14,10 +14,10 @@ public static class ServiceExtensions
     {
         services.AddTransient<IMongoDbContext, MongoDbContext>();
 
-        services.AddTransient<IZoukUserRepository, ZoukUserMongoDbRepository>();
-        services.AddTransient<IZoukUserAdditionalInformationRepository, ZoukUserAdditionalInformationMongoDbRepository>();
+        services.AddTransient<IUserRepository, UserMongoDbRepository>();
+        services.AddTransient<IUserInformationRepository, UserInformationMongoDbRepository>();
         services.AddTransient<ISubscriptionRepository, SubscriptionMongoDbRepository>();
-        services.AddTransient<IZoukUserSubscriptionRepository, ZoukUserSubscriptionMongoDbRepository>();
+        services.AddTransient<IUserSubscriptionRepository, UserSubscriptionMongoDbRepository>();
         services.AddTransient<ICultureRepository, CultureMongoDbRepository>();
         services.AddTransient<ICommandRepository, CommandMongoDbRepository>();
 

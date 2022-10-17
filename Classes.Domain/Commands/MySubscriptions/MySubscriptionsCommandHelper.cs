@@ -49,11 +49,11 @@ public static class MySubscriptionsCommandHelper
 				"Can't parse subscription subsgroup from user callback query data.")
 		};
 
-	private static string RenderZoukUserSubscriptionInformationText(ZoukUserSubscription zoukUserSubscription) =>
-		$"Subscription: {zoukUserSubscription.Subscription.Name}\n" +
-		$"Description: {zoukUserSubscription.Subscription.Description}\n" +
-		$"SubscriptionType: {zoukUserSubscription.Subscription.Type}\n" +
-		$"Remaining Classes: {zoukUserSubscription.RemainingClassesCount}\n";
+	private static string RenderUserSubscriptionInformationText(UserSubscription userSubscription) =>
+		$"Subscription: {userSubscription.Subscription.Name}\n" +
+		$"Description: {userSubscription.Subscription.Description}\n" +
+		$"SubscriptionType: {userSubscription.Subscription.Type}\n" +
+		$"Remaining Classes: {userSubscription.RemainingClassesCount}\n";
 
 	private static Func<Task<Message>> SendSubscriptionGroupTextMessage(int chatId, ITelegramBotClient client,
 		string callbackQueryData)
@@ -81,6 +81,7 @@ public static class MySubscriptionsCommandHelper
 		await client.SendTextMessageAsync(chatId,
 			$"*Price: {subscription.GetSummaryPrice()}\n*P.S. Please send your username and subscription type in comment",
 			ParseMode.Markdown, replyMarkup: replyKeyboardMarkup);
+		
 		return async () => await client.SendTextMessageAsync(chatId,
 			"*After your subscription will be approved by teacher\nYou will be able to /checkin on classes.*",
 			ParseMode.Markdown);
@@ -112,45 +113,42 @@ public static class MySubscriptionsCommandHelper
 		return subscriptionPeriod;
 	}
 
-	internal static async Task GetZoukUserSubscriptionInformation(
+	internal static async Task GetUserSubscriptionInformation(
 		Message message, ITelegramBotClient client, IUnitOfWork services)
 	{
 		var chatId = message.From.Id;
-		var zoukUserSubscriptions = (await GetZoukUserSubscriptions(message.From.Username, services)).ToList();
+		var userSubscriptions = (await GetUserSubscriptions(message.From.Username, services)).ToList();
 
-		if (!zoukUserSubscriptions.Any())
+		if (!userSubscriptions.Any())
 		{
-			await GetNewZoukUserSubscriptionInformation(client, chatId);
+			await GetNewUserSubscriptionInformation(client, chatId);
 			return;
 		}
 
-		await GetExistingZoukUserSubscriptionInformation(client, zoukUserSubscriptions, chatId);
+		await GetExistingUserSubscriptionInformation(client, userSubscriptions, chatId);
 	}
 
-	private static async Task<IEnumerable<ZoukUserSubscription>> GetZoukUserSubscriptions(
+	private static async Task<IEnumerable<UserSubscription>> GetUserSubscriptions(
 		string userName, IUnitOfWork services) =>
-		await services.ZoukUsersSubscriptions.FilterBy(x =>
+		await services.UsersSubscriptions.FilterBy(x =>
 			x.User.NickName == userName
 			&& x.RemainingClassesCount > 0
 			&& x.Subscription.IsActive);
 
-	private static async Task GetExistingZoukUserSubscriptionInformation(
-		ITelegramBotClient client, List<ZoukUserSubscription> zoukUserSubscriptions, int chatId)
+	private static async Task GetExistingUserSubscriptionInformation(
+		ITelegramBotClient client, IReadOnlyCollection<UserSubscription> userSubscriptions, int chatId)
 	{
-		var pluralEnding = zoukUserSubscriptions.Count > 1 ? "s" : "";
+		var pluralEnding = userSubscriptions.Count > 1 ? "s" : "";
 		await client.SendTextMessageAsync(chatId, $"*Your subscription{pluralEnding}:*", ParseMode.Markdown);
 
-		foreach (var zoukUserSubscription in zoukUserSubscriptions)
-		{
-			var replyMessage = RenderZoukUserSubscriptionInformationText(zoukUserSubscription);
+		foreach (var replyMessage in userSubscriptions.Select(RenderUserSubscriptionInformationText))
 			await client.SendTextMessageAsync(chatId, replyMessage, ParseMode.Markdown);
-		}
 
 		// TODO: Change to add functionality for adding few subscriptions
 		await client.SendTextMessageAsync(chatId, "*Do you want to /checkin class?*", ParseMode.Markdown);
 	}
 
-	private static async Task GetNewZoukUserSubscriptionInformation(ITelegramBotClient client, int chatId)
+	private static async Task GetNewUserSubscriptionInformation(ITelegramBotClient client, int chatId)
 	{
 		const string responseMessage = "*Which subscription do you want choose?\n*";
 		var replyKeyboardMarkup = RenderSubscriptionGroups();
@@ -161,19 +159,19 @@ public static class MySubscriptionsCommandHelper
 
 	private static InlineKeyboardMarkup RenderSubscriptionGroups() =>
 		InlineKeyboardBuilder.Create()
-			.AddButton("Novice subscription", "subsgroup:Novice")
+			.AddButton("Novice subscription", "subs-group:novice")
 			.NewLine()
-			.AddButton("Medium subscription", "subsgroup:Medium")
+			.AddButton("Medium subscription", "subs-group:medium")
 			.NewLine()
-			.AddButton("Lady Style subscription", "subsgroup:Lady")
+			.AddButton("Lady style subscription", "subs-group:lady")
 			.NewLine()
-			.AddButton("Novice and Medium subscription", "subsgroup:NoviceMedium")
+			.AddButton("Novice and medium subscription", "subs-group:novice-medium")
 			.NewLine()
-			.AddButton("Novice and Lady Style subscription", "subsgroup:NoviceLady")
+			.AddButton("Novice and lady style subscription", "subs-group:novice-lady")
 			.NewLine()
-			.AddButton("Medium and Lady Style subscription", "subsgroup:MediumLady")
+			.AddButton("Medium and lady style subscription", "subs-group:medium-lady")
 			.NewLine()
-			.AddButton("Premium", "subsgroup:Premium")
+			.AddButton("Premium", "subs-group:premium")
 			.Build();
 
 	private static InlineKeyboardMarkup RenderSubscriptionPeriods(string subscriptionGroupData)
@@ -181,15 +179,15 @@ public static class MySubscriptionsCommandHelper
 		var subscriptionPeriods = InlineKeyboardBuilder.Create();
 
 		if (!subscriptionGroupData.Contains("Premium"))
-			subscriptionPeriods.AddButton("Day", $"{subscriptionGroupData}?subsperiod:Day").NewLine();
+			subscriptionPeriods.AddButton("Day", $"{subscriptionGroupData}?subs-period:day").NewLine();
 
-		subscriptionPeriods.AddButton("Week", $"{subscriptionGroupData}?subsperiod:Week")
+		subscriptionPeriods.AddButton("Week", $"{subscriptionGroupData}?subs-period:week")
 			.NewLine()
-			.AddButton("Two Weeks", $"{subscriptionGroupData}?subsperiod:TwoWeeks")
+			.AddButton("Two weeks", $"{subscriptionGroupData}?subs-period:two-weeks")
 			.NewLine()
-			.AddButton("Month", $"{subscriptionGroupData}?subsperiod:Month")
+			.AddButton("Month", $"{subscriptionGroupData}?subs-period:month")
 			.NewLine()
-			.AddButton("Three Months", $"{subscriptionGroupData}?subsperiod:ThreeMonths");
+			.AddButton("Three months", $"{subscriptionGroupData}?subs-period:three-months");
 
 		return subscriptionPeriods.Build();
 	}

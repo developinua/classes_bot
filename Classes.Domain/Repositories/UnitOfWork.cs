@@ -6,58 +6,44 @@ namespace Classes.Domain.Repositories;
 
 public interface IUnitOfWork : IDisposable
 {
-    IZoukUserRepository ZoukUsers { get; set; }
-
-    IZoukUserAdditionalInformationRepository ZoukUsersAdditionalInformation { get; set; }
-
+    IUserRepository Users { get; set; }
+    IUserInformationRepository UsersInformation { get; set; }
     ISubscriptionRepository Subscriptions { get; set; }
-
-    IZoukUserSubscriptionRepository ZoukUsersSubscriptions { get; set; }
-
+    IUserSubscriptionRepository UsersSubscriptions { get; set; }
     ICultureRepository Cultures { get; set; }
-
     ICommandRepository Commands { get; set; }
-
     Task<int> SaveChanges();
 }
 
 public class UnitOfWork : IUnitOfWork
 {
     private IMongoDbContext Context { get; }
-
-    public IZoukUserRepository ZoukUsers { get; set; }
-
-    public IZoukUserAdditionalInformationRepository ZoukUsersAdditionalInformation { get; set; }
-
+    public IUserRepository Users { get; set; }
+    public IUserInformationRepository UsersInformation { get; set; }
     public ISubscriptionRepository Subscriptions { get; set; }
-
-    public IZoukUserSubscriptionRepository ZoukUsersSubscriptions { get; set; }
-
+    public IUserSubscriptionRepository UsersSubscriptions { get; set; }
     public ICultureRepository Cultures { get; set; }
-
     public ICommandRepository Commands { get; set; }
 
     public UnitOfWork(IMongoDbContext context,
-        IZoukUserRepository zoukUsersRepository,
-        IZoukUserAdditionalInformationRepository zoukUsersAdditionalInformation,
+        IUserRepository usersRepository,
+        IUserInformationRepository usersInformation,
         ISubscriptionRepository subscriptions,
-        IZoukUserSubscriptionRepository zoukUsersSubscriptions,
+        IUserSubscriptionRepository usersSubscriptions,
         ICultureRepository cultures,
         ICommandRepository commandRepository)
     {
         Context = context;
-        ZoukUsers = zoukUsersRepository;
-        ZoukUsersAdditionalInformation = zoukUsersAdditionalInformation;
+        Users = usersRepository;
+        UsersInformation = usersInformation;
         Subscriptions = subscriptions;
-        ZoukUsersSubscriptions = zoukUsersSubscriptions;
+        UsersSubscriptions = usersSubscriptions;
         Cultures = cultures;
         Commands = commandRepository;
     }
 
-    public async Task<int> SaveChanges()
-    {
-        return await Context.SaveChanges();
-    }
+    public async Task<int> SaveChanges() => 
+        await Context.SaveChanges();
 
     public void Dispose()
     {

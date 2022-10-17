@@ -14,9 +14,9 @@ public class StartCommandHelper
     {
         var cultureName = GetCultureNameFromCallbackQuery(callbackQuery.Data, callbackQueryPattern);
         var culture = await services.Cultures.GetCultureByCodeAsync(cultureName);
-        var dbUser = await services.ZoukUsers.FindOneAsync(x =>
+        var dbUser = await services.Users.FindOneAsync(x =>
             x.NickName == callbackQuery.Message.Chat.Username);
-        var zoukUserAdditionalInfo = new UserInformation
+        var userAdditionalInfo = new UserInformation
         {
             Culture = culture,
             ChatId = callbackQuery.From.Id,
@@ -25,33 +25,33 @@ public class StartCommandHelper
         };
 
         if (dbUser != null)
-            await UpdateUser(services, dbUser, zoukUserAdditionalInfo);
+            await UpdateUser(services, dbUser, userAdditionalInfo);
         else
-            await CreateUser(services, callbackQuery.Message.Chat.Username, zoukUserAdditionalInfo);
+            await CreateUser(services, callbackQuery.Message.Chat.Username, userAdditionalInfo);
     }
 
-    private static async Task UpdateUser(IUnitOfWork services, User zoukUser, UserInformation zoukUserAdditionalInfo)
+    private static async Task UpdateUser(IUnitOfWork services, User user, UserInformation userInformation)
     {
-        var zoukUserInfoAlreadyStoredInDb = await services.ZoukUsersAdditionalInformation.FindOneAsync(x =>
-            x.FirstName == zoukUserAdditionalInfo.FirstName
-            && x.ChatId == zoukUserAdditionalInfo.ChatId);
+        var userInfoAlreadyStoredInDb = await services.UsersInformation.FindOneAsync(x =>
+            x.FirstName == userInformation.FirstName
+            && x.ChatId == userInformation.ChatId);
 
-        if (zoukUserInfoAlreadyStoredInDb == null)
-            await services.ZoukUsersAdditionalInformation.InsertAsync(zoukUserAdditionalInfo);
+        if (userInfoAlreadyStoredInDb == null)
+            await services.UsersInformation.InsertAsync(userInformation);
         else
-            await services.ZoukUsersAdditionalInformation.ReplaceAsync(zoukUserAdditionalInfo);
+            await services.UsersInformation.ReplaceAsync(userInformation);
 
-        zoukUser.UserInformation = zoukUserAdditionalInfo;
-        await services.ZoukUsers.ReplaceAsync(zoukUser);
+        user.UserInformation = userInformation;
+        await services.Users.ReplaceAsync(user);
     }
 
-    private static async Task CreateUser(IUnitOfWork services, string username, UserInformation zoukUserAdditionalInformation)
+    private static async Task CreateUser(IUnitOfWork services, string username, UserInformation userInformation)
     {
-        await services.ZoukUsersAdditionalInformation.InsertAsync(zoukUserAdditionalInformation);
-        await services.ZoukUsers.InsertAsync(new User
+        await services.UsersInformation.InsertAsync(userInformation);
+        await services.Users.InsertAsync(new User
         {
             NickName = username,
-            UserInformation = zoukUserAdditionalInformation
+            UserInformation = userInformation
         });
     }
 

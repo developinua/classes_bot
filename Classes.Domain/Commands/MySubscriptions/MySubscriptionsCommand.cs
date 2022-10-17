@@ -12,7 +12,7 @@ namespace Classes.Domain.Commands.MySubscriptions;
 public class MySubscriptionsCommand : IBotCommand
 {
     public string Name => @"/mysubscriptions";
-    public string CallbackQueryPattern => @"(?i)(?<query>subsgroup|subsperiod)";
+    public string CallbackQueryPattern => @"(?i)(?<query>subs-group|subs-period)";
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text.Contains(Name);
 
@@ -21,7 +21,7 @@ public class MySubscriptionsCommand : IBotCommand
     public async Task Execute(Message message, ITelegramBotClient client, IUnitOfWork services)
     {
         await client.SendChatActionAsync(message.From.Id, ChatAction.Typing);
-        await MySubscriptionsCommandHelper.GetZoukUserSubscriptionInformation(message, client, services);
+        await MySubscriptionsCommandHelper.GetUserSubscriptionInformation(message, client, services);
     }
 
     public async Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, IUnitOfWork services)

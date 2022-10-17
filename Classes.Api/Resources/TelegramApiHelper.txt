@@ -7,8 +7,8 @@ ngrok authtoken 1eaTbswNPxuJtPw5laqE1PyX4qD_nwuaEQhhs93hBCKaBPL1
 Найдите тег привязки и добавьте в него второй тег привязки («localhost» удален).
 
 2. Запустите ngrok командою:
-ngrok http https://localhost:5001 -subdomain=zoukclassesbot
-ngrok http https://localhost:5001 -subdomain=zoukclassesbot -host-header="localhost:5001"
+ngrok http https://localhost:5001 -subdomain=classesbot
+ngrok http https://localhost:5001 -subdomain=classesbot -host-header="localhost:5001"
 
 3. Перейти по адресі:
 api.telegram.org/bot<Token>/setwebhook?url=<Domain>

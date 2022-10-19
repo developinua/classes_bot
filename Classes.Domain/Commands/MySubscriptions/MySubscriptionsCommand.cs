@@ -11,7 +11,7 @@ namespace Classes.Domain.Commands.MySubscriptions;
 
 public class MySubscriptionsCommand : IBotCommand
 {
-    public string Name => @"/mysubscriptions";
+    public string Name => @"/my-subscriptions";
     public string CallbackQueryPattern => @"(?i)(?<query>subs-group|subs-period)";
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);

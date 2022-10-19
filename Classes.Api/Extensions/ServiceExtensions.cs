@@ -31,7 +31,7 @@ public static class ServiceExtensions
         var telegramBotSettings = new TelegramBotSettings();
         configuration.GetSection(TelegramBotSettings.Position).Bind(telegramBotSettings);
 
-        var telegramBotClient = new TelegramBotClient(telegramBotSettings.Token);
+        ITelegramBotClient telegramBotClient = new TelegramBotClient(telegramBotSettings.Token);
         var hook = string.Concat(telegramBotSettings.Url, telegramBotSettings.UpdateRoute);
 
         services.AddSingleton(telegramBotClient);

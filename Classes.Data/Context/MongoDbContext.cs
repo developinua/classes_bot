@@ -18,17 +18,14 @@ public interface IMongoDbContext : IDisposable
 
 public class MongoDbContext : IMongoDbContext
 {
+    private IClientSessionHandle? Session { get; set; }
     private ILogger<MongoDbContext> Logger { get; }
     private IMongoDatabase MongoDatabase { get; }
     private MongoClient MongoClient { get; }
-    private IClientSessionHandle Session { get; set; }
     private List<Func<Task>> Commands { get; } = new();
 
-    public MongoDbContext(ILogger<MongoDbContext> logger, IClientSessionHandle session)
+    public MongoDbContext(ILogger<MongoDbContext> logger)
     {
-        Logger = logger;
-        Session = session;
-        
         var mongoClientSettings = MongoClientSettings.FromUrl(
             new MongoUrl(Environment.GetEnvironmentVariable("MongoDbConnectionString")));
         mongoClientSettings.SslSettings = new SslSettings
@@ -38,6 +35,7 @@ public class MongoDbContext : IMongoDbContext
 
         MongoClient = new MongoClient(mongoClientSettings);
         MongoDatabase = MongoClient.GetDatabase(Environment.GetEnvironmentVariable("MongoDbDatabaseName"));
+        Logger = logger;
     }
 
     public IMongoCollection<TEntity> GetCollection<TEntity>(string name) => 
@@ -50,8 +48,8 @@ public class MongoDbContext : IMongoDbContext
 
     public async Task<int> SaveChanges()
     {
-        using IClientSessionHandle? clientSessionHandle = Session = await MongoClient.StartSessionAsync();
-        Session.StartTransaction();
+        using IClientSessionHandle clientSessionHandle = Session = await MongoClient.StartSessionAsync();
+        clientSessionHandle.StartTransaction();
 
         var commandTasks = Commands.Select(c => c());
 
@@ -61,15 +59,15 @@ public class MongoDbContext : IMongoDbContext
         }
         catch (Exception exception)
         {
-            Logger.LogError(exception, exception.Message);
-            await Session.AbortTransactionAsync();
+            Logger.LogError(exception, "{errorMessage}", exception.Message);
+            await clientSessionHandle.AbortTransactionAsync();
         }
 
-        await Session.CommitTransactionAsync();
+        await clientSessionHandle.CommitTransactionAsync();
 
         return Commands.Count;
     }
-
+    
     public void Dispose()
     {
         while (Session is {IsInTransaction: true})

@@ -12,7 +12,7 @@ namespace Classes.Domain.Commands.CheckIn;
 
 public class CheckInCommand : IBotCommand
 {
-    public string Name => @"/checkin";
+    public string Name => @"/check-in";
     public string CallbackQueryPattern => @"(?i)(?<query>check-in-subscription-id):(?<data>.*)";
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);

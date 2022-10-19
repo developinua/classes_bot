@@ -1,4 +1,5 @@
 ﻿using Classes.Domain.Repositories;
+using Newtonsoft.Json;
 
 namespace Classes.Api.Handlers.UpdateHandler;
 
@@ -22,7 +23,7 @@ public class MessageUpdateHandler : IUpdateHandler
 
     public async Task<UpdateHandlerResponse> Handle(Update update)
     {
-        var message = update?.Message;
+        var message = update.Message;
 
         if (message == null)
         {
@@ -40,7 +41,7 @@ public class MessageUpdateHandler : IUpdateHandler
         {
             return new UpdateHandlerResponse
             {
-                Message = $"Can't process message {message}",
+                Message = $"Can't process message {JsonConvert.SerializeObject(message)}",
                 ResponseType = UpdateHandlerResponseType.Error
             };
         }

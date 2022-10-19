@@ -47,7 +47,7 @@ public class StartCommand : IBotCommand
 
 		var chatId = callbackQuery.From.Id;
 		const string responseCallbackQueryMessage =
-			"*😊Successfully!😊*\nPress /mysubscriptions to manage your class subscription.";
+			"*😊Successfully!😊*\nPress /my-subscriptions to manage your class subscription.";
 
 		await client.SendChatActionAsync(chatId, ChatAction.Typing);
 		await StartCommandHelper.SaveUser(services, callbackQuery, CallbackQueryPattern);

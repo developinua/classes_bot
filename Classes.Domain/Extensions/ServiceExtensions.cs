@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
 
-namespace Classes.Api.Extensions;
+namespace Classes.Domain.Extensions;
 
 public static class ServiceExtensions
 {

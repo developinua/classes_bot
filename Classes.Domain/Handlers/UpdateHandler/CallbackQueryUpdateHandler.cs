@@ -5,7 +5,7 @@ using Classes.Domain.Repositories;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace Classes.Api.Handlers.UpdateHandler;
+namespace Classes.Domain.Handlers.UpdateHandler;
 
 public class CallbackQueryUpdateHandler : IUpdateHandler
 {

@@ -1,13 +1,12 @@
-﻿using Classes.Domain.Repositories;
-using Newtonsoft.Json;
-
-namespace Classes.Api.Handlers.UpdateHandler;
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Classes.Domain.Repositories;
+using Newtonsoft.Json;
+
+namespace Classes.Domain.Handlers.UpdateHandler;
 
 public class MessageUpdateHandler : IUpdateHandler
 {

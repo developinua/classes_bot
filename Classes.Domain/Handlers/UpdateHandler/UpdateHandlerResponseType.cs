@@ -1,4 +1,4 @@
-﻿namespace Classes.Api.Handlers.UpdateHandler;
+﻿namespace Classes.Domain.Handlers.UpdateHandler;
 
 public enum UpdateHandlerResponseType
 {

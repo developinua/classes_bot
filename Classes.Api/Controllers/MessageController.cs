@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Classes.Api.Extensions;
-using Classes.Api.Handlers.UpdateHandler;
+using Classes.Domain.Extensions;
+using Classes.Domain.Handlers.UpdateHandler;
 using Classes.Domain.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

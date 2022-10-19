@@ -1,10 +1,10 @@
-using Classes.Api.Handlers.UpdateHandler;
+using Classes.Domain.Handlers.UpdateHandler;
 using Classes.Domain.Repositories;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace Classes.Api.Extensions;
+namespace Classes.Domain.Extensions;
 
 public static class UpdateExtensions
 {

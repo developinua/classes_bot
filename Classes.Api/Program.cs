@@ -1,4 +1,4 @@
-using Classes.Api.Extensions;
+using Classes.Domain.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

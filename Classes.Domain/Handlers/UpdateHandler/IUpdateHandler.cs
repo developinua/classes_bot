@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
-namespace Classes.Api.Handlers.UpdateHandler;
+namespace Classes.Domain.Handlers.UpdateHandler;
 
 public interface IUpdateHandler
 {

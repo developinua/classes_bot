@@ -12,6 +12,7 @@ public interface IUnitOfWork : IDisposable
     IUserSubscriptionRepository UsersSubscriptions { get; set; }
     ICultureRepository Cultures { get; set; }
     ICommandRepository Commands { get; set; }
+    
     Task<int> SaveChanges();
 }
 
@@ -25,7 +26,8 @@ public class UnitOfWork : IUnitOfWork
     public ICultureRepository Cultures { get; set; }
     public ICommandRepository Commands { get; set; }
 
-    public UnitOfWork(IMongoDbContext context,
+    public UnitOfWork(
+        IMongoDbContext context,
         IUserRepository usersRepository,
         IUserInformationRepository usersInformation,
         ISubscriptionRepository subscriptions,
@@ -42,8 +44,7 @@ public class UnitOfWork : IUnitOfWork
         Commands = commandRepository;
     }
 
-    public async Task<int> SaveChanges() => 
-        await Context.SaveChanges();
+    public async Task<int> SaveChanges() => await Context.SaveChanges();
 
     public void Dispose()
     {

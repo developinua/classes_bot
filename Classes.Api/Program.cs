@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRepository();
+builder.Services.AddAppServices(builder.Configuration);
 builder.Services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
 
 await builder.Services.UseTelegramBotWebHooks(builder.Configuration);

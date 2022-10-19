@@ -10,25 +10,27 @@ namespace Classes.Domain.Extensions;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddRepository(this IServiceCollection services)
+    public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddTransient<IMongoDbContext, MongoDbContext>();
+        services.Configure<MongoConnectionSettings>(configuration.GetSection(MongoConnectionSettings.Position));
+        
+        services.AddScoped<IMongoDbContext, MongoDbContext>();
 
-        services.AddTransient<IUserRepository, UserMongoDbRepository>();
-        services.AddTransient<IUserInformationRepository, UserInformationMongoDbRepository>();
-        services.AddTransient<ISubscriptionRepository, SubscriptionMongoDbRepository>();
-        services.AddTransient<IUserSubscriptionRepository, UserSubscriptionMongoDbRepository>();
-        services.AddTransient<ICultureRepository, CultureMongoDbRepository>();
-        services.AddTransient<ICommandRepository, CommandMongoDbRepository>();
+        services.AddScoped<IUserRepository, UserMongoDbRepository>();
+        services.AddScoped<IUserInformationRepository, UserInformationMongoDbRepository>();
+        services.AddScoped<ISubscriptionRepository, SubscriptionMongoDbRepository>();
+        services.AddScoped<IUserSubscriptionRepository, UserSubscriptionMongoDbRepository>();
+        services.AddScoped<ICultureRepository, CultureMongoDbRepository>();
+        services.AddScoped<ICommandRepository, CommandMongoDbRepository>();
 
-        services.AddTransient<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
     
     public static async Task UseTelegramBotWebHooks(this IServiceCollection services, IConfiguration configuration)
     {
-        var telegramBotSettings = new TelegramBotSettings();
+        TelegramBotSettings telegramBotSettings = new();
         configuration.GetSection(TelegramBotSettings.Position).Bind(telegramBotSettings);
 
         ITelegramBotClient telegramBotClient = new TelegramBotClient(telegramBotSettings.Token);

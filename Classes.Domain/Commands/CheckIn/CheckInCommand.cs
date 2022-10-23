@@ -65,7 +65,7 @@ public class CheckInCommand : IBotCommand
         if (userSubscription.RemainingClassesCount == 0)
         {
             await client.SendTextMessageAsync(chatId, 
-                "You haven't any available classes. Press /my-subscriptions to manage your subscriptions", 
+                "You haven't any available classes. Press /mySubscriptions to manage your subscriptions", 
                 ParseMode.Markdown);
             return;
         }

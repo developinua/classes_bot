@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
-using Classes.Domain.Models.Settings;
+using Classes.Data.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -30,12 +29,8 @@ public class MongoDbContext : IMongoDbContext
 		ILogger<MongoDbContext> logger,
 		IOptions<MongoConnectionSettings> mongoConnectionSettingsOptions)
 	{
-		var mongoSettings = mongoConnectionSettingsOptions.Value;
-		var mongoClientSettings = MongoClientSettings.FromUrl(new MongoUrl(mongoSettings.MongoDbConnectionString));
-		mongoClientSettings.SslSettings = new SslSettings {EnabledSslProtocols = SslProtocols.Tls12};
-
-		MongoClient = new MongoClient(mongoClientSettings);
-		MongoDatabase = MongoClient.GetDatabase(mongoSettings.MongoDbDatabaseName);
+		MongoClient = new MongoClient(mongoConnectionSettingsOptions.Value.ConnectionString);
+		MongoDatabase = MongoClient.GetDatabase(mongoConnectionSettingsOptions.Value.DatabaseName);
 		Logger = logger;
 	}
 

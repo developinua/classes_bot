@@ -41,12 +41,12 @@ public static class MySubscriptionsCommandHelper
 	private static MySubscriptionsCallbackQueryType GetSubscriptionCallbackQueryType(string callbackQueryData) =>
 		callbackQueryData switch
 		{
-			_ when callbackQueryData.Contains("subsgroup") && !callbackQueryData.Contains("subsperiod") =>
+			_ when callbackQueryData.Contains("subsGroup") && !callbackQueryData.Contains("subsPeriod") =>
 				MySubscriptionsCallbackQueryType.Group,
-			_ when callbackQueryData.Contains("subsgroup") && callbackQueryData.Contains("subsperiod") =>
+			_ when callbackQueryData.Contains("subsGroup") && callbackQueryData.Contains("subsPeriod") =>
 				MySubscriptionsCallbackQueryType.Period,
 			_ => throw new InvalidDataContractException(
-				"Can't parse subscription subsgroup from user callback query data.")
+				"Can't parse subscription group from user callback query data.")
 		};
 
 	private static string RenderUserSubscriptionInformationText(UserSubscription userSubscription) =>
@@ -59,55 +59,53 @@ public static class MySubscriptionsCommandHelper
 		string callbackQueryData)
 	{
 		var replyKeyboardMarkup = RenderSubscriptionPeriods(callbackQueryData);
-		return () => client.SendTextMessageAsync(chatId, "*Which subscription subsperiod do you prefer?\n*",
+		return () => client.SendTextMessageAsync(chatId, "*Which subscription period do you prefer?\n*",
 			ParseMode.Markdown, replyMarkup: replyKeyboardMarkup);
 	}
 
 	private static async Task<Func<Task<Message>>> SendSubscriptionPeriodTextMessage(
 		long chatId, ITelegramBotClient client, IUnitOfWork services, string callbackQueryData)
 	{
-		Enum.TryParse(GetSubscriptionGroupDataFromCallbackQuery(callbackQueryData), out SubscriptionType subsgroup);
-		Enum.TryParse(GetSubscriptionPeriodDataFromCallbackQuery(callbackQueryData), out SubscriptionPeriod subsperiod);
+		Enum.TryParse(GetSubscriptionGroupData(callbackQueryData), true, out SubscriptionType subsGroup);
+		Enum.TryParse(GetSubscriptionPeriodData(callbackQueryData), true, out SubscriptionPeriod subsPeriod);
 
 		var subscription = await services.Subscriptions.FindOneAsync(x =>
-			x.IsActive && x.Type.Equals(subsgroup) && x.Period.Equals(subsperiod));
+			x.IsActive && x.Type.Equals(subsGroup) && x.Period.Equals(subsPeriod));
 
 		if (subscription is null)
 			return async () => await client.SendTextMessageAsync(chatId,
 				"No available subscription was founded.\nPlease contact @nazikBro");
 
-		var replyKeyboardMarkup = RenderBuySubscription(subscription.Id);
-
 		await client.SendTextMessageAsync(chatId,
-			$"*Price: {subscription.GetSummaryPrice()}\n*P.S. Please send your username and subscription type in comment",
-			ParseMode.Markdown, replyMarkup: replyKeyboardMarkup);
-		
+			$"*Price: {subscription.GetSummaryPrice()}\n*P.S. Please send your username and subscription in comment",
+			ParseMode.Markdown, replyMarkup: RenderBuySubscription(subscription.Id));
+
 		return async () => await client.SendTextMessageAsync(chatId,
 			"*After your subscription will be approved by teacher\nYou will be able to /checkin on classes.*",
 			ParseMode.Markdown);
 	}
 
-	private static string GetSubscriptionGroupDataFromCallbackQuery(string callbackQueryData)
+	private static string GetSubscriptionGroupData(string callbackQueryData)
 	{
 		var subscriptionGroup = string.Empty;
-		var subscriptionGroupMatch = Regex.Match(callbackQueryData, @"(?i)(?<query>subsgroup):(?<data>\w+)");
+		var subscriptionGroupMatch = Regex.Match(callbackQueryData, @"(?i)(?<query>subsGroup):(?<data>\w+)");
 		var subscriptionGroupMatchQuery = subscriptionGroupMatch.Groups["query"].Value;
 		var subscriptionGroupMatchData = subscriptionGroupMatch.Groups["data"].Value;
 
-		if (subscriptionGroupMatch.Success && subscriptionGroupMatchQuery.Equals("subsgroup"))
+		if (subscriptionGroupMatch.Success && subscriptionGroupMatchQuery.Equals("subsGroup"))
 			subscriptionGroup = subscriptionGroupMatchData;
 
 		return subscriptionGroup;
 	}
 
-	private static string GetSubscriptionPeriodDataFromCallbackQuery(string callbackQueryData)
+	private static string GetSubscriptionPeriodData(string callbackQueryData)
 	{
 		var subscriptionPeriod = string.Empty;
-		var subscriptionPeriodMatch = Regex.Match(callbackQueryData, @"(?i)(?<query>subsperiod):(?<data>\w+)");
+		var subscriptionPeriodMatch = Regex.Match(callbackQueryData, @"(?i)(?<query>subsPeriod):(?<data>\w+)");
 		var subscriptionPeriodMatchQuery = subscriptionPeriodMatch.Groups["query"].Value;
 		var subscriptionPeriodMatchData = subscriptionPeriodMatch.Groups["data"].Value;
 
-		if (subscriptionPeriodMatch.Success && subscriptionPeriodMatchQuery.Equals("subsperiod"))
+		if (subscriptionPeriodMatch.Success && subscriptionPeriodMatchQuery.Equals("subsPeriod"))
 			subscriptionPeriod = subscriptionPeriodMatchData;
 
 		return subscriptionPeriod;
@@ -159,19 +157,13 @@ public static class MySubscriptionsCommandHelper
 
 	private static InlineKeyboardMarkup RenderSubscriptionGroups() =>
 		InlineKeyboardBuilder.Create()
-			.AddButton("Novice subscription", "subs-group:novice")
-			.NewLine()
-			.AddButton("Medium subscription", "subs-group:medium")
-			.NewLine()
-			.AddButton("Lady style subscription", "subs-group:lady")
-			.NewLine()
-			.AddButton("Novice and medium subscription", "subs-group:novice-medium")
-			.NewLine()
-			.AddButton("Novice and lady style subscription", "subs-group:novice-lady")
-			.NewLine()
-			.AddButton("Medium and lady style subscription", "subs-group:medium-lady")
-			.NewLine()
-			.AddButton("Premium", "subs-group:premium")
+			.AddButton("Novice subscription", "subsGroup:novice").NewLine()
+			.AddButton("Medium subscription", "subsGroup:medium").NewLine()
+			.AddButton("Lady style subscription", "subsGroup:lady").NewLine()
+			.AddButton("Novice and medium subscription", "subsGroup:novice-medium").NewLine()
+			.AddButton("Novice and lady style subscription", "subsGroup:novice-lady").NewLine()
+			.AddButton("Medium and lady style subscription", "subsGroup:medium-lady").NewLine()
+			.AddButton("Premium", "subsGroup:premium")
 			.Build();
 
 	private static InlineKeyboardMarkup RenderSubscriptionPeriods(string subscriptionGroupData)
@@ -179,15 +171,12 @@ public static class MySubscriptionsCommandHelper
 		var subscriptionPeriods = InlineKeyboardBuilder.Create();
 
 		if (!subscriptionGroupData.Contains("Premium"))
-			subscriptionPeriods.AddButton("Day", $"{subscriptionGroupData}?subs-period:day").NewLine();
+			subscriptionPeriods.AddButton("Day", $"{subscriptionGroupData}?subsPeriod:day").NewLine();
 
-		subscriptionPeriods.AddButton("Week", $"{subscriptionGroupData}?subs-period:week")
-			.NewLine()
-			.AddButton("Two weeks", $"{subscriptionGroupData}?subs-period:two-weeks")
-			.NewLine()
-			.AddButton("Month", $"{subscriptionGroupData}?subs-period:month")
-			.NewLine()
-			.AddButton("Three months", $"{subscriptionGroupData}?subs-period:three-months");
+		subscriptionPeriods.AddButton("Week", $"{subscriptionGroupData}?subsPeriod:week").NewLine()
+			.AddButton("Two weeks", $"{subscriptionGroupData}?subsPeriod:two-weeks").NewLine()
+			.AddButton("Month", $"{subscriptionGroupData}?subsPeriod:month").NewLine()
+			.AddButton("Three months", $"{subscriptionGroupData}?subsPeriod:three-months");
 
 		return subscriptionPeriods.Build();
 	}
@@ -196,7 +185,7 @@ public static class MySubscriptionsCommandHelper
 	{
 		// TODO: Add replacement link
 		return InlineKeyboardBuilder.Create()
-			.AddUrlButton("Buy", $"paymentlink:{id}", "https://send.monobank.ua/3EVPSXNq4F")
+			.AddUrlButton("Buy", $"paymentlink:{id}", "https://send.monobank.ua/4aXrhJ1FTH")
 			.Build();
 	}
 }

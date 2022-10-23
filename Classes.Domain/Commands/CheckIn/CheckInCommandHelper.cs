@@ -52,7 +52,7 @@ public static class CheckInCommandHelper
 	private static string RenderSubscriptionAvailabilityText(IReadOnlyCollection<UserSubscription> userSubscriptions) =>
 		userSubscriptions.Any()
 			? userSubscriptions.Count == 1 ? "*Your subscription:*" : "*Your subscriptions:*"
-			: "You have no subscriptions. Press /my-subscriptions to buy one.";
+			: "You have no subscriptions. Press /mySubscriptions to buy one.";
 
 	private static string RenderSubscriptionInformationText(UserSubscription userSubscription) =>
 		"*Subscription:\n*" +

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Classes.Data.Context;
+using Classes.Data.Models;
 using Classes.Domain.Models.Settings;
 using Classes.Domain.Repositories;
 using Microsoft.Extensions.Configuration;

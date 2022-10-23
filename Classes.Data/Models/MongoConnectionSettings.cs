@@ -1,10 +1,9 @@
-namespace Classes.Domain.Models.Settings;
+namespace Classes.Data.Models;
 
 public class MongoConnectionSettings
 {
-	public const string Position = "MongoConnection";
+	public const string Position = "MongoSettings";
 	
-	public string MongoConnectionString { get; set; }
-	public string MongoDbConnectionString { get; set; }
-	public string MongoDbDatabaseName { get; set; }
+	public string ConnectionString { get; set; }
+	public string DatabaseName { get; set; }
 }

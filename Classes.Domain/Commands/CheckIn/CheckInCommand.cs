@@ -39,7 +39,7 @@ public class CheckInCommand : IBotCommand
             ResizeKeyboard = true
         };
 
-        await client.SendTextMessageAsync(chatId, replyMessage, ParseMode.Markdown, replyMarkup: replyMarkup);
+        await client.SendTextMessageAsync(chatId, replyMessage, parseMode: ParseMode.Markdown, replyMarkup: replyMarkup);
     }
 
     public async Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, IUnitOfWork services)
@@ -58,7 +58,7 @@ public class CheckInCommand : IBotCommand
         {
             await client.SendTextMessageAsync(chatId, 
                 "Can't get user subscription from db. Please contact @nazikBro for details", 
-                ParseMode.Markdown);
+                parseMode: ParseMode.Markdown);
             return;
         }
 
@@ -66,13 +66,13 @@ public class CheckInCommand : IBotCommand
         {
             await client.SendTextMessageAsync(chatId, 
                 "You haven't any available classes. Press /mySubscriptions to manage your subscriptions", 
-                ParseMode.Markdown);
+                parseMode: ParseMode.Markdown);
             return;
         }
 
         userSubscription.RemainingClassesCount--;
         await services.UsersSubscriptions.ReplaceAsync(userSubscription);
 
-        await client.SendTextMessageAsync(chatId, "*💚*", ParseMode.Markdown);
+        await client.SendTextMessageAsync(chatId, "*💚*", parseMode: ParseMode.Markdown);
     }
 }

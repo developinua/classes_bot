@@ -37,7 +37,7 @@ public class SeedCommand : IBotCommand
         await ProcessSubscriptions(services);
         await ProcessUserSubscriptions(services);
 
-        await client.SendTextMessageAsync(chatId, "*Successfully seeded*", ParseMode.Markdown);
+        await client.SendTextMessageAsync(chatId, "*Successfully seeded*", parseMode: ParseMode.Markdown);
     }
 
     public Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, IUnitOfWork services)
@@ -99,7 +99,7 @@ public class SeedCommand : IBotCommand
                 DiscountPercent = 0,
                 ClassesCount = 4,
                 Type = SubscriptionType.Novice,
-                Period = SubscriptionPeriod.TwoWeeks,
+                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -136,7 +136,7 @@ public class SeedCommand : IBotCommand
                 Price = 200,
                 DiscountPercent = 0,
                 ClassesCount = 1,
-                Type = SubscriptionType.Medium,
+                Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
             },
@@ -147,7 +147,7 @@ public class SeedCommand : IBotCommand
                 Price = 400,
                 DiscountPercent = 0,
                 ClassesCount = 2,
-                Type = SubscriptionType.Medium,
+                Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
             },
@@ -158,8 +158,8 @@ public class SeedCommand : IBotCommand
                 Price = 800,
                 DiscountPercent = 0,
                 ClassesCount = 4,
-                Type = SubscriptionType.Medium,
-                Period = SubscriptionPeriod.TwoWeeks,
+                Type = SubscriptionType.Intermediate,
+                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -169,7 +169,7 @@ public class SeedCommand : IBotCommand
                 Price = 1600,
                 DiscountPercent = 0,
                 ClassesCount = 8,
-                Type = SubscriptionType.Medium,
+                Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
             },
@@ -180,14 +180,14 @@ public class SeedCommand : IBotCommand
                 Price = 3200,
                 DiscountPercent = 15,
                 ClassesCount = 16,
-                Type = SubscriptionType.Medium,
+                Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
             },
 
             #endregion
 
-            #region SubscriptionType.Lady
+            #region SubscriptionType.LadyStyling
 
             new()
             {
@@ -196,7 +196,7 @@ public class SeedCommand : IBotCommand
                 Price = 200,
                 DiscountPercent = 0,
                 ClassesCount = 1,
-                Type = SubscriptionType.Lady,
+                Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
             },
@@ -207,7 +207,7 @@ public class SeedCommand : IBotCommand
                 Price = 400,
                 DiscountPercent = 0,
                 ClassesCount = 2,
-                Type = SubscriptionType.Lady,
+                Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
             },
@@ -218,8 +218,8 @@ public class SeedCommand : IBotCommand
                 Price = 800,
                 DiscountPercent = 0,
                 ClassesCount = 4,
-                Type = SubscriptionType.Lady,
-                Period = SubscriptionPeriod.TwoWeeks,
+                Type = SubscriptionType.LadyStyling,
+                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -229,7 +229,7 @@ public class SeedCommand : IBotCommand
                 Price = 1600,
                 DiscountPercent = 0,
                 ClassesCount = 8,
-                Type = SubscriptionType.Lady,
+                Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
             },
@@ -240,187 +240,67 @@ public class SeedCommand : IBotCommand
                 Price = 3200,
                 DiscountPercent = 15,
                 ClassesCount = 16,
-                Type = SubscriptionType.Lady,
+                Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
             },
 
             #endregion
-
-            #region SubscriptionType.NoviceMedium
+            
+            #region SubscriptionType.ManStyling
 
             new()
             {
-                Name = "One day classes",
-                Description = "Two classes",
-                Price = 400,
+                Name = "One class",
+                Description = "One class",
+                Price = 200,
                 DiscountPercent = 0,
-                ClassesCount = 2,
-                Type = SubscriptionType.NoviceMedium,
+                ClassesCount = 1,
+                Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
             },
             new()
             {
                 Name = "Week Classes",
-                Description = "Four classes",
-                Price = 800,
-                DiscountPercent = 0,
-                ClassesCount = 4,
-                Type = SubscriptionType.NoviceMedium,
-                Period = SubscriptionPeriod.Week,
-                IsActive = true
-            },
-            new()
-            {
-                Name = "Two Week Classes",
-                Description = "Eight classes",
-                Price = 1600,
-                DiscountPercent = 0,
-                ClassesCount = 8,
-                Type = SubscriptionType.NoviceMedium,
-                Period = SubscriptionPeriod.TwoWeeks,
-                IsActive = true
-            },
-            new()
-            {
-                Name = "One Month Classes",
-                Description = "Sixteen classes",
-                Price = 3200,
-                DiscountPercent = 10,
-                ClassesCount = 16,
-                Type = SubscriptionType.NoviceMedium,
-                Period = SubscriptionPeriod.Month,
-                IsActive = true
-            },
-            new()
-            {
-                Name = "Three Months Classes",
-                Description = "Thirty two classes",
-                Price = 6400,
-                DiscountPercent = 15,
-                ClassesCount = 32,
-                Type = SubscriptionType.NoviceMedium,
-                Period = SubscriptionPeriod.ThreeMonths,
-                IsActive = true
-            },
-
-            #endregion
-
-            #region SubscriptionType.NoviceLady
-
-            new()
-            {
-                Name = "One day classes",
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
                 ClassesCount = 2,
-                Type = SubscriptionType.NoviceLady,
-                Period = SubscriptionPeriod.Day,
-                IsActive = true
-            },
-            new()
-            {
-                Name = "Week Classes",
-                Description = "Four classes",
-                Price = 800,
-                DiscountPercent = 0,
-                ClassesCount = 4,
-                Type = SubscriptionType.NoviceLady,
+                Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
             },
             new()
             {
                 Name = "Two Week Classes",
-                Description = "Eight classes",
-                Price = 1600,
-                DiscountPercent = 0,
-                ClassesCount = 8,
-                Type = SubscriptionType.NoviceLady,
-                Period = SubscriptionPeriod.TwoWeeks,
-                IsActive = true
-            },
-            new()
-            {
-                Name = "One Month Classes",
-                Description = "Sixteen classes",
-                Price = 3200,
-                DiscountPercent = 10,
-                ClassesCount = 16,
-                Type = SubscriptionType.NoviceLady,
-                Period = SubscriptionPeriod.Month,
-                IsActive = true
-            },
-            new()
-            {
-                Name = "Three Months Classes",
-                Description = "Thirty two classes",
-                Price = 6400,
-                DiscountPercent = 15,
-                ClassesCount = 32,
-                Type = SubscriptionType.NoviceLady,
-                Period = SubscriptionPeriod.ThreeMonths,
-                IsActive = true
-            },
-
-            #endregion
-
-            #region SubscriptionType.MediumLady
-
-            new()
-            {
-                Name = "One day classes",
-                Description = "Two classes",
-                Price = 400,
-                DiscountPercent = 0,
-                ClassesCount = 2,
-                Type = SubscriptionType.MediumLady,
-                Period = SubscriptionPeriod.Day,
-                IsActive = true
-            },
-            new()
-            {
-                Name = "Week Classes",
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
                 ClassesCount = 4,
-                Type = SubscriptionType.MediumLady,
-                Period = SubscriptionPeriod.Week,
-                IsActive = true
-            },
-            new()
-            {
-                Name = "Two Week Classes",
-                Description = "Eight classes",
-                Price = 1600,
-                DiscountPercent = 0,
-                ClassesCount = 8,
-                Type = SubscriptionType.MediumLady,
-                Period = SubscriptionPeriod.TwoWeeks,
+                Type = SubscriptionType.ManStyling,
+                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
             {
                 Name = "One Month Classes",
-                Description = "Sixteen classes",
-                Price = 3200,
-                DiscountPercent = 10,
-                ClassesCount = 16,
-                Type = SubscriptionType.MediumLady,
+                Description = "Eight classes",
+                Price = 1600,
+                DiscountPercent = 0,
+                ClassesCount = 8,
+                Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
             },
             new()
             {
                 Name = "Three Months Classes",
-                Description = "Thirty two classes",
-                Price = 6400,
+                Description = "Sixteen classes",
+                Price = 3200,
                 DiscountPercent = 15,
-                ClassesCount = 32,
-                Type = SubscriptionType.MediumLady,
+                ClassesCount = 16,
+                Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
             },
@@ -448,7 +328,7 @@ public class SeedCommand : IBotCommand
                 DiscountPercent = 5,
                 ClassesCount = 24,
                 Type = SubscriptionType.Premium,
-                Period = SubscriptionPeriod.TwoWeeks,
+                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -484,7 +364,8 @@ public class SeedCommand : IBotCommand
     {
         var userNazar = await services.Users.FindOneAsync(x => x.NickName.Equals("nazikBro"));
         var subscriptionPremiumMonth = await services.Subscriptions.FindOneAsync(x =>
-            x.Type == SubscriptionType.Premium && x.Period == SubscriptionPeriod.Month);
+            x.Type == SubscriptionType.Premium
+            && x.Period == SubscriptionPeriod.Month);
 
         if (userNazar is null || subscriptionPremiumMonth is null)
             throw new Exception("Invalid admin subscriptions data in db.");

@@ -59,8 +59,11 @@ public static class MySubscriptionsCommandHelper
 		string callbackQueryData)
 	{
 		var replyKeyboardMarkup = RenderSubscriptionPeriods(callbackQueryData);
-		return () => client.SendTextMessageAsync(chatId, "*Which subscription period do you prefer?\n*",
-			ParseMode.Markdown, replyMarkup: replyKeyboardMarkup);
+		return () => client.SendTextMessageAsync(
+			chatId,
+			"*Which subscription period do you prefer?\n*",
+			parseMode: ParseMode.Markdown,
+			replyMarkup: replyKeyboardMarkup);
 	}
 
 	private static async Task<Func<Task<Message>>> SendSubscriptionPeriodTextMessage(
@@ -78,11 +81,12 @@ public static class MySubscriptionsCommandHelper
 
 		await client.SendTextMessageAsync(chatId,
 			$"*Price: {subscription.GetSummaryPrice()}\n*P.S. Please send your username and subscription in comment",
-			ParseMode.Markdown, replyMarkup: RenderBuySubscription(subscription.Id));
+			parseMode: ParseMode.Markdown,
+			replyMarkup: RenderBuySubscription(subscription.Id));
 
 		return async () => await client.SendTextMessageAsync(chatId,
 			"*After your subscription will be approved by teacher\nYou will be able to /checkin on classes.*",
-			ParseMode.Markdown);
+			parseMode: ParseMode.Markdown);
 	}
 
 	private static string GetSubscriptionGroupData(string callbackQueryData)
@@ -137,13 +141,13 @@ public static class MySubscriptionsCommandHelper
 		ITelegramBotClient client, IReadOnlyCollection<UserSubscription> userSubscriptions, long chatId)
 	{
 		var pluralEnding = userSubscriptions.Count > 1 ? "s" : "";
-		await client.SendTextMessageAsync(chatId, $"*Your subscription{pluralEnding}:*", ParseMode.Markdown);
+		await client.SendTextMessageAsync(chatId, $"*Your subscription{pluralEnding}:*", parseMode: ParseMode.Markdown);
 
 		foreach (var replyMessage in userSubscriptions.Select(RenderUserSubscriptionInformationText))
-			await client.SendTextMessageAsync(chatId, replyMessage, ParseMode.Markdown);
+			await client.SendTextMessageAsync(chatId, replyMessage, parseMode: ParseMode.Markdown);
 
 		// TODO: Change to add functionality for adding few subscriptions
-		await client.SendTextMessageAsync(chatId, "*Do you want to /checkin class?*", ParseMode.Markdown);
+		await client.SendTextMessageAsync(chatId, "*Do you want to /checkin class?*", parseMode: ParseMode.Markdown);
 	}
 
 	private static async Task GetNewUserSubscriptionInformation(ITelegramBotClient client, long chatId)
@@ -151,7 +155,10 @@ public static class MySubscriptionsCommandHelper
 		const string responseMessage = "*Which subscription do you want choose?\n*";
 		var replyKeyboardMarkup = RenderSubscriptionGroups();
 
-		await client.SendTextMessageAsync(chatId, responseMessage, ParseMode.Markdown,
+		await client.SendTextMessageAsync(
+			chatId,
+			responseMessage,
+			parseMode: ParseMode.Markdown,
 			replyMarkup: replyKeyboardMarkup);
 	}
 

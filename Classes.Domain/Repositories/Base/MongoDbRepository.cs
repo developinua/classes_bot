@@ -10,14 +10,13 @@ using MongoDB.Driver;
 
 namespace Classes.Domain.Repositories.Base;
 
-public abstract class MongoDbRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class, IDocument
+public abstract class MongoDbRepository<TEntity> : IGenericRepository<TEntity>
+    where TEntity : class, IDocument
 {
     protected readonly IMongoCollection<TEntity> DbCollection;
 
-    protected MongoDbRepository(IMongoDbContext context)
-    {
+    protected MongoDbRepository(IMongoDbContext context) =>
         DbCollection = context.GetCollection<TEntity>(typeof(TEntity).Name);
-    }
 
     public IQueryable<TEntity> AsQueryable() => 
         DbCollection.AsQueryable();
@@ -29,7 +28,10 @@ public abstract class MongoDbRepository<TEntity> : IGenericRepository<TEntity> w
     public IEnumerable<TProjected> FilterBy<TProjected>(
         Expression<Func<TEntity, bool>> filterExpression,
         Expression<Func<TEntity, TProjected>> projectionExpression) =>
-        DbCollection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
+        DbCollection
+            .Find(filterExpression)
+            .Project(projectionExpression)
+            .ToEnumerable();
 
     public async Task<TEntity> GetAsync(string id)
     {
@@ -49,15 +51,11 @@ public abstract class MongoDbRepository<TEntity> : IGenericRepository<TEntity> w
         return await allDocs.ToListAsync();
     }
 
-    public async Task InsertAsync(TEntity document)
-    {
+    public async Task InsertAsync(TEntity document) =>
         await DbCollection.InsertOneAsync(document);
-    }
 
-    public async Task InsertManyAsync(IEnumerable<TEntity> documents)
-    {
+    public async Task InsertManyAsync(IEnumerable<TEntity> documents) =>
         await DbCollection.InsertManyAsync(documents);
-    }
 
     public async Task<TEntity> ReplaceAsync(TEntity document)
     {
@@ -79,8 +77,5 @@ public abstract class MongoDbRepository<TEntity> : IGenericRepository<TEntity> w
     public async Task<DeleteResult> DeleteManyAsync(Expression<Func<TEntity, bool>> filterExpression) => 
         await DbCollection.DeleteManyAsync(filterExpression);
 
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => GC.SuppressFinalize(this);
 }

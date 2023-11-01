@@ -25,6 +25,7 @@ public class CommandMongoDbRepository : MongoDbRepository<Command>, ICommandRepo
     {
         //logger.LogInformation($"Trying to get active commands start. {DateTime.UtcNow}.");
         // TODO: Add possibility to get active commands from db and via reflection return active commands.
+        // : IBotCommand
         var commands = await Task.Run(() => new List<IBotCommand>
         {
             new StartCommand(),

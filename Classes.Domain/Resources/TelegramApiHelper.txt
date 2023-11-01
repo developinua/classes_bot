@@ -2,11 +2,7 @@
 ngrok authtoken 1eaTbswNPxuJtPw5laqE1PyX4qD_nwuaEQhhs93hBCKaBPL1
 
 Чтобы поделиться своим локальным хостом
-и протестировать Telegram Bot с помощью ngrok, вы должны выполнить следующие шаги:
-1. Отредактируйте файл конфигурации приложения Visual Studio, который находится в ../.vs/config/applicationhost.config(следуйте за ним из корневой папки вашего проекта).
-Найдите тег привязки и добавьте в него второй тег привязки («localhost» удален).
-
-2. Запустите ngrok командою:
+1. Запустите ngrok командою:
 ngrok http https://localhost:5001 -subdomain=classesbot
 ngrok http https://localhost:5001 -subdomain=classesbot -host-header="localhost:5001"
 

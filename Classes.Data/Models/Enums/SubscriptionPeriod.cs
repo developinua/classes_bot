@@ -5,7 +5,7 @@ public enum SubscriptionPeriod
     None = 0,
     Day,
     Week,
-    TwoWeeks,
+    HalfMonth,
     Month,
     ThreeMonths
 }

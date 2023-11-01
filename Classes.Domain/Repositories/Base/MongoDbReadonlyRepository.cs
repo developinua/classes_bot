@@ -10,17 +10,15 @@ using MongoDB.Driver;
 
 namespace Classes.Domain.Repositories.Base;
 
-public class MongoDbReadonlyRepository<TEntity> : IGenericReadonlyRepository<TEntity> where TEntity : class, IDocument
+public class MongoDbReadonlyRepository<TEntity> : IGenericReadonlyRepository<TEntity>
+    where TEntity : class, IDocument
 {
     private readonly IMongoCollection<TEntity> _dbCollection;
 
-    protected MongoDbReadonlyRepository(IMongoDbContext context)
-    {
+    protected MongoDbReadonlyRepository(IMongoDbContext context) =>
         _dbCollection = context.GetCollection<TEntity>(typeof(TEntity).Name);
-    }
 
-    public IQueryable<TEntity> AsQueryable() => 
-        _dbCollection.AsQueryable();
+    public IQueryable<TEntity> AsQueryable() => _dbCollection.AsQueryable();
 
     public async Task<IEnumerable<TEntity>> FilterBy(
         Expression<Func<TEntity, bool>> filterExpression) =>
@@ -29,7 +27,10 @@ public class MongoDbReadonlyRepository<TEntity> : IGenericReadonlyRepository<TEn
     public IEnumerable<TProjected> FilterBy<TProjected>(
         Expression<Func<TEntity, bool>> filterExpression,
         Expression<Func<TEntity, TProjected>> projectionExpression) =>
-        _dbCollection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
+        _dbCollection
+            .Find(filterExpression)
+            .Project(projectionExpression)
+            .ToEnumerable();
 
     public async Task<TEntity> GetAsync(string id)
     {
@@ -49,8 +50,5 @@ public class MongoDbReadonlyRepository<TEntity> : IGenericReadonlyRepository<TEn
         return await allDocs.ToListAsync();
     }
 
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => GC.SuppressFinalize(this);
 }

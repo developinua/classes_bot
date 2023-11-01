@@ -23,17 +23,17 @@ public static class CheckInCommandHelper
 		var replyMessage = RenderSubscriptionAvailabilityText(userSubscriptions);
 
 		await client.SendTextMessageAsync(
-			chatId, replyMessage, ParseMode.Markdown, replyMarkup: new ReplyKeyboardRemove());
+			chatId, replyMessage,
+			parseMode: ParseMode.Markdown,
+			replyMarkup: new ReplyKeyboardRemove());
 
 		foreach (var userSubscription in userSubscriptions)
-		{
 			await SendCheckInInformation(client, userSubscription, chatId);
-		}
 
 		if (userSubscriptions.Any())
 			await client.SendTextMessageAsync(chatId,
 				"*Press check-in button on the subscription where you want the class to be taken from*",
-				ParseMode.Markdown);
+				parseMode: ParseMode.Markdown);
 	}
 
 	private static async Task<List<UserSubscription>> GetUserSubscriptions(IUnitOfWork services, string username) =>
@@ -46,7 +46,7 @@ public static class CheckInCommandHelper
 	{
 		var replyText = RenderSubscriptionInformationText(userSubscription);
 		var replyMarkup = RenderSubscriptionMarkup(userSubscription);
-		await client.SendTextMessageAsync(chatId, replyText, ParseMode.Markdown, replyMarkup: replyMarkup);
+		await client.SendTextMessageAsync(chatId, replyText, parseMode: ParseMode.Markdown, replyMarkup: replyMarkup);
 	}
 
 	private static string RenderSubscriptionAvailabilityText(IReadOnlyCollection<UserSubscription> userSubscriptions) =>

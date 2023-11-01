@@ -4,10 +4,8 @@ public enum SubscriptionType
 {
     None = 0,
     Novice,
-    Medium,
-    Lady,
-    NoviceMedium,
-    NoviceLady,
-    MediumLady,
+    Intermediate,
+    LadyStyling,
+    ManStyling,
     Premium
 }

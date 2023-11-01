@@ -54,3 +54,7 @@ Publish/
 *.user
 
 *.pubxml
+
+.history/
+.vscode/
+.idea/

@@ -1,18 +1,22 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+
 COPY ["Classes.Api/Classes.Api.csproj", "Classes.Api/"]
 COPY ["Classes.Domain/Classes.Domain.csproj", "Classes.Domain/"]
 COPY ["Classes.Data/Classes.Data.csproj", "Classes.Data/"]
+
 RUN dotnet restore "Classes.Api/Classes.Api.csproj"
+
 COPY . .
-WORKDIR "/src/Classes.Api"
+WORKDIR /src/Classes.Api
+
 RUN dotnet build "Classes.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Classes.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Classes.Api.csproj" -c Release -o /app/publish #/p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

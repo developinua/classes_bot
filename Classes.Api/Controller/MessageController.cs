@@ -1,12 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Classes.Domain.Extensions;
-using Classes.Domain.Handlers.UpdateHandler;
-using Classes.Domain.Repositories;
+using Classes.Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ResultNet;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -16,26 +15,22 @@ namespace Classes.Api.Controller;
 [Route("api/v1/[controller]")]
 public class MessageController : ControllerBase
 {
-    private readonly IUnitOfWork _db;
     private readonly ITelegramBotClient _botClient;
+    private readonly IUpdateService _updateService;
     private readonly ILogger<MessageController> _logger;
 
     public MessageController(
-        IUnitOfWork db,
         ITelegramBotClient botClient,
-        ILogger<MessageController> logger)
-    {
-        _db = db;
-        _botClient = botClient;
-        _logger = logger;
-    }
-    
+        IUpdateService updateService,
+        ILogger<MessageController> logger) =>
+        (_botClient, _updateService, _logger) = (botClient, updateService, logger);
+
     [HttpPost("update")]
     public async Task<IResult> Update([FromBody] Update update, CancellationToken cancellationToken)
     {
-        var updateHandler = update.GetHandler(_botClient, _db);
+        var handler = _updateService.GetHandler(update);
 
-        if (updateHandler is null)
+        if (handler is null)
         {
             _logger.LogError(
                 "Update handler not found\n" +
@@ -47,16 +42,17 @@ public class MessageController : ControllerBase
             return Results.BadRequest();
         }
 	
-        // todo: change response to Result type
-        var handlerResponse = await updateHandler.Handle(update);
-        var chatId = update.Message?.Chat.Id ?? update.CallbackQuery!.From.Id;
+        var response = await handler.Handle(update);
+        // todo: check ids
+        var chatId = update.Message?.From?.Id ?? update.CallbackQuery!.From.Id;
 
-        if (handlerResponse.ResponseType.IsError())
+        if (response.IsFailure())
         {
             _logger.LogError(
                 "Chat id: {chatId}\nMessage:\n{errorMessage}",
                 chatId.ToString(),
-                handlerResponse.Message);
+                response.Message);
+            
             await _botClient.SendTextMessageAsync(
                 chatId,
                 "Can't process message",

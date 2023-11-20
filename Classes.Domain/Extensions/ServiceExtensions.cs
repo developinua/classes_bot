@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Classes.Data.Context;
-using Classes.Data.Models;
 using Classes.Domain.Models.Settings;
 using Classes.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
@@ -13,18 +13,15 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<MongoConnectionSettings>(configuration.GetSection(MongoConnectionSettings.Position));
+        services.AddDbContext<PostgresDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
         
-        services.AddScoped<IMongoDbContext, MongoDbContext>();
-
-        services.AddScoped<IUserRepository, UserMongoDbRepository>();
-        services.AddScoped<IUserInformationRepository, UserInformationMongoDbRepository>();
-        services.AddScoped<ISubscriptionRepository, SubscriptionMongoDbRepository>();
-        services.AddScoped<IUserSubscriptionRepository, UserSubscriptionMongoDbRepository>();
-        services.AddScoped<ICultureRepository, CultureMongoDbRepository>();
-        services.AddScoped<ICommandRepository, CommandMongoDbRepository>();
-
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserProfileRepository, UserProfileEditableRepository>();
+        services.AddScoped<ISubscriptionEditableRepository, SubscriptionRepository>();
+        services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
+        services.AddScoped<ICultureRepository, CultureRepository>();
+        services.AddScoped<ICommandRepository, CommandRepository>();
 
         return services;
     }

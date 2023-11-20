@@ -1,40 +1,41 @@
 ﻿using Classes.Data.Models.Enums;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Classes.Data.Models;
 
-public class Subscription : Document
+public class Subscription : BaseModel
 {
     public string Name { get; set; } = string.Empty;
-    public decimal DiscountPercent { get; set; }
-    public decimal Price { get; set; }
     public string? Description { get; set; }
-    public int ClassesCount { get; set; }
+    public decimal Price { get; set; }
+    public decimal DiscountPercent { get; set; }
+    public int Classes { get; set; }
     public bool IsActive { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    [BsonRepresentation(BsonType.String)]
+    // [BsonRepresentation(BsonType.String)]
     public SubscriptionType Type { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    [BsonRepresentation(BsonType.String)]
+    // [BsonRepresentation(BsonType.String)]
     public SubscriptionPeriod Period { get; set; }
 
-    public decimal GetSummaryPrice() => DiscountPercent == 0 ? Price : Price - Price * DiscountPercent / 100;
+    public decimal GetPriceWithDiscount() =>
+        DiscountPercent == 0
+            ? Price
+            : Price - Price * DiscountPercent / 100;
 
     public override string ToString()
     {
         var priceText = DiscountPercent == 0
-            ? $"Price: {GetSummaryPrice()}\n"
-            : $"Price with discount: {GetSummaryPrice()}\n";
+            ? $"Price: {Price}\n"
+            : $"Price with discount: {GetPriceWithDiscount()}\n";
 
         return $"Subscription: {Name}\n" +
                $"{priceText}" +
                $"Description: {Description}\n" +
                $"SubscriptionType: {Type}\n" +
-               $"Total Classes: {ClassesCount}\n";
+               $"Total Classes: {Classes}\n";
     }
 }

@@ -5,19 +5,10 @@ namespace Classes.Domain.Utils;
 
 public class InlineKeyboardBuilder
 {
-	private List<List<InlineKeyboardButton>> Keyboard { get; }
-	private List<InlineKeyboardButton> Rows { get; set; }
+	private List<InlineKeyboardButton> Rows { get; set; } = new();
+	private readonly List<List<InlineKeyboardButton>> _keyboard = new();
 
-	private InlineKeyboardBuilder()
-	{
-		Keyboard = new List<List<InlineKeyboardButton>>();
-		Rows = new List<InlineKeyboardButton>();
-	}
-
-	public static InlineKeyboardBuilder Create()
-	{
-		return new InlineKeyboardBuilder();
-	}
+	public static InlineKeyboardBuilder Create() => new();
 
 	public InlineKeyboardBuilder AddButton(string text, string callbackData)
 	{
@@ -39,7 +30,7 @@ public class InlineKeyboardBuilder
 
 	public InlineKeyboardBuilder NewLine()
 	{
-		Keyboard.Add(Rows);
+		_keyboard.Add(Rows);
 		Rows = new List<InlineKeyboardButton>();
 
 		return this;
@@ -47,7 +38,7 @@ public class InlineKeyboardBuilder
 
 	public InlineKeyboardMarkup Build()
 	{
-		Keyboard.Add(Rows);
-		return new InlineKeyboardMarkup(Keyboard);
+		_keyboard.Add(Rows);
+		return new InlineKeyboardMarkup(_keyboard);
 	}
 }

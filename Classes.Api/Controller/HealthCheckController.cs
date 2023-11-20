@@ -6,9 +6,11 @@ namespace Classes.Api.Controller;
 
 public class HealthCheckController : ControllerBase
 {
+    [HttpGet("/")]
+    public Task<IResult> Root() => Task.FromResult(Results.Ok());
+    
     [HttpGet("/health-check")]
-    public Task<IResult> Get()
-    {
-        return Task.FromResult(Results.Ok());
-    }
+    public Task<IResult> Get() => Task.FromResult(Results.Ok());
+    
+    // todo: add db health check
 }

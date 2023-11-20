@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Classes.Data.Context;
 using Classes.Data.Models;
 using Classes.Data.Models.Enums;
 using Classes.Domain.Commands.Administration.Admin;
-using Classes.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -24,31 +25,39 @@ public class SeedCommand : IBotCommand
     public bool Contains(string callbackQueryData) =>
         new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
 
-    public async Task Execute(Message message, ITelegramBotClient client, IUnitOfWork services)
+    public async Task Execute(Message message, ITelegramBotClient client, PostgresDbContext dbContext)
     {
         var chatId = message.From!.Id;
 
-        if (!AdministrationHelper.CanExecuteCommand(message.From.Username!))
+        if (!CanExecuteCommand(message.From.Username!))
         {
             await client.SendTextMessageAsync(chatId, "Access denied. You can't execute this command.");
             return;
         }
 
-        await ProcessSubscriptions(services);
-        await ProcessUserSubscriptions(services);
+        await ProcessSubscriptions(dbContext);
+        await ProcessUserSubscriptions(dbContext);
 
         await client.SendTextMessageAsync(chatId, "*Successfully seeded*", parseMode: ParseMode.Markdown);
     }
 
-    public Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, IUnitOfWork services)
+    public Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, PostgresDbContext dbContext)
     {
         return Task.CompletedTask;
     }
-
-    private static async Task ProcessSubscriptions(IUnitOfWork services)
+    
+    // todo: extract to separate class
+    private static bool CanExecuteCommand(string username)
     {
-        await services.Subscriptions.DeleteManyAsync(x => x.IsActive);
+        var allowedUsers = new[] { "nazikBro", "taras_zouk", "kovalinas" };
+        return allowedUsers.Any(x => x.Equals(username));
+    }
 
+    private static async Task ProcessSubscriptions(PostgresDbContext dbContext)
+    {
+        await dbContext.Subscriptions.Where(x => x.IsActive).ExecuteDeleteAsync();
+        await dbContext.SaveChangesAsync();
+        
         var subscriptions = new List<Subscription>
         {
             #region SubscriptionType.None
@@ -59,7 +68,7 @@ public class SeedCommand : IBotCommand
                 Description = "Nothing to do here",
                 Price = 0,
                 DiscountPercent = 0,
-                ClassesCount = 0,
+                Classes = 0,
                 Type = SubscriptionType.None,
                 Period = SubscriptionPeriod.None,
                 IsActive = true
@@ -75,7 +84,7 @@ public class SeedCommand : IBotCommand
                 Description = "One class",
                 Price = 200,
                 DiscountPercent = 0,
-                ClassesCount = 1,
+                Classes = 1,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
@@ -86,7 +95,7 @@ public class SeedCommand : IBotCommand
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
-                ClassesCount = 2,
+                Classes = 2,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -97,7 +106,7 @@ public class SeedCommand : IBotCommand
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
-                ClassesCount = 4,
+                Classes = 4,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -108,7 +117,7 @@ public class SeedCommand : IBotCommand
                 Description = "Eight classes",
                 Price = 1600,
                 DiscountPercent = 0,
-                ClassesCount = 8,
+                Classes = 8,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -119,7 +128,7 @@ public class SeedCommand : IBotCommand
                 Description = "Sixteen classes",
                 Price = 3200,
                 DiscountPercent = 15,
-                ClassesCount = 16,
+                Classes = 16,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -135,7 +144,7 @@ public class SeedCommand : IBotCommand
                 Description = "One class",
                 Price = 200,
                 DiscountPercent = 0,
-                ClassesCount = 1,
+                Classes = 1,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
@@ -146,7 +155,7 @@ public class SeedCommand : IBotCommand
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
-                ClassesCount = 2,
+                Classes = 2,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -157,7 +166,7 @@ public class SeedCommand : IBotCommand
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
-                ClassesCount = 4,
+                Classes = 4,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -168,7 +177,7 @@ public class SeedCommand : IBotCommand
                 Description = "Eight classes",
                 Price = 1600,
                 DiscountPercent = 0,
-                ClassesCount = 8,
+                Classes = 8,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -179,7 +188,7 @@ public class SeedCommand : IBotCommand
                 Description = "Sixteen classes",
                 Price = 3200,
                 DiscountPercent = 15,
-                ClassesCount = 16,
+                Classes = 16,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -195,7 +204,7 @@ public class SeedCommand : IBotCommand
                 Description = "One class",
                 Price = 200,
                 DiscountPercent = 0,
-                ClassesCount = 1,
+                Classes = 1,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
@@ -206,7 +215,7 @@ public class SeedCommand : IBotCommand
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
-                ClassesCount = 2,
+                Classes = 2,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -217,7 +226,7 @@ public class SeedCommand : IBotCommand
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
-                ClassesCount = 4,
+                Classes = 4,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -228,7 +237,7 @@ public class SeedCommand : IBotCommand
                 Description = "Eight classes",
                 Price = 1600,
                 DiscountPercent = 0,
-                ClassesCount = 8,
+                Classes = 8,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -239,7 +248,7 @@ public class SeedCommand : IBotCommand
                 Description = "Sixteen classes",
                 Price = 3200,
                 DiscountPercent = 15,
-                ClassesCount = 16,
+                Classes = 16,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -255,7 +264,7 @@ public class SeedCommand : IBotCommand
                 Description = "One class",
                 Price = 200,
                 DiscountPercent = 0,
-                ClassesCount = 1,
+                Classes = 1,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
@@ -266,7 +275,7 @@ public class SeedCommand : IBotCommand
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
-                ClassesCount = 2,
+                Classes = 2,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -277,7 +286,7 @@ public class SeedCommand : IBotCommand
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
-                ClassesCount = 4,
+                Classes = 4,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -288,7 +297,7 @@ public class SeedCommand : IBotCommand
                 Description = "Eight classes",
                 Price = 1600,
                 DiscountPercent = 0,
-                ClassesCount = 8,
+                Classes = 8,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -299,7 +308,7 @@ public class SeedCommand : IBotCommand
                 Description = "Sixteen classes",
                 Price = 3200,
                 DiscountPercent = 15,
-                ClassesCount = 16,
+                Classes = 16,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -315,7 +324,7 @@ public class SeedCommand : IBotCommand
                 Description = "Novice, medium, lady style classes for week",
                 Price = 1200,
                 DiscountPercent = 5,
-                ClassesCount = 12,
+                Classes = 12,
                 Type = SubscriptionType.Premium,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -326,7 +335,7 @@ public class SeedCommand : IBotCommand
                 Description = "Novice, medium, lady style classes for two weeks",
                 Price = 2400,
                 DiscountPercent = 5,
-                ClassesCount = 24,
+                Classes = 24,
                 Type = SubscriptionType.Premium,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -337,7 +346,7 @@ public class SeedCommand : IBotCommand
                 Description = "Novice, medium, lady style classes for month",
                 Price = 4800,
                 DiscountPercent = 10,
-                ClassesCount = 48,
+                Classes = 48,
                 Type = SubscriptionType.Premium,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -348,7 +357,7 @@ public class SeedCommand : IBotCommand
                 Description = "Novice, medium, lady style classes for three months",
                 Price = 9600,
                 DiscountPercent = 15,
-                ClassesCount = 144,
+                Classes = 144,
                 Type = SubscriptionType.Premium,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -357,15 +366,16 @@ public class SeedCommand : IBotCommand
             #endregion
         };
 
-        await services.Subscriptions.InsertManyAsync(subscriptions);
+        await dbContext.Subscriptions.AddRangeAsync(subscriptions);
     }
 
-    private static async Task ProcessUserSubscriptions(IUnitOfWork services)
+    private static async Task ProcessUserSubscriptions(PostgresDbContext dbContext)
     {
-        var userNazar = await services.Users.FindOneAsync(x => x.NickName.Equals("nazikBro"));
-        var subscriptionPremiumMonth = await services.Subscriptions.FindOneAsync(x =>
-            x.Type == SubscriptionType.Premium
-            && x.Period == SubscriptionPeriod.Month);
+        var userNazar = await dbContext.Users.FirstOrDefaultAsync(x => x.NickName.Equals("nazikBro"));
+        var subscriptionPremiumMonth = await dbContext.Subscriptions
+            .FirstOrDefaultAsync(x =>
+                x.Type == SubscriptionType.Premium
+                && x.Period == SubscriptionPeriod.Month);
 
         if (userNazar is null || subscriptionPremiumMonth is null)
             throw new Exception("Invalid admin subscriptions data in db.");
@@ -374,13 +384,13 @@ public class SeedCommand : IBotCommand
         {
             User = userNazar,
             Subscription = subscriptionPremiumMonth,
-            RemainingClassesCount = subscriptionPremiumMonth.ClassesCount
+            RemainingClasses = subscriptionPremiumMonth.Classes
         };
-        var premiumSubscriptionInDb = await services.UsersSubscriptions.FilterBy(x =>
+        var premiumSubscriptionInDb = dbContext.UsersSubscriptions.Where(x =>
             x.User.NickName == userSubscriptionPremiumMonth.User.NickName
             && x.Subscription.Type == userSubscriptionPremiumMonth.Subscription.Type);
 
         if (!premiumSubscriptionInDb.Any())
-            await services.UsersSubscriptions.InsertAsync(userSubscriptionPremiumMonth);
+            await dbContext.UsersSubscriptions.AddAsync(userSubscriptionPremiumMonth);
     }
 }

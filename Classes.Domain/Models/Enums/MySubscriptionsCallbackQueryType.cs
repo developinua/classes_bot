@@ -1,4 +1,4 @@
-﻿namespace Classes.Domain.Commands.MySubscriptions;
+﻿namespace Classes.Domain.Models.Enums;
 
 public enum MySubscriptionsCallbackQueryType
 {

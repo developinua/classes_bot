@@ -4,11 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+var configuration = builder.Configuration;
 
-services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
+services
+    .AddAppServices(configuration)
+    .AddControllers()
+    .AddNewtonsoftJson(options => options.UseMemberCasing());
 
-services.AddAppServices(builder.Configuration);
-await services.UseTelegramBotWebHooks(builder.Configuration);
+await services.UseTelegramBotWebHooks(configuration);
 
 var app = builder.Build();
 

@@ -1,6 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Classes.Domain.Repositories;
+using Classes.Data.Context;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -16,18 +17,25 @@ public class AdminCommand : IBotCommand
 
     public bool Contains(string callbackQueryData) => new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
 
-    public async Task Execute(Message message, ITelegramBotClient client, IUnitOfWork services)
+    public async Task Execute(Message message, ITelegramBotClient client, PostgresDbContext dbContext)
     {
         var chatId = message.From!.Id;
 
-        if (AdministrationHelper.CanExecuteCommand(message.From.Username!))
+        if (!CanExecuteCommand(message.From.Username!))
             await client.SendTextMessageAsync(chatId, "Access denied. You can't execute this command.");
 
         var responseMessage = $"/seed /paymentlink /manage-subscriptions";
     }
 
-    public Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, IUnitOfWork services)
+    public Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, PostgresDbContext dbContext)
     {
         return Task.CompletedTask;
+    }
+    
+    // todo: extract to separate class
+    private static bool CanExecuteCommand(string username)
+    {
+        var allowedUsers = new[] { "nazikBro", "taras_zouk", "kovalinas" };
+        return allowedUsers.Any(x => x.Equals(username));
     }
 }

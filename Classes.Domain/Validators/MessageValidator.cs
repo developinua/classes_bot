@@ -3,6 +3,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace Classes.Domain.Validators;
 
+// use fluent validation
 public static class MessageValidator
 {
     public static bool ValidateMessageLocationData(this Message message) =>

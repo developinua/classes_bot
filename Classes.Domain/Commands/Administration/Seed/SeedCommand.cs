@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Classes.Data.Context;
 using Classes.Data.Models;
 using Classes.Data.Models.Enums;
-using Classes.Domain.Commands.Administration.Admin;
 using Microsoft.EntityFrameworkCore;
 using Telegram.Bot;
 using Telegram.Bot.Types;

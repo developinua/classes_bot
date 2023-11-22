@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Classes.Data.Context;
-using Classes.Domain.Validators;
+using FluentValidation;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -13,6 +13,10 @@ public class MySubscriptionsCommand : IBotCommand
 {
     public string Name => "/mySubscriptions";
     public string CallbackQueryPattern => "(?i)(?<query>subsGroup|subsPeriod)";
+    
+    private readonly IValidator<CallbackQuery> _validator;
+
+    public MySubscriptionsCommand(IValidator<CallbackQuery> validator) => _validator = validator;
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);
 
@@ -26,7 +30,7 @@ public class MySubscriptionsCommand : IBotCommand
 
     public async Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, PostgresDbContext dbContext)
     {
-        if (callbackQuery.Validate())
+        if ((await _validator.ValidateAsync(callbackQuery)).IsValid)
             throw new NotSupportedException();
 
         var chatId = callbackQuery.From.Id;

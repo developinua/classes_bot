@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Classes.Data.Context;
 using Classes.Domain.Services;
 using Classes.Domain.Utils;
-using Classes.Domain.Validators;
+using FluentValidation;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -17,8 +17,10 @@ public class StartCommand : IBotCommand
     public string CallbackQueryPattern => @"(?i)(?<query>language):(?<data>\w{2}-\w{2})";
 
     private readonly IUserService _userService;
+    private readonly IValidator<CallbackQuery> _validator;
 
-    public StartCommand(IUserService userService) => _userService = userService;
+    public StartCommand(IUserService userService, IValidator<CallbackQuery> validator) =>
+        (_userService, _validator) = (userService, validator);
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);
 
@@ -49,7 +51,7 @@ public class StartCommand : IBotCommand
 
     public async Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, PostgresDbContext dbContext)
     {
-        if (callbackQuery.Validate())
+        if ((await _validator.ValidateAsync(callbackQuery)).IsValid)
             throw new NotSupportedException();
 
         var chatId = callbackQuery.From.Id;

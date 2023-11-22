@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Classes.Data.Context;
-using Classes.Domain.Validators;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -15,6 +15,14 @@ public class CheckInCommand : IBotCommand
 {
     public string Name => "/check-in";
     public string CallbackQueryPattern => "(?i)(?<query>check-in-subscription-id):(?<data>.*)";
+    
+    private readonly IValidator<CallbackQuery> _callbackQueryValidator;
+    private readonly IValidator<Message> _locationValidator;
+
+    public CheckInCommand(
+        IValidator<CallbackQuery> callbackQueryValidator,
+        IValidator<Message> locationValidator) =>
+        (_callbackQueryValidator, _locationValidator) = (callbackQueryValidator, locationValidator);
 
     public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);
 
@@ -25,9 +33,9 @@ public class CheckInCommand : IBotCommand
         var chatId = message.Chat.Id;
         await client.SendChatActionAsync(chatId, ChatAction.Typing);
 
-        var isLocationMessage = message.ValidateMessageLocationData();
+        var isLocationDataValid = (await _locationValidator.ValidateAsync(message)).IsValid;
 
-        if (isLocationMessage)
+        if (isLocationDataValid)
         {
             // TODO: Check location where classes can be executed
             await CheckInCommandHelper.ShowUserSubscriptionsInformation(message, client, dbContext);
@@ -49,7 +57,7 @@ public class CheckInCommand : IBotCommand
 
     public async Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, PostgresDbContext dbContext)
     {
-        if (callbackQuery.Validate())
+        if ((await _callbackQueryValidator.ValidateAsync(callbackQuery)).IsValid)
             throw new NotSupportedException();
 
         var chatId = callbackQuery.From.Id;
@@ -79,10 +87,9 @@ public class CheckInCommand : IBotCommand
         }
 
         userSubscription.RemainingClasses--;
-        
         dbContext.UsersSubscriptions.Update(userSubscription);
-        await dbContext.SaveChangesAsync();
         
+        await dbContext.SaveChangesAsync();
         await client.SendTextMessageAsync(chatId, "*💚*", parseMode: ParseMode.Markdown);
     }
 }

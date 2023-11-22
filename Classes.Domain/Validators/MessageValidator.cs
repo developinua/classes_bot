@@ -1,13 +1,18 @@
-﻿using Telegram.Bot.Types;
+﻿using FluentValidation;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace Classes.Domain.Validators;
 
-// use fluent validation
-public static class MessageValidator
+public class MessageValidator : AbstractValidator<Message>
 {
-    public static bool ValidateMessageLocationData(this Message message) =>
-        //message?.ReplyToMessage?.From?.Username == "ClassesBot" &&
-        message.Type.Equals(MessageType.Location)
-        && message.Location != null;
+    public MessageValidator()
+    {
+        RuleFor(x => x)
+            .Must(x =>
+                // x?.ReplyToMessage?.From?.Username == "ClassesBot" &&
+                x.Type.Equals(MessageType.Location)
+                && x.Location != null)
+            .WithMessage("Must be valid location");;
+    }
 }

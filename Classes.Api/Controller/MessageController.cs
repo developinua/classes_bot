@@ -68,4 +68,9 @@ public class MessageController : ControllerBase
 
         return Results.Ok();
     }
+    
+    // var affectedRows = await context.Person.Where(x => ids.Contains(x.Id))
+    //     .ExecuteUpdateAsync(updates => updates.SetProperty(p => p.IsActive, false));
+    //
+    // return affectedRows == 0 ? Results.NotFound() : Results.NoContent();
 }

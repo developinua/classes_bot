@@ -4,9 +4,9 @@ using Telegram.Bot.Types.Enums;
 
 namespace Classes.Domain.Validators;
 
-public class MessageValidator : AbstractValidator<Message>
+public class LocationValidator : AbstractValidator<Message>
 {
-    public MessageValidator()
+    public LocationValidator()
     {
         RuleFor(x => x)
             .Must(x =>

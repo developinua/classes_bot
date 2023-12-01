@@ -1,8 +1,6 @@
-using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Classes.Data.Models;
-using Classes.Domain.Repositories;
+using Classes.Data.Repositories;
 using Telegram.Bot.Types;
 using User = Classes.Data.Models.User;
 
@@ -10,7 +8,7 @@ namespace Classes.Domain.Services;
 
 public interface IUserService
 {
-    Task SaveUser(CallbackQuery callbackQuery, string callbackQueryPattern);
+    Task SaveUser(CallbackQuery callbackQuery, string cultureName);
 }
 
 public class UserService : IUserService
@@ -29,9 +27,8 @@ public class UserService : IUserService
         _userProfileRepository = userProfileRepository;
     }
 
-    public async Task SaveUser(CallbackQuery callbackQuery, string callbackQueryPattern)
+    public async Task SaveUser(CallbackQuery callbackQuery, string cultureName)
     {
-        var cultureName = GetCultureNameFromCallbackQuery(callbackQuery.Data, callbackQueryPattern);
         var culture = await _cultureRepository.GetCultureByCodeAsync(cultureName) ?? new();
         var nickName = callbackQuery.From.Username ?? callbackQuery.From.Id.ToString();
         var userExists = await _userRepository.GetUserByNickname(nickName) is not null;
@@ -69,19 +66,5 @@ public class UserService : IUserService
             await _userProfileRepository.CreateAsync(userProfile);
         else
             await _userProfileRepository.UpdateAsync(userProfile);
-    }
-
-    private static string GetCultureNameFromCallbackQuery(string? callbackQueryData, string callbackQueryPattern)
-    {
-        var cultureName = string.Empty;
-        var cultureMatch = Regex.Match(callbackQueryData ?? "", callbackQueryPattern);
-
-        if (cultureMatch.Success && cultureMatch.Groups["query"].Value.Equals("language"))
-            cultureName = cultureMatch.Groups["data"].Value;
-
-        if (string.IsNullOrEmpty(cultureName))
-            throw new ArgumentException("Culture name can't be parsed.");
-
-        return cultureName;
     }
 }

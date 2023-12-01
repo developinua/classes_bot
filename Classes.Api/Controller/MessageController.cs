@@ -2,75 +2,72 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Classes.Domain.Services;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ResultNet;
-using Telegram.Bot;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace Classes.Api.Controller;
 
 [Route("api/v1/[controller]")]
 public class MessageController : ControllerBase
 {
-    private readonly ITelegramBotClient _botClient;
+    private readonly IBotService _botService;
     private readonly IUpdateService _updateService;
+    private readonly IMediator _mediator;
     private readonly ILogger<MessageController> _logger;
 
     public MessageController(
-        ITelegramBotClient botClient,
+        IBotService botService,
         IUpdateService updateService,
-        ILogger<MessageController> logger) =>
-        (_botClient, _updateService, _logger) = (botClient, updateService, logger);
+        IMediator mediator,
+        ILogger<MessageController> logger)
+    {
+        _botService = botService;
+        _updateService = updateService;
+        _mediator = mediator;
+        _logger = logger;
+    }
 
     [HttpPost("update")]
     public async Task<IResult> Update([FromBody] Update update, CancellationToken cancellationToken)
     {
-        var handler = _updateService.GetHandler(update);
-
-        if (handler is null)
-        {
-            _logger.LogError(
-                "Update handler not found\n" +
-                "Update type: {updateType}\n" +
-                "Update message type: {messageType}",
-                update.Type,
-                update.Message?.Type.ToString() ?? "No message type was specified");
-        
-            return Results.BadRequest();
-        }
-	
-        var response = await handler.Handle(update);
-        // todo: check ids
         var chatId = update.Message?.From?.Id ?? update.CallbackQuery!.From.Id;
+        var request = _updateService.GetRequestFromUpdate(update);
+        
+        if (request.IsFailure())
+            return await HandleFailureResponse(chatId, cancellationToken);
+	
+        var response = await _mediator.Send(request.Data, cancellationToken);
 
         if (response.IsFailure())
-        {
-            _logger.LogError(
-                "Chat id: {chatId}\nMessage:\n{errorMessage}",
-                chatId.ToString(),
-                response.Message);
-            
-            await _botClient.SendTextMessageAsync(
-                chatId,
-                "Can't process message",
-                parseMode: ParseMode.Markdown,
-                cancellationToken: cancellationToken);
-        
-            return Results.BadRequest();
-        }
+            return await HandleFailureResponse(chatId, cancellationToken, response);
 
-        _logger.LogInformation("Successful response from chat {chatId}. Date: {dateTime}", 
+        _logger.LogInformation(
+            "Successful response from chat {chatId}. Date: {dateTime}", 
             chatId.ToString(),
             DateTime.UtcNow);
 
         return Results.Ok();
     }
-    
-    // var affectedRows = await context.Person.Where(x => ids.Contains(x.Id))
-    //     .ExecuteUpdateAsync(updates => updates.SetProperty(p => p.IsActive, false));
-    //
-    // return affectedRows == 0 ? Results.NotFound() : Results.NoContent();
+
+    private async Task<IResult> HandleFailureResponse(
+        long chatId,
+        CancellationToken cancellationToken,
+        Result? response = null)
+    {
+        _logger.LogError(
+            "Chat id: {chatId}\nMessage:\n{errorMessage}",
+            chatId.ToString(),
+            response?.Message ?? "No message was specified");
+            
+        await _botService.SendTextMessageAsync(
+            chatId,
+            "Can't process message",
+            cancellationToken: cancellationToken);
+        
+        return Results.BadRequest();
+    }
 }

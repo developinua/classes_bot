@@ -1,6 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
-using Classes.Domain.Handlers;
+using AutoMapper;
+using MediatR;
+using Microsoft.Extensions.Logging;
+using ResultNet;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -8,37 +9,41 @@ namespace Classes.Domain.Services;
 
 public interface IUpdateService
 {
-    IUpdateHandler? GetHandler(Update update);
+    Result<IRequest<Result>> GetRequestFromUpdate(Update update);
 }
 
 public class UpdateService : IUpdateService
 {
-    private readonly IEnumerable<IUpdateHandler> _updateHandlers;
+    private readonly IMapper _mapper;
+    private readonly ILogger<UpdateService> _logger;
 
-    public UpdateService(IEnumerable<IUpdateHandler> updateHandlers) => _updateHandlers = updateHandlers;
-
-    public IUpdateHandler? GetHandler(Update update)
+    public UpdateService(IMapper mapper, ILogger<UpdateService> logger)
     {
-        var handler = update switch
+        _mapper = mapper;
+        _logger = logger;
+    }
+
+    public Result<IRequest<Result>> GetRequestFromUpdate(Update update)
+    {
+        var request = update switch
         {
-            { Type: UpdateType.Message, Message.Type: MessageType.Location } =>
-                _updateHandlers.Single(x => x.GetType() == typeof(LocationUpdateHandler)),
-            { Type: UpdateType.Message } =>
-                _updateHandlers.Single(x => x.GetType() == typeof(MessageUpdateHandler)),
-            { Type: UpdateType.CallbackQuery } =>
-                _updateHandlers.Single(x => x.GetType() == typeof(CallbackQueryUpdateHandler)),
-            { Type: UpdateType.InlineQuery } => null,
-            { Type: UpdateType.ChosenInlineResult } => null,
-            { Type: UpdateType.EditedMessage } => null,
-            { Type: UpdateType.ChannelPost } => null,
-            { Type: UpdateType.EditedChannelPost } => null,
-            { Type: UpdateType.ShippingQuery } => null,
-            { Type: UpdateType.PreCheckoutQuery } => null,
-            { Type: UpdateType.Poll } => null,
-            { Type: UpdateType.PollAnswer } => null,
-            { Type: UpdateType.Unknown } => null,
+            { Type: UpdateType.Message } => _mapper.Map<IRequest<Result>>(update.Message!),
+            { Type: UpdateType.CallbackQuery } => _mapper.Map<IRequest<Result>>(update.CallbackQuery),
             _ => null
         };
-        return handler;
+
+        if (request is null)
+        {
+            _logger.LogError(
+                "Update handler not found\n" +
+                "Update type: {updateType}\n" +
+                "Update message type: {messageType}",
+                update.Type,
+                update.Message?.Type.ToString() ?? "No message type was specified");
+            return Result.Failure<IRequest<Result>>()
+                .WithMessage("Update handler not found");
+        }
+
+        return Result.Success(request);
     }
 }

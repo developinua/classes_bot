@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classes.Api", "Classes.Api\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classes.Data", "Classes.Data\Classes.Data.csproj", "{B173D3BF-290D-4610-B333-27AAB54AD3E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classes.Domain", "Classes.Domain\Classes.Domain.csproj", "{722BD947-A68D-449D-9E91-E7431A0494B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classes.App", "Classes.App\Classes.App.csproj", "{722BD947-A68D-449D-9E91-E7431A0494B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

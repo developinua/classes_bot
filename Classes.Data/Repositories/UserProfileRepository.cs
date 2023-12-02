@@ -1,39 +1,72 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Classes.Data.Context;
 using Classes.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using ResultNet;
 
 namespace Classes.Data.Repositories;
 
 public interface IUserProfileRepository
 {
-    Task CreateAsync(UserProfile userProfile);
-    Task<UserProfile?> GetUserProfileByChatId(long chatId);
-    Task UpdateAsync(UserProfile userProfile);
+    Task<Result> CreateAsync(UserProfile userProfile);
+    Task<Result<UserProfile?>> GetUserProfileByChatId(long chatId);
+    Task<Result> UpdateAsync(UserProfile userProfile);
 }
 
-public class UserProfileEditableRepository : IUserProfileRepository
+public class UserProfileRepository : IUserProfileRepository
 {
     private readonly PostgresDbContext _dbContext;
+    private readonly ILogger<UserProfileRepository> _logger;
     
-    public UserProfileEditableRepository(PostgresDbContext dbContext) => _dbContext = dbContext;
-    public async Task<UserProfile?> GetUserProfileByChatId(long chatId)
+    public UserProfileRepository(PostgresDbContext dbContext, ILogger<UserProfileRepository> logger) =>
+        (_dbContext, _logger) = (dbContext, logger);
+
+    public async Task<Result<UserProfile?>> GetUserProfileByChatId(long chatId)
     {
-        var userProfileDb = await _dbContext.UsersProfiles
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.ChatId == chatId);
-        return userProfileDb;
+        try
+        {
+            return await _dbContext.UsersProfiles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.ChatId == chatId);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return Result.Failure<UserProfile?>().WithMessage("Problem with finding the user.");
+        }
     }
 
-    public async Task CreateAsync(UserProfile userProfile)
+    public async Task<Result> CreateAsync(UserProfile userProfile)
     {
-        await _dbContext.UsersProfiles.AddAsync(userProfile);
-        await _dbContext.SaveChangesAsync();
+        try
+        {
+            await _dbContext.UsersProfiles.AddAsync(userProfile);
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Success();
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return Result.Failure().WithMessage("User hasn't been created.");
+        }
     }
 
-    public async Task UpdateAsync(UserProfile userProfile)
+    public async Task<Result> UpdateAsync(UserProfile userProfile)
     {
-        _dbContext.UsersProfiles.Update(userProfile);
-        await _dbContext.SaveChangesAsync();
+        try
+        {
+            _dbContext.UsersProfiles.Update(userProfile);
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Success();
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return Result.Failure().WithMessage("User hasn't been updated.");
+        }
     }
 }

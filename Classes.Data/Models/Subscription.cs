@@ -14,11 +14,9 @@ public class Subscription : BaseModel
     public bool IsActive { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    // [BsonRepresentation(BsonType.String)]
     public SubscriptionType Type { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
-    // [BsonRepresentation(BsonType.String)]
     public SubscriptionPeriod Period { get; set; }
 
     public decimal GetPriceWithDiscount() =>

@@ -37,7 +37,7 @@ public class StartCallbackHandler : IRequestHandler<StartCallbackRequest, Result
         await _userService.SaveUser(request.CallbackQuery, cultureName);
         await _botService.SendTextMessageAsync(
             request.ChatId,
-            "*😊Successfully!😊*\nPress /mySubscriptions to manage your class subscription.",
+            "*😊Successfully!😊*\nPress /subscriptions to manage your class subscription.",
             cancellationToken);
         
         return Result.Success();

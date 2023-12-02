@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -8,13 +9,13 @@ namespace Classes.Domain.Services;
 
 public interface IBotService
 {
-    Task SendTextMessageAsync(
+    Task<Message> SendTextMessageAsync(
         long chatId,
         string text,
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown);
 
-    Task SendTextMessageWithReplyAsync(
+    Task<Message> SendTextMessageWithReplyAsync(
         long chatId,
         string text,
         IReplyMarkup replyMarkup,
@@ -33,27 +34,27 @@ public class BotService : IBotService
 
     public BotService(ITelegramBotClient botClient) => _botClient = botClient;
 
-    public async Task SendTextMessageAsync(
+    public async Task<Message> SendTextMessageAsync(
         long chatId,
         string text,
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown)
     {
-        await _botClient.SendTextMessageAsync(
+        return await _botClient.SendTextMessageAsync(
             chatId,
             text,
             parseMode: parseMode,
             cancellationToken: cancellationToken);
     }
 
-    public async Task SendTextMessageWithReplyAsync(
+    public async Task<Message> SendTextMessageWithReplyAsync(
         long chatId,
         string text,
         IReplyMarkup replyMarkup,
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown)
     {
-        await _botClient.SendTextMessageAsync(
+        return await _botClient.SendTextMessageAsync(
             chatId,
             text,
             parseMode: parseMode,

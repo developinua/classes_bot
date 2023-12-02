@@ -51,7 +51,7 @@ public class CheckinCallbackHandler : IRequestHandler<CheckinCallbackRequest, Re
         {
             await _botService.SendTextMessageAsync(
                 request.ChatId,
-                "You haven't any available classes. Press /mySubscriptions to manage your subscriptions",
+                "You haven't any available classes. Press /subscriptions to manage your subscriptions",
                 cancellationToken);
             return Result.Failure();
         }

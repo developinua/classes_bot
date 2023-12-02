@@ -13,6 +13,7 @@ public interface IUserSubscriptionRepository
     Task Update(UserSubscription userSubscription);
     Task<Result<UserSubscription?>> GetById(long id);
     Task<Result<List<UserSubscription>>> GetByUsername(string username);
+    Task<Result<List<UserSubscription>>> GetActiveUserSubscriptionsWithRemainingClasses(string username);
 }
 
 public class UserSubscriptionRepository : IUserSubscriptionRepository
@@ -41,5 +42,15 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
             .Where(x => x.User.NickName.Equals(username) && x.RemainingClasses > 0)
             .ToListAsync();
         return Result.Success(userSubscriptions);
+    }
+
+    public async Task<Result<List<UserSubscription>>> GetActiveUserSubscriptionsWithRemainingClasses(string username)
+    {
+        return await _dbContext.UsersSubscriptions
+            .Where(x =>
+                x.User.NickName == username
+                && x.RemainingClasses > 0
+                && x.Subscription.IsActive)
+            .ToListAsync();
     }
 }

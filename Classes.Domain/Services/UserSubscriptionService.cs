@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Classes.Data.Models;
 using Classes.Data.Repositories;
+using Classes.Domain.Extensions;
 using Classes.Domain.Utils;
 using ResultNet;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -14,6 +15,8 @@ public interface IUserSubscriptionService
 {
     Task<Result> Update(UserSubscription userSubscription);
     Task<Result<UserSubscription?>> GetById(long id);
+    Task<Result<IReadOnlyCollection<UserSubscription>>> GetByUsername(string username);
+    Task<Result<IReadOnlyCollection<UserSubscription>>> GetActiveUserSubscriptionsWithRemainingClasses(string username);
     Task ShowUserSubscriptionsInformation(long chatId, string username, CancellationToken cancellationToken);
 }
 
@@ -42,12 +45,26 @@ public class UserSubscriptionService : IUserSubscriptionService
         return Result.Success(userSubscription);
     }
 
+    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetByUsername(string username)
+    {
+        var userSubscriptions = (await _userSubscriptionRepository.GetByUsername(username)).Data;
+        return Result.Success(userSubscriptions.AsReadOnlyCollection());
+    }
+
+    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetActiveUserSubscriptionsWithRemainingClasses(
+        string username)
+    {
+        var userSubscriptions = (await _userSubscriptionRepository.GetActiveUserSubscriptionsWithRemainingClasses(
+            username)).Data;
+        return Result.Success(userSubscriptions.AsReadOnlyCollection());
+    }
+
     public async Task ShowUserSubscriptionsInformation(
         long chatId,
         string username,
         CancellationToken cancellationToken)
     {
-        var userSubscriptions = (await _userSubscriptionRepository.GetByUsername(username)).Data;
+        var userSubscriptions = (await GetByUsername(username)).Data;
         
         // TODO: Check location where classes can be executed
         
@@ -61,7 +78,7 @@ public class UserSubscriptionService : IUserSubscriptionService
     
     private async Task SendSubscriptionTitle(
         long chatId,
-        List<UserSubscription> userSubscriptions,
+        IReadOnlyCollection<UserSubscription> userSubscriptions,
         CancellationToken cancellationToken)
     {
         var replyMessage = userSubscriptions.Any()

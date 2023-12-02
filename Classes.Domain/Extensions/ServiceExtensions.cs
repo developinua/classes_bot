@@ -33,7 +33,7 @@ public static class ServiceExtensions
         
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserProfileRepository, UserProfileEditableRepository>();
-        services.AddScoped<ISubscriptionEditableRepository, SubscriptionRepository>();
+        services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
         services.AddScoped<ICultureRepository, CultureRepository>();
         services.AddScoped<ICommandRepository, CommandRepository>();

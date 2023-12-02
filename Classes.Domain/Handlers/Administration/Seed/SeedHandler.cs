@@ -1,48 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
-using Classes.Data.Context;
 using Classes.Data.Models;
 using Classes.Data.Models.Enums;
-using Microsoft.EntityFrameworkCore;
-using Telegram.Bot;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
+using Classes.Domain.Services;
+using MediatR;
+using ResultNet;
 
-namespace Classes.Domain.Commands.Administration;
+namespace Classes.Domain.Handlers.Administration.Seed;
 
-public class SeedCommand : IBotCommand
+public class SeedHandler : IRequestHandler<SeedRequest, Result>
 {
-    public string Name => "/seed";
+    private readonly IBotService _botService;
+    private readonly ISubscriptionService _subscriptionService;
+    private readonly IUserSubscriptionService _userSubscriptionService;
+    private readonly IUserService _userService;
 
-    public string CallbackQueryPattern => "Not implemented";
-
-    public bool Contains(Message message) => message.Type == MessageType.Text && message.Text!.Contains(Name);
-
-    public bool Contains(string callbackQueryData) =>
-        new Regex(CallbackQueryPattern).Match(callbackQueryData).Success;
-
-    public async Task Execute(Message message, ITelegramBotClient client, PostgresDbContext dbContext)
+    public SeedHandler(
+        IBotService botService,
+        ISubscriptionService subscriptionService,
+        IUserSubscriptionService userSubscriptionService,
+        IUserService userService)
     {
-        var chatId = message.From!.Id;
-
-        if (!CanExecuteCommand(message.From.Username!))
-        {
-            await client.SendTextMessageAsync(chatId, "Access denied. You can't execute this command.");
-            return;
-        }
-
-        await ProcessSubscriptions(dbContext);
-        await ProcessUserSubscriptions(dbContext);
-
-        await client.SendTextMessageAsync(chatId, "*Successfully seeded*", parseMode: ParseMode.Markdown);
+        _botService = botService;
+        _subscriptionService = subscriptionService;
+        _userSubscriptionService = userSubscriptionService;
+        _userService = userService;
     }
 
-    public Task Execute(CallbackQuery callbackQuery, ITelegramBotClient client, PostgresDbContext dbContext)
+    public async Task<Result> Handle(SeedRequest request, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        if (!CanExecuteCommand(request.Username))
+        {
+            await _botService.SendTextMessageAsync(
+                request.ChatId,
+                "Access denied. You can't execute this command.",
+                cancellationToken);
+            return Result.Failure()
+                .WithMessage("Access denied. You can't execute this command.");
+        }
+
+        await ProcessSubscriptions();
+        await ProcessUserSubscriptions();
+
+        await _botService.SendTextMessageAsync(
+            request.ChatId,
+            "*Successfully seeded*", 
+            cancellationToken);
+        
+        return Result.Success();
     }
     
     // todo: extract to separate class
@@ -52,10 +60,9 @@ public class SeedCommand : IBotCommand
         return allowedUsers.Any(x => x.Equals(username));
     }
 
-    private static async Task ProcessSubscriptions(PostgresDbContext dbContext)
+    private async Task ProcessSubscriptions()
     {
-        await dbContext.Subscriptions.Where(x => x.IsActive).ExecuteDeleteAsync();
-        await dbContext.SaveChangesAsync();
+        await _subscriptionService.RemoveActiveSubscriptions();
         
         var subscriptions = new List<Subscription>
         {
@@ -365,31 +372,29 @@ public class SeedCommand : IBotCommand
             #endregion
         };
 
-        await dbContext.Subscriptions.AddRangeAsync(subscriptions);
+        await _subscriptionService.Add(subscriptions);
     }
 
-    private static async Task ProcessUserSubscriptions(PostgresDbContext dbContext)
+    private async Task ProcessUserSubscriptions()
     {
-        var userNazar = await dbContext.Users.FirstOrDefaultAsync(x => x.NickName.Equals("nazikBro"));
-        var subscriptionPremiumMonth = await dbContext.Subscriptions
-            .FirstOrDefaultAsync(x =>
-                x.Type == SubscriptionType.Premium
-                && x.Period == SubscriptionPeriod.Month);
+        var userNazar = await _userService.GetByUsername("nazikBro");
+        var subscriptionPremiumMonth = await _subscriptionService.GetActiveSubscriptionByTypeAndPeriodAsync(
+            SubscriptionType.Premium, SubscriptionPeriod.Month);
 
-        if (userNazar is null || subscriptionPremiumMonth is null)
+        if (userNazar is null || subscriptionPremiumMonth.Data is null)
             throw new Exception("Invalid admin subscriptions data in db.");
         
         var userSubscriptionPremiumMonth = new UserSubscription
         {
-            User = userNazar,
-            Subscription = subscriptionPremiumMonth,
-            RemainingClasses = subscriptionPremiumMonth.Classes
+            User = userNazar.Data!,
+            Subscription = subscriptionPremiumMonth.Data,
+            RemainingClasses = subscriptionPremiumMonth.Data.Classes
         };
-        var premiumSubscriptionInDb = dbContext.UsersSubscriptions.Where(x =>
-            x.User.NickName == userSubscriptionPremiumMonth.User.NickName
-            && x.Subscription.Type == userSubscriptionPremiumMonth.Subscription.Type);
+        var premiumSubscriptionInDb = await _userSubscriptionService.GetByUsernameAndType(
+                userSubscriptionPremiumMonth.User.NickName,
+                userSubscriptionPremiumMonth.Subscription.Type);
 
-        if (!premiumSubscriptionInDb.Any())
-            await dbContext.UsersSubscriptions.AddAsync(userSubscriptionPremiumMonth);
+        if (premiumSubscriptionInDb.Data is not null)
+            await _userSubscriptionService.Add(userSubscriptionPremiumMonth);
     }
 }

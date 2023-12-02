@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Classes.Data.Context;
 using Classes.Data.Models;
+using Classes.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using ResultNet;
 
@@ -13,7 +14,9 @@ public interface IUserSubscriptionRepository
     Task Update(UserSubscription userSubscription);
     Task<Result<UserSubscription?>> GetById(long id);
     Task<Result<List<UserSubscription>>> GetByUsername(string username);
+    Task<Result<UserSubscription?>> GetByUsernameAndType(string username, SubscriptionType subscriptionType);
     Task<Result<List<UserSubscription>>> GetActiveUserSubscriptionsWithRemainingClasses(string username);
+    Task Add(UserSubscription userSubscription);
 }
 
 public class UserSubscriptionRepository : IUserSubscriptionRepository
@@ -44,6 +47,16 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
         return Result.Success(userSubscriptions);
     }
 
+    public async Task<Result<UserSubscription?>> GetByUsernameAndType(
+        string username,
+        SubscriptionType subscriptionType)
+    {
+        var response = await _dbContext.UsersSubscriptions.FirstOrDefaultAsync(x =>
+            x.User.NickName == username
+            && x.Subscription.Type == subscriptionType);
+        return Result.Success(response);
+    }
+
     public async Task<Result<List<UserSubscription>>> GetActiveUserSubscriptionsWithRemainingClasses(string username)
     {
         return await _dbContext.UsersSubscriptions
@@ -52,5 +65,11 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
                 && x.RemainingClasses > 0
                 && x.Subscription.IsActive)
             .ToListAsync();
+    }
+
+    public async Task Add(UserSubscription userSubscription)
+    {
+        await _dbContext.UsersSubscriptions.AddAsync(userSubscription);
+        await _dbContext.SaveChangesAsync();
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Classes.Data.Models;
+using Classes.Data.Models.Enums;
 using Classes.Data.Repositories;
 using Classes.Domain.Extensions;
 using Classes.Domain.Utils;
@@ -16,8 +17,10 @@ public interface IUserSubscriptionService
     Task<Result> Update(UserSubscription userSubscription);
     Task<Result<UserSubscription?>> GetById(long id);
     Task<Result<IReadOnlyCollection<UserSubscription>>> GetByUsername(string username);
+    Task<Result<UserSubscription?>> GetByUsernameAndType(string username, SubscriptionType subscriptionType);
     Task<Result<IReadOnlyCollection<UserSubscription>>> GetActiveUserSubscriptionsWithRemainingClasses(string username);
     Task ShowUserSubscriptionsInformation(long chatId, string username, CancellationToken cancellationToken);
+    Task Add(UserSubscription userSubscription);
 }
 
 public class UserSubscriptionService : IUserSubscriptionService
@@ -47,16 +50,22 @@ public class UserSubscriptionService : IUserSubscriptionService
 
     public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetByUsername(string username)
     {
-        var userSubscriptions = (await _userSubscriptionRepository.GetByUsername(username)).Data;
-        return Result.Success(userSubscriptions.AsReadOnlyCollection());
+        var userSubscriptions = await _userSubscriptionRepository.GetByUsername(username);
+        return Result.Success(userSubscriptions.Data.AsReadOnlyCollection());
+    }
+
+    public async Task<Result<UserSubscription?>> GetByUsernameAndType(string username, SubscriptionType subscriptionType)
+    {
+        var userSubscription = await _userSubscriptionRepository.GetByUsernameAndType(username, subscriptionType);
+        return Result.Success(userSubscription.Data);
     }
 
     public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetActiveUserSubscriptionsWithRemainingClasses(
         string username)
     {
-        var userSubscriptions = (await _userSubscriptionRepository.GetActiveUserSubscriptionsWithRemainingClasses(
-            username)).Data;
-        return Result.Success(userSubscriptions.AsReadOnlyCollection());
+        var userSubscriptions = await _userSubscriptionRepository.GetActiveUserSubscriptionsWithRemainingClasses(
+            username);
+        return Result.Success(userSubscriptions.Data.AsReadOnlyCollection());
     }
 
     public async Task ShowUserSubscriptionsInformation(
@@ -75,7 +84,10 @@ public class UserSubscriptionService : IUserSubscriptionService
 
         await SendSubscriptionFooter(chatId, userSubscriptions, cancellationToken);
     }
-    
+
+    public async Task Add(UserSubscription userSubscription) =>
+        await _userSubscriptionRepository.Add(userSubscription);
+
     private async Task SendSubscriptionTitle(
         long chatId,
         IReadOnlyCollection<UserSubscription> userSubscriptions,

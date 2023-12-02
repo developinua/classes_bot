@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Classes.Data.Models;
 using Classes.Data.Repositories;
+using ResultNet;
 using Telegram.Bot.Types;
 using User = Classes.Data.Models.User;
 
@@ -9,6 +10,7 @@ namespace Classes.Domain.Services;
 public interface IUserService
 {
     Task SaveUser(CallbackQuery callbackQuery, string cultureName);
+    Task<Result<User?>> GetByUsername(string username);
 }
 
 public class UserService : IUserService
@@ -47,7 +49,13 @@ public class UserService : IUserService
         else
             await CreateUser(nickName, userProfile);
     }
-    
+
+    public async Task<Result<User?>> GetByUsername(string username)
+    {
+        var response = await _userRepository.GetUserByNickname(username);
+        return Result.Success(response);
+    }
+
     private async Task CreateUser(string nickName, UserProfile userProfile)
     {
         await _userProfileRepository.CreateAsync(userProfile);

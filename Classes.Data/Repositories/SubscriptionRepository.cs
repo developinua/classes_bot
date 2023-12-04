@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Classes.Data.Context;
-using Classes.Data.Models;
-using Classes.Data.Models.Enums;
+using Classes.Domain.Models;
+using Classes.Domain.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ResultNet;
@@ -14,7 +14,7 @@ namespace Classes.Data.Repositories;
 public interface ISubscriptionRepository
 {
     Task<Result<Subscription?>> GetActiveByTypeAndPeriodAsync(
-        SubscriptionType subscriptionGroup,
+        SubscriptionType subscriptionType,
         SubscriptionPeriod subscriptionPeriod);
 
     Task<Result> Add(IEnumerable<Subscription> subscriptions);
@@ -30,7 +30,7 @@ public class SubscriptionRepository : ISubscriptionRepository
         (_dbContext, _logger) = (dbContext, logger);
 
     public async Task<Result<Subscription?>> GetActiveByTypeAndPeriodAsync(
-        SubscriptionType subscriptionGroup,
+        SubscriptionType subscriptionType,
         SubscriptionPeriod subscriptionPeriod)
     {
         try
@@ -38,7 +38,7 @@ public class SubscriptionRepository : ISubscriptionRepository
             var subscription = await _dbContext.Subscriptions
                 .FirstOrDefaultAsync(x =>
                     x.IsActive
-                    && x.Type.Equals(subscriptionGroup)
+                    && x.Type.Equals(subscriptionType)
                     && x.Period.Equals(subscriptionPeriod));
             return Result.Success(subscription);
         }

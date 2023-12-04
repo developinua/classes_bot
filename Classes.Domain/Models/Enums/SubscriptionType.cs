@@ -1,4 +1,4 @@
-﻿namespace Classes.Data.Models.Enums;
+﻿namespace Classes.Domain.Models.Enums;
 
 public enum SubscriptionType
 {

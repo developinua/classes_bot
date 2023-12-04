@@ -1,4 +1,4 @@
-﻿namespace Classes.Data.Models;
+﻿namespace Classes.Domain.Models;
 
 public class Command : BaseModel
 {

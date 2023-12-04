@@ -1,8 +1,8 @@
-﻿using Classes.Data.Models.Enums;
+﻿using Classes.Domain.Models.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Classes.Data.Models;
+namespace Classes.Domain.Models;
 
 public class Subscription : BaseModel
 {

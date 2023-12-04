@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Classes.Data.Context;
-using Classes.Data.Models;
+using Classes.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ResultNet;

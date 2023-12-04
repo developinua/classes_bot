@@ -7,6 +7,7 @@ WORKDIR /src
 COPY ["Classes.Api/Classes.Api.csproj", "Classes.Api/"]
 COPY ["Classes.Domain/Classes.App.csproj", "Classes.App/"]
 COPY ["Classes.Data/Classes.Data.csproj", "Classes.Data/"]
+COPY ["Classes.Data/Classes.Domain.csproj", "Classes.Domain/"]
 
 RUN dotnet restore "Classes.Api/Classes.Api.csproj" --verbosity detailed
 

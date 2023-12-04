@@ -1,4 +1,4 @@
-﻿using Classes.Data.Models;
+﻿using Classes.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Classes.Data.Context;

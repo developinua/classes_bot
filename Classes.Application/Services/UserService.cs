@@ -14,38 +14,22 @@ public interface IUserService
     Task<Result> SaveUser(StartCallbackRequest request, Culture culture);
 }
 
-public class UserService : IUserService
-{
-    private readonly IUpdateService _updateService;
-    private readonly IUserProfileService _userProfileService;
-    private readonly IUserRepository _userRepository;
-    private readonly IUserProfileRepository _userProfileRepository;
-    private readonly PostgresDbContext _dbContext;
-    private readonly ILogger<UserService> _logger;
-    
-    public UserService(
+public class UserService(
         IUpdateService updateService,
         IUserProfileService userProfileService,
         IUserRepository userRepository,
         IUserProfileRepository userProfileRepository,
         PostgresDbContext dbContext,
         ILogger<UserService> logger)
-    {
-        _updateService = updateService;
-        _userProfileService = userProfileService;
-        _userRepository = userRepository;
-        _userProfileRepository = userProfileRepository;
-        _dbContext = dbContext;
-        _logger = logger;
-    }
-
+    : IUserService
+{
     public async Task<Result> SaveUser(StartCallbackRequest request, Culture culture)
     {
-        var username = _updateService.GetUsername(request.CallbackQuery);
-        var userProfile = _userProfileService.CreateUserProfile(request.CallbackQuery, culture);
-        var userExists = await _userRepository.GetByUsername(username) is not null;
+        var username = updateService.GetUsername(request.CallbackQuery);
+        var userProfile = userProfileService.CreateUserProfile(request.CallbackQuery, culture);
+        var userExists = await userRepository.GetByUsername(username) is not null;
         var result = userExists
-            ? await _userProfileService.UpdateUserProfile(userProfile)
+            ? await userProfileService.UpdateUserProfile(userProfile)
             : await CreateUser(userProfile, username);
 
         return result;
@@ -53,10 +37,10 @@ public class UserService : IUserService
     
     private async Task<Result> CreateUser(UserProfile userProfile, string nickname)
     {
-        await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+        await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
-            var profileCreateResult = await _userProfileRepository.CreateAsync(userProfile);
+            var profileCreateResult = await userProfileRepository.CreateAsync(userProfile);
 
             if (profileCreateResult.IsFailure())
             {
@@ -64,7 +48,7 @@ public class UserService : IUserService
                 return Result.Failure().WithMessage("Failed to create user profile");
             }
             
-            var userCreateResult = await _userRepository.CreateAsync(new User
+            var userCreateResult = await userRepository.CreateAsync(new User
             {
                 NickName = nickname,
                 UserProfile = userProfile
@@ -76,7 +60,7 @@ public class UserService : IUserService
                 return Result.Failure().WithMessage("Failed to create user");
             }
                     
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
 
             return Result.Success();
@@ -84,7 +68,7 @@ public class UserService : IUserService
         catch (Exception ex)
         {
             await transaction.RollbackAsync();
-            _logger.LogCritical(ex, "Failed to create user");
+            logger.LogCritical(ex, "Failed to create user");
 
             return Result.Failure().WithMessage("Failed to create user");
         }

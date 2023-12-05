@@ -11,34 +11,24 @@ using ResultNet;
 
 namespace Classes.Application.Handlers.Subscriptions;
 
-public class SubscriptionsHandler : IRequestHandler<SubscriptionsRequest, Result>
-{
-    private readonly IBotService _botService;
-    private readonly IReplyMarkupService _replyMarkupService;
-    private readonly IUserSubscriptionRepository _userSubscriptionRepository;
-
-    public SubscriptionsHandler(
+public class SubscriptionsHandler(
         IBotService botService,
         IReplyMarkupService replyMarkupService,
         IUserSubscriptionRepository userSubscriptionRepository)
-    {
-        _botService = botService;
-        _replyMarkupService = replyMarkupService;
-        _userSubscriptionRepository = userSubscriptionRepository;
-    }
-
+    : IRequestHandler<SubscriptionsRequest, Result>
+{
     public async Task<Result> Handle(SubscriptionsRequest request, CancellationToken cancellationToken)
     {
-        await _botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
         
-        var userSubscriptions = await _userSubscriptionRepository.GetAllActiveWithRemainingClasses(request.Username);
+        var userSubscriptions = await userSubscriptionRepository.GetAllActiveWithRemainingClasses(request.Username);
 
         if (!userSubscriptions.Data.Any())
         {
-            await _botService.SendTextMessageWithReplyAsync(
+            await botService.SendTextMessageWithReplyAsync(
                 request.ChatId,
                 "*Which subscription do you want choose?\n*",
-                replyMarkup: _replyMarkupService.GetSubscriptions(),
+                replyMarkup: replyMarkupService.GetSubscriptions(),
                 cancellationToken: cancellationToken);
             return Result.Success();
         }
@@ -55,16 +45,16 @@ public class SubscriptionsHandler : IRequestHandler<SubscriptionsRequest, Result
     {
         var pluralEnding = userSubscriptions.Count > 1 ? "s" : "";
 
-        await _botService.SendTextMessageAsync(
+        await botService.SendTextMessageAsync(
             chatId,
             $"*Your subscription{pluralEnding}:*",
             cancellationToken);
 
         foreach (var replyMessage in userSubscriptions.Select(RenderUserSubscriptionInformationText))
-            await _botService.SendTextMessageAsync(chatId, replyMessage, cancellationToken);
+            await botService.SendTextMessageAsync(chatId, replyMessage, cancellationToken);
 
         // TODO: add functionality for adding multiple subscriptions
-        await _botService.SendTextMessageAsync(
+        await botService.SendTextMessageAsync(
             chatId,
             "*Do you want to /checkin class?*",
             cancellationToken);

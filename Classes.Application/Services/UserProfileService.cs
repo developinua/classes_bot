@@ -12,13 +12,8 @@ public interface IUserProfileService
     Task<Result> UpdateUserProfile(UserProfile userProfile);
 }
 
-public class UserProfileService : IUserProfileService
+public class UserProfileService(IUserProfileRepository userProfileRepository) : IUserProfileService
 {
-    private readonly IUserProfileRepository _userProfileRepository;
-
-    public UserProfileService(IUserProfileRepository userProfileRepository) =>
-        _userProfileRepository = userProfileRepository;
-
     public UserProfile CreateUserProfile(CallbackQuery callbackQuery, Culture culture)
     {
         return new UserProfile
@@ -34,9 +29,9 @@ public class UserProfileService : IUserProfileService
 
     public async Task<Result> UpdateUserProfile(UserProfile userProfile)
     {
-        var userProfileDb = await _userProfileRepository.GetUserProfileByChatId(userProfile.ChatId);
+        var userProfileDb = await userProfileRepository.GetUserProfileByChatId(userProfile.ChatId);
         return userProfileDb is null
-            ? await _userProfileRepository.CreateAsync(userProfile)
-            : await _userProfileRepository.UpdateAsync(userProfile);
+            ? await userProfileRepository.CreateAsync(userProfile)
+            : await userProfileRepository.UpdateAsync(userProfile);
     }
 }

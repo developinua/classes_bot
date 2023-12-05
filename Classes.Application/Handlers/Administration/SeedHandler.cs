@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,30 +12,18 @@ using ResultNet;
 
 namespace Classes.Application.Handlers.Administration;
 
-public class SeedHandler : IRequestHandler<SeedRequest, Result>
-{
-    private readonly IBotService _botService;
-    private readonly IUserRepository _userRepository;
-    private readonly ISubscriptionRepository _subscriptionRepository;
-    private readonly IUserSubscriptionRepository _userSubscriptionRepository;
-
-    public SeedHandler(
+public class SeedHandler(
         IBotService botService,
         IUserRepository userRepository,
         ISubscriptionRepository subscriptionRepository,
         IUserSubscriptionRepository userSubscriptionRepository)
-    {
-        _botService = botService;
-        _userRepository = userRepository;
-        _subscriptionRepository = subscriptionRepository;
-        _userSubscriptionRepository = userSubscriptionRepository;
-    }
-
+    : IRequestHandler<SeedRequest, Result>
+{
     public async Task<Result> Handle(SeedRequest request, CancellationToken cancellationToken)
     {
         if (!CanExecuteCommand(request.Username))
         {
-            await _botService.SendTextMessageAsync(
+            await botService.SendTextMessageAsync(
                 request.ChatId,
                 "Access denied. You can't execute this command.",
                 cancellationToken);
@@ -44,10 +31,13 @@ public class SeedHandler : IRequestHandler<SeedRequest, Result>
                 .WithMessage("Access denied. You can't execute this command.");
         }
 
-        await ProcessSubscriptions();
-        await ProcessUserSubscriptions();
+        var processSubscriptions = await ProcessSubscriptions();
+        var processUserSubscriptions = await ProcessUserSubscriptions();
+        
+        if (processSubscriptions.IsFailure() || processUserSubscriptions.IsFailure())
+            return Result.Failure().WithMessage("Error while seeding data.");
 
-        await _botService.SendTextMessageAsync(
+        await botService.SendTextMessageAsync(
             request.ChatId,
             "*Successfully seeded*", 
             cancellationToken);
@@ -62,9 +52,9 @@ public class SeedHandler : IRequestHandler<SeedRequest, Result>
         return allowedUsers.Any(x => x.Equals(username));
     }
 
-    private async Task ProcessSubscriptions()
+    private async Task<Result> ProcessSubscriptions()
     {
-        await _subscriptionRepository.RemoveAllActive();
+        await subscriptionRepository.RemoveAllActive();
         
         var subscriptions = new List<Subscription>
         {
@@ -374,17 +364,19 @@ public class SeedHandler : IRequestHandler<SeedRequest, Result>
             #endregion
         };
 
-        await _subscriptionRepository.Add(subscriptions);
+        await subscriptionRepository.Add(subscriptions);
+        
+        return Result.Success();
     }
 
-    private async Task ProcessUserSubscriptions()
+    private async Task<Result> ProcessUserSubscriptions()
     {
-        var userNazar = await _userRepository.GetByUsername("nazikBro");
-        var subscriptionPremiumMonth = await _subscriptionRepository.GetActiveByTypeAndPeriodAsync(
+        var userNazar = await userRepository.GetByUsername("nazikBro");
+        var subscriptionPremiumMonth = await subscriptionRepository.GetActiveByTypeAndPeriodAsync(
             SubscriptionType.Premium, SubscriptionPeriod.Month);
 
         if (userNazar is null || subscriptionPremiumMonth.Data is null)
-            throw new Exception("Invalid admin subscriptions data in db.");
+            return Result.Failure().WithMessage("Invalid admin subscriptions data in db.");
         
         var userSubscriptionPremiumMonth = new UserSubscription
         {
@@ -392,11 +384,13 @@ public class SeedHandler : IRequestHandler<SeedRequest, Result>
             Subscription = subscriptionPremiumMonth.Data,
             RemainingClasses = subscriptionPremiumMonth.Data.Classes
         };
-        var premiumSubscriptionInDb = await _userSubscriptionRepository.GetByUsernameAndType(
+        var premiumSubscriptionInDb = await userSubscriptionRepository.GetByUsernameAndType(
                 userSubscriptionPremiumMonth.User.NickName,
                 userSubscriptionPremiumMonth.Subscription.Type);
 
         if (premiumSubscriptionInDb.Data is not null)
-            await _userSubscriptionRepository.Add(userSubscriptionPremiumMonth);
+            await userSubscriptionRepository.Add(userSubscriptionPremiumMonth);
+        
+        return Result.Success();
     }
 }

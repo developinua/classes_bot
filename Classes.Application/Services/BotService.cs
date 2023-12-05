@@ -28,19 +28,15 @@ public interface IBotService
         ChatAction typing = ChatAction.Typing);
 }
 
-public class BotService : IBotService
+public class BotService(ITelegramBotClient botClient) : IBotService
 {
-    private readonly ITelegramBotClient _botClient;
-
-    public BotService(ITelegramBotClient botClient) => _botClient = botClient;
-
     public async Task<Message> SendTextMessageAsync(
         long chatId,
         string text,
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown)
     {
-        return await _botClient.SendTextMessageAsync(
+        return await botClient.SendTextMessageAsync(
             chatId,
             text,
             parseMode: parseMode,
@@ -54,7 +50,7 @@ public class BotService : IBotService
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown)
     {
-        return await _botClient.SendTextMessageAsync(
+        return await botClient.SendTextMessageAsync(
             chatId,
             text,
             parseMode: parseMode,
@@ -67,7 +63,7 @@ public class BotService : IBotService
         CancellationToken cancellationToken,
         ChatAction typing = ChatAction.Typing)
     {
-        await _botClient.SendChatActionAsync(
+        await botClient.SendChatActionAsync(
             chatId,
             chatAction: typing,
             cancellationToken: cancellationToken);

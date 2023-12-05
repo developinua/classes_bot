@@ -19,22 +19,12 @@ public interface IUpdateService
     Task HandleFailureResponse(long chatId, CancellationToken cancellationToken, string? responseMessage = null);
 }
 
-public class UpdateService : IUpdateService
-{
-    private readonly IMapper _mapper;
-    private readonly IBotService _botService;
-    private readonly ILogger<UpdateService> _logger;
-
-    public UpdateService(
+public class UpdateService(
         IMapper mapper,
         IBotService botService,
         ILogger<UpdateService> logger)
-    {
-        _mapper = mapper;
-        _botService = botService;
-        _logger = logger;
-    }
-
+    : IUpdateService
+{
     public long GetChatId(Update update) =>
         update.Message?.From?.Id ?? update.CallbackQuery!.From.Id;
 
@@ -45,14 +35,14 @@ public class UpdateService : IUpdateService
     {
         var request = update switch
         {
-            { Type: UpdateType.Message } => _mapper.Map<IRequest<Result>>(update.Message!),
-            { Type: UpdateType.CallbackQuery } => _mapper.Map<IRequest<Result>>(update.CallbackQuery),
+            { Type: UpdateType.Message } => mapper.Map<IRequest<Result>>(update.Message!),
+            { Type: UpdateType.CallbackQuery } => mapper.Map<IRequest<Result>>(update.CallbackQuery),
             _ => null
         };
 
         if (request is null)
         {
-            _logger.LogError(
+            logger.LogError(
                 "Update handler not found\n" +
                 "Update type: {updateType}\n" +
                 "Update message type: {messageType}",
@@ -67,7 +57,7 @@ public class UpdateService : IUpdateService
     
     public Task HandleSuccessResponse(long chatId)
     {
-        _logger.LogInformation(
+        logger.LogInformation(
             "Successful response from chat {chatId}. Date: {dateTime}",
             chatId.ToString(),
             DateTime.UtcNow);
@@ -79,12 +69,12 @@ public class UpdateService : IUpdateService
         CancellationToken cancellationToken,
         string? responseMessage = null)
     {
-        _logger.LogError(
+        logger.LogError(
             "Chat id: {chatId}\nMessage:\n{errorMessage}",
             chatId.ToString(),
             responseMessage ?? "No message was specified");
             
-        await _botService.SendTextMessageAsync(
+        await botService.SendTextMessageAsync(
             chatId,
             "Can't process message",
             cancellationToken: cancellationToken);

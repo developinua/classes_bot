@@ -8,17 +8,14 @@ namespace Classes.Application.Services;
 public interface ICallbackExtractorService
 {
     string GetCultureNameFromCallbackQuery(string? callbackData, string callbackPattern);
+    long GetUserSubscriptionIdFromCallback(string callbackData, string callbackPattern);
     SubscriptionType GetSubscriptionType(string callbackData);
     SubscriptionPeriod GetSubscriptionPeriod(string callbackData);
     SubscriptionsCallbackQueryType GetSubscriptionCallbackQueryType(string callbackData);
 }
 
-public class CallbackExtractorService : ICallbackExtractorService
+public class CallbackExtractorService(ILogger<CallbackExtractorService> logger) : ICallbackExtractorService
 {
-    private readonly ILogger<CallbackExtractorService> _logger;
-
-    public CallbackExtractorService(ILogger<CallbackExtractorService> logger) => _logger = logger;
-
     public string GetCultureNameFromCallbackQuery(string? callbackData, string callbackPattern)
     {
         var cultureName = string.Empty;
@@ -29,11 +26,25 @@ public class CallbackExtractorService : ICallbackExtractorService
 
         if (string.IsNullOrEmpty(cultureName))
         {
-            _logger.LogWarning("Culture name can't be parsed.");
+            logger.LogWarning("Culture name can't be parsed.");
             return "en-US";
         }
         
         return cultureName;
+    }
+    
+    public long GetUserSubscriptionIdFromCallback(string callbackData, string callbackPattern)
+    {
+        var userSubscriptionIdGroup = string.Empty;
+        var userSubscriptionIdGroupMatch = Regex.Match(callbackData, callbackPattern);
+        var userSubscriptionIdGroupMatchQuery = userSubscriptionIdGroupMatch.Groups["query"].Value;
+        var userSubscriptionIdGroupMatchData = userSubscriptionIdGroupMatch.Groups["data"].Value;
+
+        if (userSubscriptionIdGroupMatch.Success
+            && userSubscriptionIdGroupMatchQuery.Equals("checkinUserSubscriptionId"))
+            userSubscriptionIdGroup = userSubscriptionIdGroupMatchData;
+
+        return long.Parse(userSubscriptionIdGroup);
     }
     
     public SubscriptionType GetSubscriptionType(string callbackData)

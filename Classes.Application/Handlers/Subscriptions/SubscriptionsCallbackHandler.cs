@@ -10,36 +10,22 @@ using Telegram.Bot.Types;
 
 namespace Classes.Application.Handlers.Subscriptions;
 
-public class SubscriptionsCallbackHandler : IRequestHandler<SubscriptionsCallbackRequest, Result>
-{
-    private readonly IBotService _botService;
-    private readonly ISubscriptionService _subscriptionService;
-    private readonly IReplyMarkupService _replyMarkupService;
-    private readonly ICallbackExtractorService _callbackExtractorService;
-    private readonly IValidator<CallbackQuery> _validator;
-
-    public SubscriptionsCallbackHandler(
+public class SubscriptionsCallbackHandler(
         IBotService botService,
         ISubscriptionService subscriptionService,
         IReplyMarkupService replyMarkupService,
         ICallbackExtractorService callbackExtractorService,
         IValidator<CallbackQuery> validator)
-    {
-        _botService = botService;
-        _subscriptionService = subscriptionService;
-        _replyMarkupService = replyMarkupService;
-        _callbackExtractorService = callbackExtractorService;
-        _validator = validator;
-    }
-
+    : IRequestHandler<SubscriptionsCallbackRequest, Result>
+{
     public async Task<Result> Handle(SubscriptionsCallbackRequest request, CancellationToken cancellationToken)
     {
-        if ((await _validator.ValidateAsync(request.CallbackQuery, cancellationToken)).IsValid)
+        if ((await validator.ValidateAsync(request.CallbackQuery, cancellationToken)).IsValid)
             Result.Failure().WithMessage("No valid callback query.");
 
-        await _botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
         
-        var callbackType = _callbackExtractorService.GetSubscriptionCallbackQueryType(request.CallbackQuery.Data!);
+        var callbackType = callbackExtractorService.GetSubscriptionCallbackQueryType(request.CallbackQuery.Data!);
 
         return callbackType switch
         {
@@ -55,10 +41,10 @@ public class SubscriptionsCallbackHandler : IRequestHandler<SubscriptionsCallbac
         SubscriptionsCallbackRequest request,
         CancellationToken cancellationToken)
     {
-        await _botService.SendTextMessageWithReplyAsync(
+        await botService.SendTextMessageWithReplyAsync(
             request.ChatId,
             "*Which subscription period do you prefer?\n*",
-            replyMarkup: _replyMarkupService.GetSubscriptionPeriods(request.CallbackQuery.Data!),
+            replyMarkup: replyMarkupService.GetSubscriptionPeriods(request.CallbackQuery.Data!),
             cancellationToken: cancellationToken);
         return Result.Success();
     }
@@ -67,19 +53,18 @@ public class SubscriptionsCallbackHandler : IRequestHandler<SubscriptionsCallbac
         SubscriptionsCallbackRequest request,
         CancellationToken cancellationToken)
     {
-        var subscription = await _subscriptionService.GetSubscriptionFromCallback(
+        var subscription = await subscriptionService.GetSubscriptionFromCallback(
             request.CallbackQuery, request.ChatId, cancellationToken);
         
-        if (subscription.IsFailure())
-            return subscription;
+        if (subscription.IsFailure()) return subscription;
 
-        await _botService.SendTextMessageWithReplyAsync(
+        await botService.SendTextMessageWithReplyAsync(
             request.ChatId,
             $"*Price: {subscription.Data.GetPriceWithDiscount()}\n" +
             $"*P.S. Please send your username and subscription in comment",
-            _replyMarkupService.GetBuySubscription(subscription.Data.Id),
+            replyMarkupService.GetBuySubscription(subscription.Data.Id),
             cancellationToken);
-        await _botService.SendTextMessageAsync(
+        await botService.SendTextMessageAsync(
             request.ChatId,
             "*After your subscription will be approved by teacher\nYou will be able to /checkin on classes.*",
             cancellationToken);

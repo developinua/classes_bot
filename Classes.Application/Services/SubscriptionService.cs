@@ -15,36 +15,26 @@ public interface ISubscriptionService
         CancellationToken cancellationToken);
 }
 
-public class SubscriptionService : ISubscriptionService
-{
-    private readonly IBotService _botService;
-    private readonly ICallbackExtractorService _callbackExtractorService;
-    private readonly ISubscriptionRepository _subscriptionRepository;
-
-    public SubscriptionService(
+public class SubscriptionService(
         IBotService botService,
         ICallbackExtractorService callbackExtractorService,
         ISubscriptionRepository subscriptionRepository)
-    {
-        _botService = botService;
-        _callbackExtractorService = callbackExtractorService;
-        _subscriptionRepository = subscriptionRepository;
-    }
-
+    : ISubscriptionService
+{
     public async Task<Result<Subscription>> GetSubscriptionFromCallback(
         CallbackQuery callback,
         long chatId,
         CancellationToken cancellationToken)
     {
-        var subscriptionType = _callbackExtractorService.GetSubscriptionType(callback.Data!);
-        var subscriptionPeriod = _callbackExtractorService.GetSubscriptionPeriod(callback.Data!);
+        var subscriptionType = callbackExtractorService.GetSubscriptionType(callback.Data!);
+        var subscriptionPeriod = callbackExtractorService.GetSubscriptionPeriod(callback.Data!);
         
-        var subscription = await _subscriptionRepository.GetActiveByTypeAndPeriodAsync(
+        var subscription = await subscriptionRepository.GetActiveByTypeAndPeriodAsync(
             subscriptionType, subscriptionPeriod);
 
         if (subscription.Data is null)
         {
-            await _botService.SendTextMessageAsync(
+            await botService.SendTextMessageAsync(
                 chatId,
                 "No available subscription was founded.\nPlease contact @nazikBro",
                 cancellationToken);

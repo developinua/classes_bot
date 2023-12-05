@@ -8,16 +8,12 @@ using ResultNet;
 
 namespace Classes.Application.Handlers.Administration;
 
-public class AdminHandler : IRequestHandler<AdminRequest, Result>
+public class AdminHandler(IBotService botService) : IRequestHandler<AdminRequest, Result>
 {
-    private readonly IBotService _botService;
-
-    public AdminHandler(IBotService botService) => _botService = botService;
-
     public async Task<Result> Handle(AdminRequest request, CancellationToken cancellationToken)
     {
         if (!CanExecuteCommand(request.Username))
-            await _botService.SendTextMessageAsync(
+            await botService.SendTextMessageAsync(
                 request.ChatId,
                 "Access denied. You can't execute this command.",
                 cancellationToken);
@@ -27,7 +23,7 @@ public class AdminHandler : IRequestHandler<AdminRequest, Result>
         return Result.Success();
     }
 
-    // todo: extract to separate class
+    // todo: extract to permissions
     private static bool CanExecuteCommand(string username)
     {
         var allowedUsers = new[] { "nazikBro", "taras_zouk", "kovalinas" };

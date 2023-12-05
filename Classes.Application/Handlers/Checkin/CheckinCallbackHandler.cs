@@ -1,9 +1,6 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Classes.Application.Services;
-using Classes.Data.Repositories;
 using Classes.Domain.Requests;
 using FluentValidation;
 using MediatR;
@@ -12,74 +9,55 @@ using Telegram.Bot.Types;
 
 namespace Classes.Application.Handlers.Checkin;
 
-public class CheckinCallbackHandler : IRequestHandler<CheckinCallbackRequest, Result>
-{
-    private readonly IBotService _botService;
-    private readonly IUserSubscriptionRepository _userSubscriptionRepository;
-    private readonly IValidator<CallbackQuery> _callbackQueryValidator;
-
-    public CheckinCallbackHandler(
+public class CheckinCallbackHandler(
         IBotService botService,
-        IUserSubscriptionRepository userSubscriptionRepository,
+        ICallbackExtractorService callbackExtractorService,
+        IUserSubscriptionService userSubscriptionService,
         IValidator<CallbackQuery> callbackQueryValidator)
-    {
-        _botService = botService;
-        _userSubscriptionRepository = userSubscriptionRepository;
-        _callbackQueryValidator = callbackQueryValidator;
-    }
-
+    : IRequestHandler<CheckinCallbackRequest, Result>
+{
     public async Task<Result> Handle(CheckinCallbackRequest request, CancellationToken cancellationToken)
     {
-        if ((await _callbackQueryValidator.ValidateAsync(request.CallbackQuery, cancellationToken)).IsValid)
-            throw new NotSupportedException();
+        if ((await callbackQueryValidator.ValidateAsync(request.CallbackQuery, cancellationToken)).IsValid)
+            return Result.Failure().WithMessage("Invalid check-in parameters.");
 
-        await _botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
 
-        var userSubscriptionId = GetUserSubscriptionIdFromCallbackQuery(
+        var userSubscriptionId = callbackExtractorService.GetUserSubscriptionIdFromCallback(
             request.CallbackQuery.Data!,
             request.CallbackPattern);
-        var userSubscription = await _userSubscriptionRepository.GetById(userSubscriptionId);
+        var userSubscription = await userSubscriptionService.GetById(userSubscriptionId);
 
         if (userSubscription.Data is null)
         {
-            await _botService.SendTextMessageAsync(
+            await botService.SendTextMessageAsync(
                 request.ChatId,
-                "Can't get user subscription from db. Please contact @nazikBro for details",
+                "You haven't that subscription. Please contact @nazikBro for details.",
                 cancellationToken);
-            return Result.Failure();
+            return Result.Failure().WithMessage("User subscription not found.");
         }
 
         if (userSubscription.Data.RemainingClasses == 0)
         {
-            await _botService.SendTextMessageAsync(
+            await botService.SendTextMessageAsync(
                 request.ChatId,
-                "You haven't any available classes. Press /subscriptions to manage your subscriptions",
+                "You haven't any available classes. Press /subscriptions to manage your subscriptions.",
                 cancellationToken);
-            return Result.Failure();
+            return Result.Failure().WithMessage("No remaining classes left.");
         }
-
-        userSubscription.Data.RemainingClasses--;
-        await _userSubscriptionRepository.Update(userSubscription.Data);
         
-        await _botService.SendTextMessageAsync(
-            request.ChatId,
-            "*💚*",
-            cancellationToken);
+        var checkinResult = await userSubscriptionService.CheckinOnClass(userSubscription.Data);
 
+        if (checkinResult.IsFailure())
+        {
+            await botService.SendTextMessageAsync(
+                request.ChatId,
+                "There was a problem with class check-in. Please contact @nazikBro for details.",
+                cancellationToken);
+            return Result.Failure().WithMessage("There was a problem with class check-in.");
+        }
+        
+        await botService.SendTextMessageAsync(request.ChatId, "*💚*", cancellationToken);
         return Result.Success();
-    }
-    
-    private static long GetUserSubscriptionIdFromCallbackQuery(string callbackQueryData, string callbackQueryPattern)
-    {
-        var userSubscriptionIdGroup = string.Empty;
-        var userSubscriptionIdGroupMatch = Regex.Match(callbackQueryData, callbackQueryPattern);
-        var userSubscriptionIdGroupMatchQuery = userSubscriptionIdGroupMatch.Groups["query"].Value;
-        var userSubscriptionIdGroupMatchData = userSubscriptionIdGroupMatch.Groups["data"].Value;
-
-        if (userSubscriptionIdGroupMatch.Success
-            && userSubscriptionIdGroupMatchQuery.Equals("checkinUserSubscriptionId"))
-            userSubscriptionIdGroup = userSubscriptionIdGroupMatchData;
-
-        return long.Parse(userSubscriptionIdGroup);
     }
 }

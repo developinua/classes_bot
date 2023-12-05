@@ -8,16 +8,12 @@ public interface IReplyMarkupService
 {
     IReplyMarkup GetStartMarkup();
     IReplyMarkup GetSubscriptions();
-    IReplyMarkup GetSubscriptionPeriods(string subscriptionGroupData);
+    IReplyMarkup GetSubscriptionPeriods(string subscriptionGroup);
     IReplyMarkup GetBuySubscription(long subscriptionId);
 }
 
-public class ReplyMarkupService : IReplyMarkupService
+public class ReplyMarkupService(ILogger<ReplyMarkupService> logger) : IReplyMarkupService
 {
-    private readonly ILogger<ReplyMarkupService> _logger;
-
-    public ReplyMarkupService(ILogger<ReplyMarkupService> logger) => _logger = logger;
-
     public IReplyMarkup GetStartMarkup()
     {
         var replyKeyboardMarkup = InlineKeyboardBuilder.Create()
@@ -41,32 +37,17 @@ public class ReplyMarkupService : IReplyMarkupService
         return replyKeyboardMarkup;
     }
     
-    private static InlineKeyboardMarkup RenderSubscriptionPeriods(string subscriptionGroupData)
+    public IReplyMarkup GetSubscriptionPeriods(string subscriptionGroup)
     {
         var subscriptionPeriods = InlineKeyboardBuilder.Create();
 
-        if (!subscriptionGroupData.Contains("Premium"))
-            subscriptionPeriods.AddButton("Day", $"{subscriptionGroupData}?subsPeriod:day").NewLine();
+        if (!subscriptionGroup.Contains("Premium"))
+            subscriptionPeriods.AddButton("Day", $"{subscriptionGroup}?subsPeriod:day").NewLine();
 
-        subscriptionPeriods.AddButton("Week", $"{subscriptionGroupData}?subsPeriod:week").NewLine()
-            .AddButton("Two weeks", $"{subscriptionGroupData}?subsPeriod:two-weeks").NewLine()
-            .AddButton("Month", $"{subscriptionGroupData}?subsPeriod:month").NewLine()
-            .AddButton("Three months", $"{subscriptionGroupData}?subsPeriod:three-months");
-
-        return subscriptionPeriods.Build();
-    }
-    
-    public IReplyMarkup GetSubscriptionPeriods(string subscriptionGroupData)
-    {
-        var subscriptionPeriods = InlineKeyboardBuilder.Create();
-
-        if (!subscriptionGroupData.Contains("Premium"))
-            subscriptionPeriods.AddButton("Day", $"{subscriptionGroupData}?subsPeriod:day").NewLine();
-
-        subscriptionPeriods.AddButton("Week", $"{subscriptionGroupData}?subsPeriod:week").NewLine()
-            .AddButton("Two weeks", $"{subscriptionGroupData}?subsPeriod:two-weeks").NewLine()
-            .AddButton("Month", $"{subscriptionGroupData}?subsPeriod:month").NewLine()
-            .AddButton("Three months", $"{subscriptionGroupData}?subsPeriod:three-months");
+        subscriptionPeriods.AddButton("Week", $"{subscriptionGroup}?subsPeriod:week").NewLine()
+            .AddButton("Two weeks", $"{subscriptionGroup}?subsPeriod:two-weeks").NewLine()
+            .AddButton("Month", $"{subscriptionGroup}?subsPeriod:month").NewLine()
+            .AddButton("Three months", $"{subscriptionGroup}?subsPeriod:three-months");
 
         return subscriptionPeriods.Build();
     }

@@ -14,27 +14,17 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Classes.Application.Handlers.Checkin;
 
-public class CheckinHandler : IRequestHandler<CheckinRequest, Result>
-{
-    private readonly IBotService _botService;
-    private readonly IUserSubscriptionRepository _userSubscriptionRepository;
-    private readonly IValidator<Message> _locationValidator;
-
-    public CheckinHandler(
+public class CheckinHandler(
         IBotService botService,
         IUserSubscriptionRepository userSubscriptionRepository,
         IValidator<Message> locationValidator)
-    {
-        _botService = botService;
-        _userSubscriptionRepository = userSubscriptionRepository;
-        _locationValidator = locationValidator;
-    }
-
+    : IRequestHandler<CheckinRequest, Result>
+{
     public async Task<Result> Handle(CheckinRequest request, CancellationToken cancellationToken)
     {
-        await _botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
 
-        var isLocationDataValidationResult = await _locationValidator.ValidateAsync(request.Message, cancellationToken);
+        var isLocationDataValidationResult = await locationValidator.ValidateAsync(request.Message, cancellationToken);
 
         if (isLocationDataValidationResult.IsValid)
             await ShowUserSubscriptionsInformation(request.ChatId, request.Username, cancellationToken);
@@ -45,7 +35,7 @@ public class CheckinHandler : IRequestHandler<CheckinRequest, Result>
             ResizeKeyboard = true
         };
 
-        await _botService.SendTextMessageWithReplyAsync(
+        await botService.SendTextMessageWithReplyAsync(
             request.ChatId,
             "Please send me your location, so I can check if you are on classes now.",
             replyMarkup,
@@ -59,7 +49,7 @@ public class CheckinHandler : IRequestHandler<CheckinRequest, Result>
         string username,
         CancellationToken cancellationToken)
     {
-        var userSubscriptions = (await _userSubscriptionRepository.GetByUsername(username)).Data;
+        var userSubscriptions = (await userSubscriptionRepository.GetByUsername(username)).Data;
         
         // TODO: Check location where classes can be executed
         
@@ -78,7 +68,7 @@ public class CheckinHandler : IRequestHandler<CheckinRequest, Result>
                 ? userSubscriptions.Count == 1 ? "*Your subscription:*" : "*Your subscriptions:*"
                 : "You have no subscriptions. Press /subscriptions to buy one.";
 
-            await _botService.SendTextMessageWithReplyAsync(
+            await botService.SendTextMessageWithReplyAsync(
                 chatId,
                 replyMessage,
                 replyMarkup: new ReplyKeyboardRemove(),
@@ -96,14 +86,14 @@ public class CheckinHandler : IRequestHandler<CheckinRequest, Result>
                 .AddButton("Check-in", $"check-in-subscription-id:{userSubscription.Id}")
                 .Build();
 
-            await _botService.SendTextMessageWithReplyAsync(chatId, replyText, replyMarkup, cancellationToken);
+            await botService.SendTextMessageWithReplyAsync(chatId, replyText, replyMarkup, cancellationToken);
         }
     
         async Task SendSubscriptionFooter()
         {
             if (!userSubscriptions.Any()) return;
         
-            await _botService.SendTextMessageAsync(
+            await botService.SendTextMessageAsync(
                 chatId,
                 "*Press check-in button on the subscription where you want the class to be taken from*",
                 cancellationToken);

@@ -14,19 +14,16 @@ public interface ICultureRepository
     Task<Result<Culture?>> GetCultureByCodeAsync(string languageCode);
 }
 
-public class CultureRepository : ICultureRepository
+public class CultureRepository(
+        PostgresDbContext dbContext,
+        ILogger<CultureRepository> logger)
+    : ICultureRepository
 {
-    private readonly PostgresDbContext _dbContext;
-    private readonly ILogger<CultureRepository> _logger;
-
-    public CultureRepository(PostgresDbContext dbContext, ILogger<CultureRepository> logger) =>
-        (_dbContext, _logger) = (dbContext, logger);
-
     public async Task<Result<Culture?>> GetCultureByCodeAsync(string languageCode)
     {
         try
         {
-            var culture = await _dbContext.Cultures
+            var culture = await dbContext.Cultures
                 .AsNoTracking()
                 .Where(doc => doc.LanguageCode == languageCode)
                 .FirstOrDefaultAsync();
@@ -34,7 +31,7 @@ public class CultureRepository : ICultureRepository
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure<Culture?>().WithMessage("Can't get culture by code.");
         }
     }

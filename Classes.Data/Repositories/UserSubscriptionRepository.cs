@@ -21,25 +21,23 @@ public interface IUserSubscriptionRepository
     Task<Result> Update(UserSubscription userSubscription);
 }
 
-public class UserSubscriptionRepository : IUserSubscriptionRepository
+public class UserSubscriptionRepository(
+        PostgresDbContext dbContext,
+        ILogger<UserSubscriptionRepository> logger)
+    : IUserSubscriptionRepository
 {
-    private readonly PostgresDbContext _dbContext;
-    private readonly ILogger<UserSubscriptionRepository> _logger;
-    public UserSubscriptionRepository(PostgresDbContext dbContext, ILogger<UserSubscriptionRepository> logger) =>
-        (_dbContext, _logger) = (dbContext, logger);
-    
     public async Task<Result> Add(UserSubscription userSubscription)
     {
         try
         {
-            await _dbContext.UsersSubscriptions.AddAsync(userSubscription);
-            await _dbContext.SaveChangesAsync();
+            await dbContext.UsersSubscriptions.AddAsync(userSubscription);
+            await dbContext.SaveChangesAsync();
             
             return Result.Success();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure().WithMessage("User subscription hasn't been created.");
         }
     }
@@ -48,14 +46,14 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
     {
         try
         {
-            var userSubscription = await _dbContext.UsersSubscriptions
+            var userSubscription = await dbContext.UsersSubscriptions
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id.Equals(id));
             return Result.Success(userSubscription);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure<UserSubscription?>()
                 .WithMessage("Can't get user subscription by id.");
         }
@@ -65,14 +63,14 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
     {
         try
         {
-            var userSubscriptions = await _dbContext.UsersSubscriptions
+            var userSubscriptions = await dbContext.UsersSubscriptions
                 .Where(x => x.User.NickName.Equals(username) && x.RemainingClasses > 0)
                 .ToListAsync();
             return Result.Success(userSubscriptions);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure<List<UserSubscription>>()
                 .WithMessage("Can't get user subscriptions by username.");
         }
@@ -84,14 +82,14 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
     {
         try
         {
-            var response = await _dbContext.UsersSubscriptions.FirstOrDefaultAsync(x =>
+            var response = await dbContext.UsersSubscriptions.FirstOrDefaultAsync(x =>
                 x.User.NickName == username
                 && x.Subscription.Type == subscriptionType);
             return Result.Success(response);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure<UserSubscription?>()
                 .WithMessage("Can't get user subscription by username and type.");
         }
@@ -101,7 +99,7 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
     {
         try
         {
-            var response = await _dbContext.UsersSubscriptions
+            var response = await dbContext.UsersSubscriptions
                 .Where(x =>
                     x.User.NickName == username
                     && x.RemainingClasses > 0
@@ -111,7 +109,7 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure<Result<List<UserSubscription>>>()
                 .WithMessage("Can't get all active user subscription by username with remaining classes.");
         }
@@ -121,14 +119,14 @@ public class UserSubscriptionRepository : IUserSubscriptionRepository
     {
         try
         {
-            _dbContext.UsersSubscriptions.Update(userSubscription);
-            await _dbContext.SaveChangesAsync();
+            dbContext.UsersSubscriptions.Update(userSubscription);
+            await dbContext.SaveChangesAsync();
             
             return Result.Success();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure().WithMessage("User subscription hasn't been updated.");
         }
     }

@@ -16,26 +16,22 @@ public interface ISubscriptionRepository
     Task<Result<Subscription?>> GetActiveByTypeAndPeriodAsync(
         SubscriptionType subscriptionType,
         SubscriptionPeriod subscriptionPeriod);
-
     Task<Result> Add(IEnumerable<Subscription> subscriptions);
     Task<Result> RemoveAllActive();
 }
 
-public class SubscriptionRepository : ISubscriptionRepository
+public class SubscriptionRepository(
+        PostgresDbContext dbContext,
+        ILogger<SubscriptionRepository> logger) 
+    : ISubscriptionRepository
 {
-    private readonly PostgresDbContext _dbContext;
-    private readonly ILogger<SubscriptionRepository> _logger;
-
-    public SubscriptionRepository(PostgresDbContext dbContext, ILogger<SubscriptionRepository> logger) =>
-        (_dbContext, _logger) = (dbContext, logger);
-
     public async Task<Result<Subscription?>> GetActiveByTypeAndPeriodAsync(
         SubscriptionType subscriptionType,
         SubscriptionPeriod subscriptionPeriod)
     {
         try
         {
-            var subscription = await _dbContext.Subscriptions
+            var subscription = await dbContext.Subscriptions
                 .FirstOrDefaultAsync(x =>
                     x.IsActive
                     && x.Type.Equals(subscriptionType)
@@ -44,7 +40,7 @@ public class SubscriptionRepository : ISubscriptionRepository
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure<Subscription?>().WithMessage("Can't get active subscription by type and period.");
         }
     }
@@ -53,14 +49,14 @@ public class SubscriptionRepository : ISubscriptionRepository
     {
         try
         {
-            await _dbContext.Subscriptions.AddRangeAsync(subscriptions);
-            await _dbContext.SaveChangesAsync();
+            await dbContext.Subscriptions.AddRangeAsync(subscriptions);
+            await dbContext.SaveChangesAsync();
             
             return Result.Success();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure<Subscription?>().WithMessage("Can't add subscriptions.");
         }
     }
@@ -69,14 +65,14 @@ public class SubscriptionRepository : ISubscriptionRepository
     {
         try
         {
-            await _dbContext.Subscriptions.Where(x => x.IsActive).ExecuteDeleteAsync();
-            await _dbContext.SaveChangesAsync();
+            await dbContext.Subscriptions.Where(x => x.IsActive).ExecuteDeleteAsync();
+            await dbContext.SaveChangesAsync();
         
             return Result.Success();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return Result.Failure<Subscription?>().WithMessage("Can't remove all active subscriptions.");
         }
     }

@@ -1,4 +1,4 @@
-using Classes.Domain.Models.BotRequest;
+using Classes.Domain.BotRequest;
 using MediatR;
 using ResultNet;
 using Telegram.Bot.Types;

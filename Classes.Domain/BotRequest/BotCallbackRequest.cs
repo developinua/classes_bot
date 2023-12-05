@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Classes.Domain.Models.BotRequest;
+namespace Classes.Domain.BotRequest;
 
 public abstract class BotCallbackRequest
 {

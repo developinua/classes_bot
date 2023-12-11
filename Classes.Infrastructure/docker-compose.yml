@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+    classes:
+        image: classes.api
+        container_name: classes
+        build:
+            context: ../
+            dockerfile: Classes.Infrastructure/api/Dockerfile
+        ports:
+            - "4000:4000"
+            - "4001:4001"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:4001;http://+:4000
+        networks:
+            - classes_net
+
+    classes_nginx:
+        container_name: classes_nginx
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+            - "8080:8080"
+        networks:
+            - classes_net
+
+networks:
+    classes_net:
+        driver: bridge

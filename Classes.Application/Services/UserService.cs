@@ -12,6 +12,7 @@ namespace Classes.Application.Services;
 public interface IUserService
 {
     Task<Result> SaveUser(StartCallbackRequest request, Culture culture);
+    Task<Culture> GetUserCulture(string? userId);
 }
 
 public class UserService(
@@ -34,7 +35,15 @@ public class UserService(
 
         return result;
     }
-    
+
+    public async Task<Culture> GetUserCulture(string? userId)
+    {
+        return new Culture
+        {
+            LanguageCode = "en-US"
+        };
+    }
+
     private async Task<Result> CreateUser(UserProfile userProfile, string nickname)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync();

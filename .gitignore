@@ -20,6 +20,10 @@ target/
 # JetBrains IDE
 .idea/
 
+# VSCode IDE
+.history/
+.vscode/
+
 # Run configurations
 .run/
 
@@ -55,6 +59,5 @@ Publish/
 
 *.pubxml
 
-.history/
-.vscode/
-.idea/
+# ssl keys for nginx configuration
+Classes.Infrastructure/nginx/ssl/*

@@ -5,12 +5,13 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY ["Classes.Api/Classes.Api.csproj", "Classes.Api/"]
-COPY ["Classes.Domain/Classes.App.csproj", "Classes.App/"]
+COPY ["Classes.Application/Classes.Application.csproj", "Classes.Application/"]
 COPY ["Classes.Data/Classes.Data.csproj", "Classes.Data/"]
-COPY ["Classes.Data/Classes.Domain.csproj", "Classes.Domain/"]
+COPY ["Classes.Domain/Classes.Domain.csproj", "Classes.Domain/"]
 
 RUN dotnet restore "Classes.Api/Classes.Api.csproj" --verbosity detailed
 
+# refactor to use a .dockerignore file and copy only the necessary files
 COPY . .
 WORKDIR /src/Classes.Api
 

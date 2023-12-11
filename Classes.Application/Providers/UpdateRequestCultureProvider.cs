@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Localization;
 
 namespace Classes.Application.Providers;
 
-public class UpdateRequestCultureProvider(ICultureService cultureService) : IRequestCultureProvider
+public class UpdateRequestCultureProvider(IUserService userService) : IRequestCultureProvider
 {
     public async Task<ProviderCultureResult?> DetermineProviderCultureResult(HttpContext httpContext)
     {
@@ -14,7 +14,7 @@ public class UpdateRequestCultureProvider(ICultureService cultureService) : IReq
         // todo: check logic for start command(unregistered user) and other commands when user is in db
 
         // Fetch user's preferred culture from the database
-        var userCulture = await cultureService.GetByName("en-us");
+        var userCulture = await userService.GetUserCulture(userId);
 
         return new ProviderCultureResult(userCulture.LanguageCode);
     }

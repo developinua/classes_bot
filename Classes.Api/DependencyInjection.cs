@@ -109,24 +109,31 @@ public static class DependencyInjection
     
     public static WebApplication UseLocalizations(this WebApplication app)
     {
-        var supportedCultures = new[]
+        app.Use(async (_, next) =>
         {
-            new CultureInfo("en-us"),
-            new CultureInfo("uk-ua")
-        };
-        var localizationOptions = new RequestLocalizationOptions
-        {
-            DefaultRequestCulture = new RequestCulture("en-us"),
-            SupportedCultures = supportedCultures,
-            SupportedUICultures = supportedCultures,
-            ApplyCurrentCultureToResponseHeaders = true,
-            RequestCultureProviders = new List<IRequestCultureProvider>
+            using var scope = app.Services.CreateScope();
+            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+            var supportedCultures = new[]
             {
-                new UpdateRequestCultureProvider(app.Services.GetRequiredService<CultureService>())
-            }
-        };
-        
-        app.UseRequestLocalization(localizationOptions);
+                new CultureInfo("en-us"),
+                new CultureInfo("uk-ua")
+            };
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-us"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+                ApplyCurrentCultureToResponseHeaders = true,
+                RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                    new UpdateRequestCultureProvider(userService)
+                }
+            };
+
+            app.UseRequestLocalization(localizationOptions);
+
+            await next();
+        });
 
         return app;
     }

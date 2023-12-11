@@ -60,4 +60,5 @@ Publish/
 *.pubxml
 
 # ssl keys for nginx configuration
+Classes.Api/Certificates/*
 Classes.Infrastructure/nginx/ssl/*

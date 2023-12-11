@@ -16,5 +16,14 @@
     <ProjectReference Include="..\Classes.Application\Classes.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Certificates\classes.key">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Certificates\classes.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>

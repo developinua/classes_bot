@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-    classes:
+    classes.api:
         image: classes.api
-        container_name: classes
+        container_name: classes.api
         build:
             context: ../
             dockerfile: Classes.Infrastructure/api/Dockerfile
@@ -13,11 +13,13 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=https://+:4001;http://+:4000
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=Certificates/classes.pem
+            - ASPNETCORE_Kestrel__Certificates__Default__KeyPath=Certificates/classes.key
         networks:
             - classes_net
 
-    classes_nginx:
-        container_name: classes_nginx
+    classes.nginx:
+        container_name: classes.nginx
         build:
             context: ./nginx
             dockerfile: Dockerfile

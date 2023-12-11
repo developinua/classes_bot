@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Classes.Application.Services;
 using Classes.Domain.Requests;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using ResultNet;
 using Telegram.Bot.Types;
 
@@ -13,6 +13,8 @@ namespace Classes.Application.Handlers.Checkin;
 public class CheckinCallbackHandler(
         IBotService botService,
         IUserSubscriptionService userSubscriptionService,
+        ICallbackExtractorService callbackExtractorService,
+        IStringLocalizer<CheckinHandler> localizer,
         IValidator<CallbackQuery> callbackQueryValidator)
     : IRequestHandler<CheckinCallbackRequest, Result>
 {
@@ -21,47 +23,36 @@ public class CheckinCallbackHandler(
         if ((await callbackQueryValidator.ValidateAsync(request.CallbackQuery, cancellationToken)).IsValid)
             return Result.Failure().WithMessage("Invalid check-in parameters.");
 
-        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        botService.UseChat(request.ChatId);
 
-        var userSubscription = await userSubscriptionService.GetFromCallback(
-            request.CallbackQuery, request.CallbackPattern);
+        await botService.SendChatActionAsync(cancellationToken);
+
+        var userSubscriptionId = callbackExtractorService.GetUserSubscriptionIdFromCallback(
+            request.CallbackQuery.Data!, request.CallbackPattern);
+        var userSubscription = await userSubscriptionService.GetById(userSubscriptionId);
 
         if (userSubscription.Data is null)
-            return await HandleSubscriptionNotFoundFailure();
+        {
+            await botService.SendTextMessageAsync(localizer.GetString("SubscriptionNotFound"), cancellationToken);
+            return Result.Failure().WithMessage("User subscription not found.");
+        }
+
+        if (!userSubscriptionService.CanCheckinOnClass(userSubscription.Data))
+        {
+            await botService.SendTextMessageAsync(localizer.GetString("NoAvailableClasses"), cancellationToken);
+            return Result.Failure().WithMessage("No available classes.");
+        }
         
         var checkinResult = await userSubscriptionService.CheckinOnClass(userSubscription.Data);
 
         if (checkinResult.IsFailure())
-            return await HandleCheckinFailure();
-        
-        await botService.SendTextMessageAsync(request.ChatId, "*💚*", cancellationToken);
-        return Result.Success();
-        
-        async Task<Result> HandleSubscriptionNotFoundFailure()
         {
-            await botService.SendTextMessageAsync(
-                request.ChatId,
-                "You haven't this subscription. Please contact @nazikBro for details.",
-                cancellationToken);
-            return Result.Failure().WithMessage("User subscription not found.");
-        }
-        
-        async Task<Result> HandleCheckinFailure()
-        {
-            if (checkinResult.Errors.Any())
-            {
-                await botService.SendTextMessageAsync(
-                    request.ChatId,
-                    checkinResult.Errors.First().Message,
-                    cancellationToken);
-                return Result.Failure().WithMessage(checkinResult.Errors.First().Message);
-            }
-
-            await botService.SendTextMessageAsync(
-                request.ChatId,
-                "There was a problem with class check-in. Please contact @nazikBro for details.",
-                cancellationToken);
+            await botService.SendTextMessageAsync(localizer.GetString("ClassCheckinProblem"), cancellationToken);
             return Result.Failure().WithMessage("There was a problem with class check-in.");
         }
+        
+        await botService.SendTextMessageAsync("*💚*", cancellationToken);
+
+        return Result.Success();
     }
 }

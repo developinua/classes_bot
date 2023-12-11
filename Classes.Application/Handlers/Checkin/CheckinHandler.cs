@@ -8,6 +8,7 @@ using Classes.Domain.Models;
 using Classes.Domain.Requests;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using ResultNet;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -16,46 +17,43 @@ namespace Classes.Application.Handlers.Checkin;
 
 public class CheckinHandler(
         IBotService botService,
+        IStringLocalizer<CheckinHandler> localizer,
         IUserSubscriptionRepository userSubscriptionRepository,
         IValidator<Message> locationValidator)
     : IRequestHandler<CheckinRequest, Result>
 {
     public async Task<Result> Handle(CheckinRequest request, CancellationToken cancellationToken)
     {
-        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        botService.UseChat(request.ChatId);
+        await botService.SendChatActionAsync(cancellationToken);
 
         var isLocationDataValidationResult = await locationValidator.ValidateAsync(request.Message, cancellationToken);
 
         if (isLocationDataValidationResult.IsValid)
-            await ShowUserSubscriptionsInformation(request.ChatId, request.Username, cancellationToken);
+            await ShowUserSubscriptionsInformation(request.Username, cancellationToken);
 
-        var replyMarkup = new ReplyKeyboardMarkup(KeyboardButton.WithRequestLocation("Send location"))
+        var replyMarkup = new ReplyKeyboardMarkup(KeyboardButton.WithRequestLocation(
+            localizer.GetString("SendLocationRequest")))
         {
             OneTimeKeyboard = true,
             ResizeKeyboard = true
         };
 
         await botService.SendTextMessageWithReplyAsync(
-            request.ChatId,
-            "Please send me your location, so I can check if you are on classes now.",
-            replyMarkup,
-            cancellationToken);
+            localizer.GetString("SendLocation"), replyMarkup, cancellationToken);
         
         return Result.Success();
     }
     
-    private async Task ShowUserSubscriptionsInformation(
-        long chatId,
-        string username,
-        CancellationToken cancellationToken)
+    private async Task ShowUserSubscriptionsInformation(string username, CancellationToken cancellationToken)
     {
-        var userSubscriptions = (await userSubscriptionRepository.GetByUsername(username)).Data;
+        var userSubscriptions = await userSubscriptionRepository.GetByUsername(username);
         
         // TODO: Check location where classes can be executed
         
         await SendSubscriptionTitle();
         
-        foreach (var userSubscription in userSubscriptions)
+        foreach (var userSubscription in userSubscriptions.Data)
             await SendSubscriptionDetails(userSubscription);
 
         await SendSubscriptionFooter();
@@ -64,12 +62,11 @@ public class CheckinHandler(
         
         async Task SendSubscriptionTitle()
         {
-            var replyMessage = userSubscriptions.Any()
-                ? userSubscriptions.Count == 1 ? "*Your subscription:*" : "*Your subscriptions:*"
+            var replyMessage = userSubscriptions.Data.Any()
+                ? userSubscriptions.Data.Count == 1 ? "*Your subscription:*" : "*Your subscriptions:*"
                 : "You have no subscriptions. Press /subscriptions to buy one.";
 
             await botService.SendTextMessageWithReplyAsync(
-                chatId,
                 replyMessage,
                 replyMarkup: new ReplyKeyboardRemove(),
                 cancellationToken: cancellationToken);
@@ -86,15 +83,14 @@ public class CheckinHandler(
                 .AddButton("Check-in", $"check-in-subscription-id:{userSubscription.Id}")
                 .Build();
 
-            await botService.SendTextMessageWithReplyAsync(chatId, replyText, replyMarkup, cancellationToken);
+            await botService.SendTextMessageWithReplyAsync(replyText, replyMarkup, cancellationToken);
         }
     
         async Task SendSubscriptionFooter()
         {
-            if (!userSubscriptions.Any()) return;
+            if (!userSubscriptions.Data.Any()) return;
         
             await botService.SendTextMessageAsync(
-                chatId,
                 "*Press check-in button on the subscription where you want the class to be taken from*",
                 cancellationToken);
         }

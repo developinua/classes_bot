@@ -21,26 +21,22 @@ public class SeedHandler(
 {
     public async Task<Result> Handle(SeedRequest request, CancellationToken cancellationToken)
     {
+        botService.UseChat(request.ChatId);
+        
         if (!CanExecuteCommand(request.Username))
         {
-            await botService.SendTextMessageAsync(
-                request.ChatId,
-                "Access denied. You can't execute this command.",
-                cancellationToken);
-            return Result.Failure()
-                .WithMessage("Access denied. You can't execute this command.");
+            const string errorMessage = "Access denied. You can't execute this command.";
+            await botService.SendTextMessageAsync(errorMessage, cancellationToken);
+            return Result.Failure().WithMessage(errorMessage);
         }
 
-        var processSubscriptions = await ProcessSubscriptions();
-        var processUserSubscriptions = await ProcessUserSubscriptions();
+        var processSubscriptions = await AddDefaultSubscriptions();
+        var processUserSubscriptions = await AddAdminSubscription();
         
         if (processSubscriptions.IsFailure() || processUserSubscriptions.IsFailure())
             return Result.Failure().WithMessage("Error while seeding data.");
 
-        await botService.SendTextMessageAsync(
-            request.ChatId,
-            "*Successfully seeded*", 
-            cancellationToken);
+        await botService.SendTextMessageAsync("*Successfully seeded*", cancellationToken);
         
         return Result.Success();
     }
@@ -52,7 +48,7 @@ public class SeedHandler(
         return allowedUsers.Any(x => x.Equals(username));
     }
 
-    private async Task<Result> ProcessSubscriptions()
+    private async Task<Result> AddDefaultSubscriptions()
     {
         await subscriptionRepository.RemoveAllActive();
         
@@ -66,7 +62,7 @@ public class SeedHandler(
                 Description = "Nothing to do here",
                 Price = 0,
                 DiscountPercent = 0,
-                Classes = 0,
+                ClassesCount = 0,
                 Type = SubscriptionType.None,
                 Period = SubscriptionPeriod.None,
                 IsActive = true
@@ -82,7 +78,7 @@ public class SeedHandler(
                 Description = "One class",
                 Price = 200,
                 DiscountPercent = 0,
-                Classes = 1,
+                ClassesCount = 1,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
@@ -93,7 +89,7 @@ public class SeedHandler(
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
-                Classes = 2,
+                ClassesCount = 2,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -104,7 +100,7 @@ public class SeedHandler(
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
-                Classes = 4,
+                ClassesCount = 4,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -115,7 +111,7 @@ public class SeedHandler(
                 Description = "Eight classes",
                 Price = 1600,
                 DiscountPercent = 0,
-                Classes = 8,
+                ClassesCount = 8,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -126,7 +122,7 @@ public class SeedHandler(
                 Description = "Sixteen classes",
                 Price = 3200,
                 DiscountPercent = 15,
-                Classes = 16,
+                ClassesCount = 16,
                 Type = SubscriptionType.Novice,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -142,7 +138,7 @@ public class SeedHandler(
                 Description = "One class",
                 Price = 200,
                 DiscountPercent = 0,
-                Classes = 1,
+                ClassesCount = 1,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
@@ -153,7 +149,7 @@ public class SeedHandler(
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
-                Classes = 2,
+                ClassesCount = 2,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -164,7 +160,7 @@ public class SeedHandler(
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
-                Classes = 4,
+                ClassesCount = 4,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -175,7 +171,7 @@ public class SeedHandler(
                 Description = "Eight classes",
                 Price = 1600,
                 DiscountPercent = 0,
-                Classes = 8,
+                ClassesCount = 8,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -186,7 +182,7 @@ public class SeedHandler(
                 Description = "Sixteen classes",
                 Price = 3200,
                 DiscountPercent = 15,
-                Classes = 16,
+                ClassesCount = 16,
                 Type = SubscriptionType.Intermediate,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -202,7 +198,7 @@ public class SeedHandler(
                 Description = "One class",
                 Price = 200,
                 DiscountPercent = 0,
-                Classes = 1,
+                ClassesCount = 1,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
@@ -213,7 +209,7 @@ public class SeedHandler(
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
-                Classes = 2,
+                ClassesCount = 2,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -224,7 +220,7 @@ public class SeedHandler(
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
-                Classes = 4,
+                ClassesCount = 4,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -235,7 +231,7 @@ public class SeedHandler(
                 Description = "Eight classes",
                 Price = 1600,
                 DiscountPercent = 0,
-                Classes = 8,
+                ClassesCount = 8,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -246,7 +242,7 @@ public class SeedHandler(
                 Description = "Sixteen classes",
                 Price = 3200,
                 DiscountPercent = 15,
-                Classes = 16,
+                ClassesCount = 16,
                 Type = SubscriptionType.LadyStyling,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -262,7 +258,7 @@ public class SeedHandler(
                 Description = "One class",
                 Price = 200,
                 DiscountPercent = 0,
-                Classes = 1,
+                ClassesCount = 1,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Day,
                 IsActive = true
@@ -273,7 +269,7 @@ public class SeedHandler(
                 Description = "Two classes",
                 Price = 400,
                 DiscountPercent = 0,
-                Classes = 2,
+                ClassesCount = 2,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -284,7 +280,7 @@ public class SeedHandler(
                 Description = "Four classes",
                 Price = 800,
                 DiscountPercent = 0,
-                Classes = 4,
+                ClassesCount = 4,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -295,7 +291,7 @@ public class SeedHandler(
                 Description = "Eight classes",
                 Price = 1600,
                 DiscountPercent = 0,
-                Classes = 8,
+                ClassesCount = 8,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -306,7 +302,7 @@ public class SeedHandler(
                 Description = "Sixteen classes",
                 Price = 3200,
                 DiscountPercent = 15,
-                Classes = 16,
+                ClassesCount = 16,
                 Type = SubscriptionType.ManStyling,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -322,7 +318,7 @@ public class SeedHandler(
                 Description = "Novice, medium, lady style classes for week",
                 Price = 1200,
                 DiscountPercent = 5,
-                Classes = 12,
+                ClassesCount = 12,
                 Type = SubscriptionType.Premium,
                 Period = SubscriptionPeriod.Week,
                 IsActive = true
@@ -333,7 +329,7 @@ public class SeedHandler(
                 Description = "Novice, medium, lady style classes for two weeks",
                 Price = 2400,
                 DiscountPercent = 5,
-                Classes = 24,
+                ClassesCount = 24,
                 Type = SubscriptionType.Premium,
                 Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
@@ -344,7 +340,7 @@ public class SeedHandler(
                 Description = "Novice, medium, lady style classes for month",
                 Price = 4800,
                 DiscountPercent = 10,
-                Classes = 48,
+                ClassesCount = 48,
                 Type = SubscriptionType.Premium,
                 Period = SubscriptionPeriod.Month,
                 IsActive = true
@@ -355,7 +351,7 @@ public class SeedHandler(
                 Description = "Novice, medium, lady style classes for three months",
                 Price = 9600,
                 DiscountPercent = 15,
-                Classes = 144,
+                ClassesCount = 144,
                 Type = SubscriptionType.Premium,
                 Period = SubscriptionPeriod.ThreeMonths,
                 IsActive = true
@@ -369,26 +365,26 @@ public class SeedHandler(
         return Result.Success();
     }
 
-    private async Task<Result> ProcessUserSubscriptions()
+    private async Task<Result> AddAdminSubscription()
     {
         var userNazar = await userRepository.GetByUsername("nazikBro");
-        var subscriptionPremiumMonth = await subscriptionRepository.GetActiveByTypeAndPeriodAsync(
+        var subscriptionPremiumMonth = await subscriptionRepository.GetActiveByTypeAndPeriod(
             SubscriptionType.Premium, SubscriptionPeriod.Month);
 
-        if (userNazar is null || subscriptionPremiumMonth.Data is null)
+        if (userNazar.Data is null || subscriptionPremiumMonth.Data is null)
             return Result.Failure().WithMessage("Invalid admin subscriptions data in db.");
         
         var userSubscriptionPremiumMonth = new UserSubscription
         {
             User = userNazar.Data!,
             Subscription = subscriptionPremiumMonth.Data,
-            RemainingClasses = subscriptionPremiumMonth.Data.Classes
+            RemainingClasses = subscriptionPremiumMonth.Data.ClassesCount
         };
         var premiumSubscriptionInDb = await userSubscriptionRepository.GetByUsernameAndType(
                 userSubscriptionPremiumMonth.User.NickName,
                 userSubscriptionPremiumMonth.Subscription.Type);
 
-        if (premiumSubscriptionInDb.Data is not null)
+        if (premiumSubscriptionInDb.Data is null)
             await userSubscriptionRepository.Add(userSubscriptionPremiumMonth);
         
         return Result.Success();

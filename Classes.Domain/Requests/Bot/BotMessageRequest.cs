@@ -1,7 +1,7 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace Classes.Domain.BotRequest;
+namespace Classes.Domain.Requests.Bot;
 
 public abstract class BotMessageRequest
 {

@@ -40,25 +40,22 @@ public class UpdateService(
             _ => null
         };
 
-        if (request is null)
-        {
-            logger.LogError(
-                "Update handler not found\n" +
-                "Update type: {updateType}\n" +
-                "Update message type: {messageType}",
-                update.Type,
-                update.Message?.Type.ToString() ?? "No message type was specified");
-            return Result.Failure<IRequest<Result>>()
-                .WithMessage("Update handler not found");
-        }
+        if (request is not null) return Result.Success(request);
 
-        return Result.Success(request);
+        logger.LogError(
+            "Update handler not found\n" +
+            "Update type: {updateType}\n" +
+            "Update message type: {messageType}.",
+            update.Type,
+            update.Message?.Type.ToString() ?? "No message type was specified.");
+
+        return Result.Failure<IRequest<Result>>().WithMessage("Update handler not found.");
     }
     
     public Task HandleSuccessResponse(long chatId)
     {
         logger.LogInformation(
-            "Successful response from chat {chatId}. Date: {dateTime}",
+            "Successful response from chat {ChatId}. Date: {DateTime}.",
             chatId.ToString(),
             DateTime.UtcNow);
         return Task.CompletedTask;
@@ -70,13 +67,11 @@ public class UpdateService(
         string? responseMessage = null)
     {
         logger.LogError(
-            "Chat id: {chatId}\nMessage:\n{errorMessage}",
+            "Chat id: {ChatId}\nMessage:\n{ErrorMessage}.",
             chatId.ToString(),
-            responseMessage ?? "No message was specified");
-            
-        await botService.SendTextMessageAsync(
-            chatId,
-            "Can't process message",
-            cancellationToken: cancellationToken);
+            responseMessage ?? "No message was specified.");
+        
+        botService.UseChat(chatId);
+        await botService.SendTextMessageAsync("Can't process the message.", cancellationToken);
     }
 }

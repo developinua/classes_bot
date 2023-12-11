@@ -1,4 +1,4 @@
-using Classes.Application.Extensions;
+using Classes.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,16 +7,24 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 services
-    .AddAppServices(configuration)
+    .AddAppServices()
+    .AddDatabase(configuration)
+    .AddMediator()
+    .AddAutoMapper()
+    .AddBotRequests()
+    .AddLocalizations()
     .AddControllers()
     .AddNewtonsoftJson(options => options.UseMemberCasing());
 
-await services.UseTelegramBotWebHooks(configuration);
+await services.SetTelegramBotWebHook(configuration);
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-app.UseRouting();
+app
+    .UseLocalizations()
+    .UseHttpsRedirection();
+
+// app.UseRouting();
 app.MapControllers();
 
 app.Run();

@@ -24,13 +24,10 @@ public class CallbackExtractorService(ILogger<CallbackExtractorService> logger) 
         if (cultureMatch.Success && cultureMatch.Groups["query"].Value.Equals("language"))
             cultureName = cultureMatch.Groups["data"].Value;
 
-        if (string.IsNullOrEmpty(cultureName))
-        {
-            logger.LogWarning("Culture name can't be parsed.");
-            return "en-US";
-        }
-        
-        return cultureName;
+        if (!string.IsNullOrEmpty(cultureName)) return cultureName;
+
+        logger.LogWarning("Culture name can't be parsed.");
+        return "en-us";
     }
     
     public long GetUserSubscriptionIdFromCallback(string callbackData, string callbackPattern)

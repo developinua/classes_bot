@@ -12,11 +12,12 @@ public class AdminHandler(IBotService botService) : IRequestHandler<AdminRequest
 {
     public async Task<Result> Handle(AdminRequest request, CancellationToken cancellationToken)
     {
+        botService.UseChat(request.ChatId);
+        
         if (!CanExecuteCommand(request.Username))
-            await botService.SendTextMessageAsync(
-                request.ChatId,
-                "Access denied. You can't execute this command.",
-                cancellationToken);
+        {
+            await botService.SendTextMessageAsync("Access denied. You can't execute this command.", cancellationToken);
+        }
 
         var responseMessage = $"/seed /paymentlink /manage-subscriptions";
         

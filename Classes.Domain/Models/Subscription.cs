@@ -7,10 +7,12 @@ namespace Classes.Domain.Models;
 public class Subscription : BaseModel
 {
     public string Name { get; set; } = string.Empty;
+    public string NameCode { get; set; } = null!;
+    public string DescriptionCode { get; set; } = null!;
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public decimal DiscountPercent { get; set; }
-    public int Classes { get; set; }
+    public int ClassesCount { get; set; }
     public bool IsActive { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -34,6 +36,6 @@ public class Subscription : BaseModel
                $"{priceText}" +
                $"Description: {Description}\n" +
                $"SubscriptionType: {Type}\n" +
-               $"Total Classes: {Classes}\n";
+               $"Total Classes: {ClassesCount}\n";
     }
 }

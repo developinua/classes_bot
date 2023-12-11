@@ -1,5 +1,4 @@
 using Classes.Application.Utils;
-using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Classes.Application.Services;
@@ -12,13 +11,13 @@ public interface IReplyMarkupService
     IReplyMarkup GetBuySubscription(long subscriptionId);
 }
 
-public class ReplyMarkupService(ILogger<ReplyMarkupService> logger) : IReplyMarkupService
+public class ReplyMarkupService : IReplyMarkupService
 {
     public IReplyMarkup GetStartMarkup()
     {
         var replyKeyboardMarkup = InlineKeyboardBuilder.Create()
-            .AddButton("English", "language:en-US")
-            .AddButton("Ukrainian", "language:uk-UA")
+            .AddButton("English", "language:en-us")
+            .AddButton("Ukrainian", "language:uk-ua")
             .Build();
         return replyKeyboardMarkup;
     }
@@ -56,7 +55,7 @@ public class ReplyMarkupService(ILogger<ReplyMarkupService> logger) : IReplyMark
     {
         // todo: replacement link
         return InlineKeyboardBuilder.Create()
-            .AddUrlButton("Buy", $"paymentlink:{subscriptionId}", "https://send.monobank.ua/4aXrhJ1FTH")
+            .AddUrlButton("Buy", $"paymentlink:{subscriptionId}", "")
             .Build();
     }
 }

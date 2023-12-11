@@ -5,6 +5,7 @@ using Classes.Domain.Models.Enums;
 using Classes.Domain.Requests;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using ResultNet;
 using Telegram.Bot.Types;
 
@@ -15,6 +16,7 @@ public class SubscriptionsCallbackHandler(
         ISubscriptionService subscriptionService,
         IReplyMarkupService replyMarkupService,
         ICallbackExtractorService callbackExtractorService,
+        IStringLocalizer<SubscriptionsHandler> localizer,
         IValidator<CallbackQuery> validator)
     : IRequestHandler<SubscriptionsCallbackRequest, Result>
 {
@@ -23,7 +25,8 @@ public class SubscriptionsCallbackHandler(
         if ((await validator.ValidateAsync(request.CallbackQuery, cancellationToken)).IsValid)
             Result.Failure().WithMessage("No valid callback query.");
 
-        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        botService.UseChat(request.ChatId);
+        await botService.SendChatActionAsync(cancellationToken);
         
         var callbackType = callbackExtractorService.GetSubscriptionCallbackQueryType(request.CallbackQuery.Data!);
 
@@ -41,9 +44,9 @@ public class SubscriptionsCallbackHandler(
         SubscriptionsCallbackRequest request,
         CancellationToken cancellationToken)
     {
+        botService.UseChat(request.ChatId);
         await botService.SendTextMessageWithReplyAsync(
-            request.ChatId,
-            "*Which subscription period do you prefer?\n*",
+            localizer.GetString("ChooseSubscriptionPeriod"),
             replyMarkup: replyMarkupService.GetSubscriptionPeriods(request.CallbackQuery.Data!),
             cancellationToken: cancellationToken);
         return Result.Success();
@@ -53,21 +56,25 @@ public class SubscriptionsCallbackHandler(
         SubscriptionsCallbackRequest request,
         CancellationToken cancellationToken)
     {
-        var subscription = await subscriptionService.GetSubscriptionFromCallback(
-            request.CallbackQuery, request.ChatId, cancellationToken);
+        botService.UseChat(request.ChatId);
+        
+        var type = callbackExtractorService.GetSubscriptionType(request.CallbackQuery.Data!);
+        var period = callbackExtractorService.GetSubscriptionPeriod(request.CallbackQuery.Data!);
+        var subscription = await subscriptionService.GetSubscriptionByTypeAndPeriod(type, period);
         
         if (subscription.IsFailure()) return subscription;
+        
+        if (subscription.Data is null)
+        {
+            await botService.SendTextMessageAsync(localizer.GetString("NoAvailableSubscriptions"), cancellationToken);
+            return Result.Failure().WithMessage("No available subscriptions were founded.");
+        }
 
         await botService.SendTextMessageWithReplyAsync(
-            request.ChatId,
-            $"*Price: {subscription.Data.GetPriceWithDiscount()}\n" +
-            $"*P.S. Please send your username and subscription in comment",
+            localizer["BuySubscription", subscription.Data.GetPriceWithDiscount()],
             replyMarkupService.GetBuySubscription(subscription.Data.Id),
             cancellationToken);
-        await botService.SendTextMessageAsync(
-            request.ChatId,
-            "*After your subscription will be approved by teacher\nYou will be able to /checkin on classes.*",
-            cancellationToken);
+        await botService.SendTextMessageAsync(localizer.GetString("BuySubscriptionApproval"), cancellationToken);
         
         return Result.Success();
     }

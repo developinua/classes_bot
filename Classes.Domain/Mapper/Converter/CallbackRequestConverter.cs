@@ -1,5 +1,5 @@
 using AutoMapper;
-using Classes.Domain.BotRequest;
+using Classes.Domain.Requests.Bot;
 using MediatR;
 using ResultNet;
 using Telegram.Bot.Types;
@@ -15,7 +15,11 @@ public class CallbackRequestValueConverter(IEnumerable<BotCallbackRequest> callb
 
         if (callbackRequest is null) return default;
         
-        return context.Mapper.Map(source, callbackRequest, typeof(CallbackQuery), callbackRequest.GetType())
+        return context.Mapper.Map(
+                source,
+                callbackRequest,
+                typeof(CallbackQuery),
+                callbackRequest.GetType())
             as IRequest<Result>;
     }
 }

@@ -1,4 +1,4 @@
-using Classes.Domain.BotRequest;
+using Classes.Domain.Requests.Bot;
 using MediatR;
 using ResultNet;
 

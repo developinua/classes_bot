@@ -13,7 +13,7 @@ namespace Classes.Data.Repositories;
 
 public interface ISubscriptionRepository
 {
-    Task<Result<Subscription?>> GetActiveByTypeAndPeriodAsync(
+    Task<Result<Subscription?>> GetActiveByTypeAndPeriod(
         SubscriptionType subscriptionType,
         SubscriptionPeriod subscriptionPeriod);
     Task<Result> Add(IEnumerable<Subscription> subscriptions);
@@ -25,7 +25,7 @@ public class SubscriptionRepository(
         ILogger<SubscriptionRepository> logger) 
     : ISubscriptionRepository
 {
-    public async Task<Result<Subscription?>> GetActiveByTypeAndPeriodAsync(
+    public async Task<Result<Subscription?>> GetActiveByTypeAndPeriod(
         SubscriptionType subscriptionType,
         SubscriptionPeriod subscriptionPeriod)
     {

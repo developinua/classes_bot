@@ -21,4 +21,79 @@
     <ItemGroup>
       <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Handlers\Start\StartHandler.en-us.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>StartHandler.en-us.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Start\StartHandler.uk-ua.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>StartHandler.uk-ua.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Subscriptions\SubscriptionsHandler.en-us.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SubscriptionsHandler.en-us.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Subscriptions\SubscriptionsHandler.uk-ua.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SubscriptionsHandler.uk-ua.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Checkin\CheckinHandler.en-us.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CheckinHandler.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Checkin\CheckinHandler.uk-ua.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CheckinHandler.uk-ua.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Checkin\CheckinHandler.uk-ua.resx">
+        <LastGenOutput>CheckinHandler.uk-ua.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Start\StartHandler.en-us.resx">
+        <LastGenOutput>StartHandler.en-us.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Start\StartHandler.uk-ua.resx">
+        <LastGenOutput>StartHandler.uk-ua.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Subscriptions\SubscriptionsHandler.en-us.resx">
+        <LastGenOutput>SubscriptionsHandler.en-us.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Handlers\Subscriptions\SubscriptionsHandler.uk-ua.resx">
+        <LastGenOutput>SubscriptionsHandler.uk-ua.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Handlers\Start\StartHandler.en-us.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>StartHandler.en-us.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Handlers\Start\StartHandler.uk-ua.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>StartHandler.uk-ua.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Handlers\Subscriptions\SubscriptionsHandler.en-us.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SubscriptionsHandler.en-us.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Handlers\Subscriptions\SubscriptionsHandler.uk-ua.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SubscriptionsHandler.uk-ua.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Handlers\Checkin\CheckinHandler.en-us.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CheckinHandler.en-us.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Handlers\Checkin\CheckinHandler.uk-ua.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CheckinHandler.uk-ua.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

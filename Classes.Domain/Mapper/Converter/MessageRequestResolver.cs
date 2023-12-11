@@ -1,5 +1,5 @@
 using AutoMapper;
-using Classes.Domain.BotRequest;
+using Classes.Domain.Requests.Bot;
 using MediatR;
 using ResultNet;
 using Telegram.Bot.Types;
@@ -15,7 +15,11 @@ public class MessageRequestValueConverter(IEnumerable<BotMessageRequest> message
 
         if (messageRequest is null) return default;
         
-        return context.Mapper.Map(source, messageRequest, typeof(Message), messageRequest.GetType())
+        return context.Mapper.Map(
+                source,
+                messageRequest,
+                typeof(Message),
+                messageRequest.GetType())
             as IRequest<Result>;
     }
 }

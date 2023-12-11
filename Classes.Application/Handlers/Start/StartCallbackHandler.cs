@@ -4,6 +4,7 @@ using Classes.Application.Services;
 using Classes.Domain.Requests;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using ResultNet;
 using Telegram.Bot.Types;
 
@@ -14,6 +15,7 @@ public class StartCallbackHandler(
         IUserService userService,
         ICultureService cultureService,
         ICallbackExtractorService callbackExtractorService,
+        IStringLocalizer<StartHandler> localizer,
         IValidator<CallbackQuery> validator)
     : IRequestHandler<StartCallbackRequest, Result>
 {
@@ -22,7 +24,8 @@ public class StartCallbackHandler(
         if ((await validator.ValidateAsync(request.CallbackQuery, cancellationToken)).IsValid)
             return Result.Failure().WithMessage("Invalid callback query.");
 
-        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        botService.UseChat(request.ChatId);
+        await botService.SendChatActionAsync(cancellationToken);
         
         var cultureName = callbackExtractorService.GetCultureNameFromCallbackQuery(
             request.CallbackQuery.Data, request.CallbackPattern);
@@ -31,10 +34,7 @@ public class StartCallbackHandler(
         
         if (result.IsFailure()) return result;
         
-        await botService.SendTextMessageAsync(
-            request.ChatId,
-            "*😊Successfully!😊*\nPress /subscriptions to manage your class subscription.",
-            cancellationToken);
+        await botService.SendTextMessageAsync(localizer.GetString("ManageClassSubscriptions"), cancellationToken);
         
         return Result.Success();
     }

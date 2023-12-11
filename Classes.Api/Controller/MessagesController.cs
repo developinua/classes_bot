@@ -10,7 +10,7 @@ using Telegram.Bot.Types;
 namespace Classes.Api.Controller;
 
 [Route("api/v1/[controller]")]
-public class MessageController(IUpdateService updateService, IMediator mediator) : ControllerBase
+public class MessagesController(IUpdateService updateService, IMediator mediator) : ControllerBase
 {
     [HttpPost("update")]
     public async Task<IResult> Update([FromBody] Update update, CancellationToken cancellationToken)
@@ -33,7 +33,6 @@ public class MessageController(IUpdateService updateService, IMediator mediator)
         }
 
         await updateService.HandleSuccessResponse(chatId);
-
         return Results.Ok();
     }
 }

@@ -15,7 +15,9 @@ public class CultureService(ICultureRepository cultureRepository) : ICultureServ
     public async Task<Culture> GetByName(string cultureName)
     {
         var cultureResult = await cultureRepository.GetCultureByCodeAsync(cultureName);
-        var culture = cultureResult.IsFailure() || cultureResult.Data is null ? new Culture() : cultureResult.Data;
+        var culture = cultureResult.IsFailure() || cultureResult.Data is null
+            ? new Culture()
+            : cultureResult.Data;
 
         return culture;
     }

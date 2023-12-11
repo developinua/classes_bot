@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Classes.Application.Extensions;
 using Classes.Application.Services;
-using Classes.Data.Repositories;
 using Classes.Domain.Models;
 using Classes.Domain.Requests;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using ResultNet;
 
 namespace Classes.Application.Handlers.Subscriptions;
@@ -14,20 +15,21 @@ namespace Classes.Application.Handlers.Subscriptions;
 public class SubscriptionsHandler(
         IBotService botService,
         IReplyMarkupService replyMarkupService,
-        IUserSubscriptionRepository userSubscriptionRepository)
+        IStringLocalizer<SubscriptionsHandler> localizer,
+        IUserSubscriptionService userSubscriptionService)
     : IRequestHandler<SubscriptionsRequest, Result>
 {
     public async Task<Result> Handle(SubscriptionsRequest request, CancellationToken cancellationToken)
     {
-        await botService.SendChatActionAsync(request.ChatId, cancellationToken);
+        botService.UseChat(request.ChatId);
+        await botService.SendChatActionAsync(cancellationToken);
         
-        var userSubscriptions = await userSubscriptionRepository.GetAllActiveWithRemainingClasses(request.Username);
+        var userSubscriptions = await userSubscriptionService.GetAllActiveWithRemainingClasses(request.Username);
 
         if (!userSubscriptions.Data.Any())
         {
             await botService.SendTextMessageWithReplyAsync(
-                request.ChatId,
-                "*Which subscription do you want choose?\n*",
+                localizer.GetString("ChooseSubscription"),
                 replyMarkup: replyMarkupService.GetSubscriptions(),
                 cancellationToken: cancellationToken);
             return Result.Success();
@@ -43,28 +45,25 @@ public class SubscriptionsHandler(
         IReadOnlyCollection<UserSubscription> userSubscriptions,
         CancellationToken cancellationToken)
     {
-        var pluralEnding = userSubscriptions.Count > 1 ? "s" : "";
+        var message = userSubscriptions.Count > 1 
+            ? localizer.GetString("YourSubscriptions")
+            : localizer.GetString("YourSubscription");
 
-        await botService.SendTextMessageAsync(
-            chatId,
-            $"*Your subscription{pluralEnding}:*",
-            cancellationToken);
+        botService.UseChat(chatId);
+        await botService.SendTextMessageAsync(message, cancellationToken);
 
-        foreach (var replyMessage in userSubscriptions.Select(RenderUserSubscriptionInformationText))
-            await botService.SendTextMessageAsync(chatId, replyMessage, cancellationToken);
+        foreach (var userSubscription in userSubscriptions)
+        {
+            // todo: localize
+            var replyMessage =
+                $"{localizer["Subscription", localizer[userSubscription.Subscription.NameCode]]}\n" +
+                $"{localizer["Description", localizer[userSubscription.Subscription.DescriptionCode]]}\n" +
+                $"{localizer["SubscriptionType", localizer[userSubscription.Subscription.Type.DisplayName()]]}\n" +
+                $"{localizer["RemainingClasses", localizer[userSubscription.RemainingClasses.ToString()]]}\n";
+            await botService.SendTextMessageAsync(replyMessage, cancellationToken);
+        }
 
         // TODO: add functionality for adding multiple subscriptions
-        await botService.SendTextMessageAsync(
-            chatId,
-            "*Do you want to /checkin class?*",
-            cancellationToken);
-        return;
-        
-        // todo: localize
-        string RenderUserSubscriptionInformationText(UserSubscription userSubscription) =>
-            $"Subscription: {userSubscription.Subscription.Name}\n" +
-            $"Description: {userSubscription.Subscription.Description}\n" +
-            $"SubscriptionType: {userSubscription.Subscription.Type}\n" +
-            $"Remaining Classes: {userSubscription.RemainingClasses}\n";
+        await botService.SendTextMessageAsync(localizer.GetString("DoYouWantToCheckin"), cancellationToken);
     }
 }

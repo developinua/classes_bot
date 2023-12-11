@@ -1,39 +1,40 @@
-using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Classes.Data.Repositories;
 using Classes.Domain.Models;
-using Microsoft.Extensions.Logging;
 using ResultNet;
-using Telegram.Bot.Types;
 
 namespace Classes.Application.Services;
 
 public interface IUserSubscriptionService
 {
-    Task<Result<UserSubscription?>> GetFromCallback(CallbackQuery callback, string callbackPattern);
+    Task<Result<UserSubscription?>> GetById(long id);
+    Result<bool> CanCheckinOnClass(UserSubscription userSubscription);
     Task<Result> CheckinOnClass(UserSubscription userSubscription);
+    Task<Result<IReadOnlyCollection<UserSubscription>>> GetAllActiveWithRemainingClasses(string username);
 }
 
-public class UserSubscriptionService(
-        ICallbackExtractorService callbackExtractorService,
-        IUserSubscriptionRepository userSubscriptionRepository,
-        ILogger<UserService> logger)
-    : IUserSubscriptionService
+public class UserSubscriptionService(IUserSubscriptionRepository userSubscriptionRepository) : IUserSubscriptionService
 {
-    public async Task<Result<UserSubscription?>> GetFromCallback(CallbackQuery callback, string callbackPattern)
-    {
-        var userSubscriptionId = callbackExtractorService.GetUserSubscriptionIdFromCallback(
-            callback.Data!, callbackPattern);
-        return await userSubscriptionRepository.GetById(userSubscriptionId);
-    }
+    public async Task<Result<UserSubscription?>> GetById(long id) =>
+        await userSubscriptionRepository.GetById(id);
+
+    public Result<bool> CanCheckinOnClass(UserSubscription userSubscription) =>
+        userSubscription.RemainingClasses == 0
+            ? Result.Failure<bool>().WithMessage("No available classes.")
+            : Result.Success(true);
 
     public async Task<Result> CheckinOnClass(UserSubscription userSubscription)
     {
         if (userSubscription.RemainingClasses == 0)
-            return Result.Failure()
-                .WithMessage("You haven't any available classes. Press /subscriptions to manage your subscriptions.");
+            return Result.Failure().WithMessage("No available classes.");
         
         userSubscription.RemainingClasses--;
         return await userSubscriptionRepository.Update(userSubscription);
+    }
+
+    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetAllActiveWithRemainingClasses(string username)
+    {
+        return await userSubscriptionRepository.GetAllActiveWithRemainingClasses(username);
     }
 }

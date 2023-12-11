@@ -9,49 +9,45 @@ namespace Classes.Application.Services;
 
 public interface IBotService
 {
+    void UseChat(long chatId);
     Task<Message> SendTextMessageAsync(
-        long chatId,
         string text,
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown);
-
     Task<Message> SendTextMessageWithReplyAsync(
-        long chatId,
         string text,
         IReplyMarkup replyMarkup,
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown);
-
-    Task SendChatActionAsync(
-        long chatId,
-        CancellationToken cancellationToken,
-        ChatAction typing = ChatAction.Typing);
+    Task SendChatActionAsync(CancellationToken cancellationToken, ChatAction typing = ChatAction.Typing);
 }
 
 public class BotService(ITelegramBotClient botClient) : IBotService
 {
+    private long ChatId { get; set; }
+
+    public void UseChat(long chatId) => ChatId = chatId;
+
     public async Task<Message> SendTextMessageAsync(
-        long chatId,
         string text,
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown)
     {
         return await botClient.SendTextMessageAsync(
-            chatId,
+            ChatId,
             text,
             parseMode: parseMode,
             cancellationToken: cancellationToken);
     }
 
     public async Task<Message> SendTextMessageWithReplyAsync(
-        long chatId,
         string text,
         IReplyMarkup replyMarkup,
         CancellationToken cancellationToken,
         ParseMode parseMode = ParseMode.Markdown)
     {
         return await botClient.SendTextMessageAsync(
-            chatId,
+            ChatId,
             text,
             parseMode: parseMode,
             replyMarkup: replyMarkup,
@@ -59,13 +55,9 @@ public class BotService(ITelegramBotClient botClient) : IBotService
     }
 
     public async Task SendChatActionAsync(
-        long chatId,
         CancellationToken cancellationToken,
         ChatAction typing = ChatAction.Typing)
     {
-        await botClient.SendChatActionAsync(
-            chatId,
-            chatAction: typing,
-            cancellationToken: cancellationToken);
+        await botClient.SendChatActionAsync(ChatId, chatAction: typing, cancellationToken: cancellationToken);
     }
 }

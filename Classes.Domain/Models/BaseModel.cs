@@ -1,3 +1,5 @@
+using System;
+
 namespace Classes.Domain.Models;
 
 public class BaseModel

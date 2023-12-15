@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Classes.Domain.Resources.Handlers.Start {
+namespace Classes.Application.Resources.Handlers.Checkin {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class StartHandler_en_US {
+    internal class CheckinHandler_en_US {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal StartHandler_en_US() {
+        internal CheckinHandler_en_US() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Classes.Domain.Resources.Handlers.Start.StartHandler_en_US", typeof(StartHandler_en_US).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Classes.Application.Resources.Handlers.Checkin.CheckinHandler_en_US", typeof(CheckinHandler_en_US).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,21 +45,33 @@ namespace Classes.Domain.Resources.Handlers.Start {
             }
         }
         
-        internal static string UsernameIsNotFilledIn {
+        internal static string NoAvailableClasses {
             get {
-                return ResourceManager.GetString("UsernameIsNotFilledIn", resourceCulture);
+                return ResourceManager.GetString("NoAvailableClasses", resourceCulture);
             }
         }
         
-        internal static string CommunicationLanguage {
+        internal static string ClassCheckinProblem {
             get {
-                return ResourceManager.GetString("CommunicationLanguage", resourceCulture);
+                return ResourceManager.GetString("ClassCheckinProblem", resourceCulture);
             }
         }
         
-        internal static string ManageClassSubscriptions {
+        internal static string SubscriptionNotFound {
             get {
-                return ResourceManager.GetString("ManageClassSubscriptions", resourceCulture);
+                return ResourceManager.GetString("SubscriptionNotFound", resourceCulture);
+            }
+        }
+        
+        internal static string SendLocation {
+            get {
+                return ResourceManager.GetString("SendLocation", resourceCulture);
+            }
+        }
+        
+        internal static string SendLocationRequest {
+            get {
+                return ResourceManager.GetString("SendLocationRequest", resourceCulture);
             }
         }
     }

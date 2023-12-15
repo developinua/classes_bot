@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Classes.Domain.Resources.Handlers.Subscriptions {
+namespace Classes.Domain.Resources.Handlers.Checkin {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SubscriptionsHandler_en_us {
+    internal class CheckinHandler_uk_UA {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SubscriptionsHandler_en_us() {
+        internal CheckinHandler_uk_UA() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Classes.Domain.Resources.Handlers.Subscriptions.SubscriptionsHandler_en_us", typeof(SubscriptionsHandler_en_us).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Classes.Domain.Resources.Handlers.Checkin.CheckinHandler_uk_UA", typeof(CheckinHandler_uk_UA).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,51 +45,33 @@ namespace Classes.Domain.Resources.Handlers.Subscriptions {
             }
         }
         
-        internal static string ChooseSubscription {
+        internal static string NoAvailableClasses {
             get {
-                return ResourceManager.GetString("ChooseSubscription", resourceCulture);
+                return ResourceManager.GetString("NoAvailableClasses", resourceCulture);
             }
         }
         
-        internal static string YourSubscriptions {
+        internal static string ClassCheckinProblem {
             get {
-                return ResourceManager.GetString("YourSubscriptions", resourceCulture);
+                return ResourceManager.GetString("ClassCheckinProblem", resourceCulture);
             }
         }
         
-        internal static string YourSubscription {
+        internal static string SubscriptionNotFound {
             get {
-                return ResourceManager.GetString("YourSubscription", resourceCulture);
+                return ResourceManager.GetString("SubscriptionNotFound", resourceCulture);
             }
         }
         
-        internal static string DoYouWantToCheckin {
+        internal static string SendLocation {
             get {
-                return ResourceManager.GetString("DoYouWantToCheckin", resourceCulture);
+                return ResourceManager.GetString("SendLocation", resourceCulture);
             }
         }
         
-        internal static string ChooseSubscriptionPeriod {
+        internal static string SendLocationRequest {
             get {
-                return ResourceManager.GetString("ChooseSubscriptionPeriod", resourceCulture);
-            }
-        }
-        
-        internal static string NoAvailableSubscriptions {
-            get {
-                return ResourceManager.GetString("NoAvailableSubscriptions", resourceCulture);
-            }
-        }
-        
-        internal static string BuySubscription {
-            get {
-                return ResourceManager.GetString("BuySubscription", resourceCulture);
-            }
-        }
-        
-        internal static string BuySubscriptionApproval {
-            get {
-                return ResourceManager.GetString("BuySubscriptionApproval", resourceCulture);
+                return ResourceManager.GetString("SendLocationRequest", resourceCulture);
             }
         }
     }

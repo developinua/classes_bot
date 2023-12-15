@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Classes.Domain.Resources.Handlers.Subscriptions {
+namespace Classes.Domain.Resources.Handlers.Start {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SubscriptionsHandler_uk_ua {
+    internal class StartHandler_en_US {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SubscriptionsHandler_uk_ua() {
+        internal StartHandler_en_US() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Classes.Domain.Resources.Handlers.Subscriptions.SubscriptionsHandler_uk_ua", typeof(SubscriptionsHandler_uk_ua).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Classes.Domain.Resources.Handlers.Start.StartHandler_en_US", typeof(StartHandler_en_US).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,51 +45,21 @@ namespace Classes.Domain.Resources.Handlers.Subscriptions {
             }
         }
         
-        internal static string ChooseSubscription {
+        internal static string UsernameIsNotFilledIn {
             get {
-                return ResourceManager.GetString("ChooseSubscription", resourceCulture);
+                return ResourceManager.GetString("UsernameIsNotFilledIn", resourceCulture);
             }
         }
         
-        internal static string YourSubscriptions {
+        internal static string CommunicationLanguage {
             get {
-                return ResourceManager.GetString("YourSubscriptions", resourceCulture);
+                return ResourceManager.GetString("CommunicationLanguage", resourceCulture);
             }
         }
         
-        internal static string YourSubscription {
+        internal static string ManageClassSubscriptions {
             get {
-                return ResourceManager.GetString("YourSubscription", resourceCulture);
-            }
-        }
-        
-        internal static string DoYouWantToCheckin {
-            get {
-                return ResourceManager.GetString("DoYouWantToCheckin", resourceCulture);
-            }
-        }
-        
-        internal static string ChooseSubscriptionPeriod {
-            get {
-                return ResourceManager.GetString("ChooseSubscriptionPeriod", resourceCulture);
-            }
-        }
-        
-        internal static string NoAvailableSubscriptions {
-            get {
-                return ResourceManager.GetString("NoAvailableSubscriptions", resourceCulture);
-            }
-        }
-        
-        internal static string BuySubscription {
-            get {
-                return ResourceManager.GetString("BuySubscription", resourceCulture);
-            }
-        }
-        
-        internal static string BuySubscriptionApproval {
-            get {
-                return ResourceManager.GetString("BuySubscriptionApproval", resourceCulture);
+                return ResourceManager.GetString("ManageClassSubscriptions", resourceCulture);
             }
         }
     }

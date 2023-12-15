@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using Classes.Domain.Models;
 using Classes.Domain.Models.Enums;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +28,7 @@ public class CallbackExtractorService(ILogger<CallbackExtractorService> logger) 
         if (!string.IsNullOrEmpty(cultureName)) return cultureName;
 
         logger.LogWarning("Culture name can't be parsed.");
-        return "en-us";
+        return new Culture().Name;
     }
     
     public long GetUserSubscriptionIdFromCallback(string callbackData, string callbackPattern)

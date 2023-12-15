@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Classes.Domain.Resources.Handlers.Checkin {
+namespace Classes.Domain.Resources.Handlers.Subscriptions {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class CheckinHandler_uk_ua {
+    internal class SubscriptionsHandler_uk_UA {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CheckinHandler_uk_ua() {
+        internal SubscriptionsHandler_uk_UA() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Classes.Domain.Resources.Handlers.Checkin.CheckinHandler_uk_ua", typeof(CheckinHandler_uk_ua).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Classes.Domain.Resources.Handlers.Subscriptions.SubscriptionsHandler_uk_UA", typeof(SubscriptionsHandler_uk_UA).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,33 +45,51 @@ namespace Classes.Domain.Resources.Handlers.Checkin {
             }
         }
         
-        internal static string NoAvailableClasses {
+        internal static string ChooseSubscription {
             get {
-                return ResourceManager.GetString("NoAvailableClasses", resourceCulture);
+                return ResourceManager.GetString("ChooseSubscription", resourceCulture);
             }
         }
         
-        internal static string ClassCheckinProblem {
+        internal static string YourSubscriptions {
             get {
-                return ResourceManager.GetString("ClassCheckinProblem", resourceCulture);
+                return ResourceManager.GetString("YourSubscriptions", resourceCulture);
             }
         }
         
-        internal static string SubscriptionNotFound {
+        internal static string YourSubscription {
             get {
-                return ResourceManager.GetString("SubscriptionNotFound", resourceCulture);
+                return ResourceManager.GetString("YourSubscription", resourceCulture);
             }
         }
         
-        internal static string SendLocation {
+        internal static string DoYouWantToCheckin {
             get {
-                return ResourceManager.GetString("SendLocation", resourceCulture);
+                return ResourceManager.GetString("DoYouWantToCheckin", resourceCulture);
             }
         }
         
-        internal static string SendLocationRequest {
+        internal static string ChooseSubscriptionPeriod {
             get {
-                return ResourceManager.GetString("SendLocationRequest", resourceCulture);
+                return ResourceManager.GetString("ChooseSubscriptionPeriod", resourceCulture);
+            }
+        }
+        
+        internal static string NoAvailableSubscriptions {
+            get {
+                return ResourceManager.GetString("NoAvailableSubscriptions", resourceCulture);
+            }
+        }
+        
+        internal static string BuySubscription {
+            get {
+                return ResourceManager.GetString("BuySubscription", resourceCulture);
+            }
+        }
+        
+        internal static string BuySubscriptionApproval {
+            get {
+                return ResourceManager.GetString("BuySubscriptionApproval", resourceCulture);
             }
         }
     }

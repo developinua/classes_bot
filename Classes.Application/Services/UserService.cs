@@ -12,7 +12,7 @@ namespace Classes.Application.Services;
 public interface IUserService
 {
     Task<Result> SaveUser(StartCallbackRequest request, Culture culture);
-    Task<Culture> GetUserCulture(string? userId);
+    Task<Culture> GetUserCulture(string? username);
 }
 
 public class UserService(
@@ -36,12 +36,10 @@ public class UserService(
         return result;
     }
 
-    public async Task<Culture> GetUserCulture(string? userId)
+    public Task<Culture> GetUserCulture(string? username)
     {
-        return new Culture
-        {
-            LanguageCode = "en-US"
-        };
+        // todo: get from db
+        return Task.FromResult(new Culture());
     }
 
     private async Task<Result> CreateUser(UserProfile userProfile, string nickname)

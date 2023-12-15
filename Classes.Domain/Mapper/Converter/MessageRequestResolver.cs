@@ -15,11 +15,7 @@ public class MessageRequestValueConverter(IEnumerable<BotMessageRequest> message
 
         if (messageRequest is null) return default;
         
-        return context.Mapper.Map(
-                source,
-                messageRequest,
-                typeof(Message),
-                messageRequest.GetType())
+        return context.Mapper.Map(source, messageRequest, typeof(Message), messageRequest.GetType())
             as IRequest<Result>;
     }
 }

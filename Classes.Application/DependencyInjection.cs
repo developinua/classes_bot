@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -18,9 +17,10 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Telegram.Bot;
 
-namespace Classes.Api;
+namespace Classes.Application;
 
 public static class DependencyInjection
 {
@@ -70,12 +70,13 @@ public static class DependencyInjection
     public static IServiceCollection AddBotRequests(this IServiceCollection services)
     {
         // Register all classes that is assigned from bot requests
-        var botRequests = Assembly.GetExecutingAssembly()
+        var botRequests = Assembly.GetAssembly(typeof(BotMessageRequest))!
             .GetTypes()
             .Where(t =>
                 (typeof(BotMessageRequest).IsAssignableFrom(t)
                  || typeof(BotCallbackRequest).IsAssignableFrom(t))
-                && t is { IsInterface: false, IsAbstract: false });
+                && t is { IsInterface: false, IsAbstract: false })
+            .ToList();
 
         foreach (var callbackRequest in botRequests)
         {
@@ -88,10 +89,33 @@ public static class DependencyInjection
         return services;
     }
     
-    public static IServiceCollection AddLocalizations(this IServiceCollection services)
+    public static IServiceCollection AddCustomLocalizations(this IServiceCollection services)
     {
         services.AddLocalization(options => options.ResourcesPath = "Resources");
+        services.Configure<RequestLocalizationOptions>(options =>
+        {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("uk-UA")
+            };
+            
+            options.DefaultRequestCulture = new RequestCulture("en-US");
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+            options.ApplyCurrentCultureToResponseHeaders = true;
+            options.RequestCultureProviders.Insert(0, new UpdateRequestCultureProvider());
+        });
+
         return services;
+    }
+    
+    public static IApplicationBuilder UseCustomRequestLocalization(this IApplicationBuilder app)
+    {
+        var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>()!.Value;
+        app.UseRequestLocalization(options);
+
+        return app;
     }
 
     public static async Task SetTelegramBotWebHook(this IServiceCollection services, IConfiguration configuration)
@@ -105,36 +129,5 @@ public static class DependencyInjection
         services.AddSingleton(telegramBotClient);
 
         await telegramBotClient.SetWebhookAsync(hook);
-    }
-    
-    public static WebApplication UseLocalizations(this WebApplication app)
-    {
-        app.Use(async (_, next) =>
-        {
-            using var scope = app.Services.CreateScope();
-            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en-us"),
-                new CultureInfo("uk-ua")
-            };
-            var localizationOptions = new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("en-us"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures,
-                ApplyCurrentCultureToResponseHeaders = true,
-                RequestCultureProviders = new List<IRequestCultureProvider>
-                {
-                    new UpdateRequestCultureProvider(userService)
-                }
-            };
-
-            app.UseRequestLocalization(localizationOptions);
-
-            await next();
-        });
-
-        return app;
     }
 }

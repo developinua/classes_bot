@@ -16,8 +16,8 @@ public class ReplyMarkupService : IReplyMarkupService
     public IReplyMarkup GetStartMarkup()
     {
         var replyKeyboardMarkup = InlineKeyboardBuilder.Create()
-            .AddButton("English", "language:en-us")
-            .AddButton("Ukrainian", "language:uk-ua")
+            .AddButton("English", "language:en-US")
+            .AddButton("Ukrainian", "language:uk-UA")
             .Build();
         return replyKeyboardMarkup;
     }

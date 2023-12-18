@@ -31,9 +31,9 @@ public class UserProfileService(IUserProfileRepository userProfileRepository) : 
     public async Task<Result> UpdateUserProfile(UserProfile userProfile)
     {
         var userProfileDb = await userProfileRepository.GetUserProfileByChatId(userProfile.ChatId);
-        return userProfileDb is null
+        return userProfileDb.Data is null
             ? await userProfileRepository.CreateAsync(userProfile)
-            : await userProfileRepository.UpdateAsync(userProfile);
+            : await userProfileRepository.UpdateAsync(userProfileDb.Data);
     }
 
     public async Task<Result> Create(UserProfile userProfile) =>

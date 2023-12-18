@@ -45,17 +45,17 @@ public class UpdateService(
         logger.LogError(
             "Update handler not found\n" +
             "Update type: {updateType}\n" +
-            "Update message type: {messageType}.",
+            "Update message type: {messageType}\\.",
             update.Type,
-            update.Message?.Type.ToString() ?? "No message type was specified.");
+            update.Message?.Type.ToString() ?? "No message type was specified\\.");
 
-        return Result.Failure<IRequest<Result>>().WithMessage("Update handler not found.");
+        return Result.Failure<IRequest<Result>>().WithMessage("Update handler not found\\.");
     }
     
     public Task HandleSuccessResponse(long chatId)
     {
         logger.LogInformation(
-            "Successful response from chat {ChatId}. Date: {DateTime}.",
+            "Successful response from chat {ChatId}\\. Date: {DateTime}\\.",
             chatId.ToString(),
             DateTime.UtcNow);
         return Task.CompletedTask;
@@ -67,11 +67,11 @@ public class UpdateService(
         string? responseMessage = null)
     {
         logger.LogError(
-            "Chat id: {ChatId}\nMessage:\n{ErrorMessage}.",
+            "Chat id: {ChatId}\nMessage:\n{ErrorMessage}\\.",
             chatId.ToString(),
-            responseMessage ?? "No message was specified.");
+            responseMessage ?? "No message was specified\\.");
         
         botService.UseChat(chatId);
-        await botService.SendTextMessageAsync("Can't process the message.", cancellationToken);
+        await botService.SendTextMessageAsync("Can't process the message\\.", cancellationToken);
     }
 }

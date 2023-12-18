@@ -3,16 +3,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Classes.Data.Context;
 
-public class PostgresDbContext : DbContext
+public class PostgresDbContext(DbContextOptions<PostgresDbContext> options) : DbContext(options)
 {
-    public PostgresDbContext(DbContextOptions<PostgresDbContext> options) : base(options)
-    {
-    }
-
-    public DbSet<User> Users { get; set; }
-    public DbSet<Subscription> Subscriptions { get; set; }
-    public DbSet<UserProfile> UsersProfiles { get; set; }
-    public DbSet<UserSubscription> UsersSubscriptions { get; set; }
-    public DbSet<Culture> Cultures { get; set; }
-    public DbSet<Command> Commands { get; set; }
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Subscription> Subscriptions { get; set; } = null!;
+    public DbSet<UserProfile> UsersProfiles { get; set; } = null!;
+    public DbSet<UserSubscription> UsersSubscriptions { get; set; } = null!;
+    public DbSet<Culture> Cultures { get; set; } = null!;
+    public DbSet<Command> Commands { get; set; } = null!;
+    
+    // // Configure your models (if needed)
+    // protected override void OnModelCreating(ModelBuilder modelBuilder)
+    // {
+    //     base.OnModelCreating(modelBuilder);
+    //
+    //     // Model configuration goes here
+    // }
 }

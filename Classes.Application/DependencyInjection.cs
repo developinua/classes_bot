@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Classes.Application.Handlers.Exceptions;
 using Classes.Application.Handlers.Start;
 using Classes.Application.Providers;
 using Classes.Application.Services;
@@ -24,6 +25,14 @@ namespace Classes.Application;
 
 public static class DependencyInjection
 {
+    public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
+    {
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+        
+        return services;
+    }
+
     public static IServiceCollection AddAppServices(this IServiceCollection services)
     {
         services.AddScoped<IBotService, BotService>();

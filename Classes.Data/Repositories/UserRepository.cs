@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Classes.Data.Context;
 using Classes.Domain.Models;
@@ -12,6 +13,7 @@ public interface IUserRepository
 {
     Task<Result<User?>> GetByUsername(string username);
     Task<Result> CreateAsync(User user);
+    Task<Culture?> GetUserCultureByUsername(string? username);
 }
 
 public class UserRepository(
@@ -34,7 +36,16 @@ public class UserRepository(
             return Result.Failure().WithMessage("User hasn't been created.");
         }
     }
-    
+
+    public async Task<Culture?> GetUserCultureByUsername(string? username)
+    {
+        return await dbContext.Users
+            .Include(x => x.UserProfile.Culture)
+            .Where(x => x.NickName == username)
+            .Select(x => x.UserProfile.Culture)
+            .SingleOrDefaultAsync();
+    }
+
     public async Task<Result<User?>> GetByUsername(string username)
     {
         try

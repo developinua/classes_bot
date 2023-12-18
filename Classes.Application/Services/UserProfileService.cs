@@ -10,6 +10,7 @@ public interface IUserProfileService
 {
     UserProfile CreateUserProfile(CallbackQuery callbackQuery, Culture culture);
     Task<Result> UpdateUserProfile(UserProfile userProfile);
+    Task<Result> Create(UserProfile userProfile);
 }
 
 public class UserProfileService(IUserProfileRepository userProfileRepository) : IUserProfileService
@@ -34,4 +35,7 @@ public class UserProfileService(IUserProfileRepository userProfileRepository) : 
             ? await userProfileRepository.CreateAsync(userProfile)
             : await userProfileRepository.UpdateAsync(userProfile);
     }
+
+    public async Task<Result> Create(UserProfile userProfile) =>
+        await userProfileRepository.CreateAsync(userProfile);
 }

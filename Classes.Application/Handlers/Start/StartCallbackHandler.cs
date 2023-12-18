@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Classes.Application.Extensions;
 using Classes.Application.Services;
 using Classes.Domain.Requests;
 using FluentValidation;
@@ -36,9 +35,7 @@ public class StartCallbackHandler(
         
         if (result.IsFailure()) return result;
         
-        await botService.SendTextMessageAsync(
-            localizer.GetString("ManageClassSubscriptions").WithNewLines(),
-            cancellationToken);
+        await botService.SendTextMessageAsync(localizer.GetString("ManageClassSubscriptions"), cancellationToken);
         
         return Result.Success();
     }

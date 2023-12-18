@@ -29,7 +29,7 @@ public class SubscriptionsHandler(
         if (!userSubscriptions.Data.Any())
         {
             await botService.SendTextMessageWithReplyAsync(
-                localizer.GetString("ChooseSubscription").WithNewLines(),
+                localizer.GetString("ChooseSubscription"),
                 replyMarkup: replyMarkupService.GetSubscriptions(),
                 cancellationToken: cancellationToken);
             return Result.Success();

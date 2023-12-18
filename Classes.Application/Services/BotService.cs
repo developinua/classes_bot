@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -35,7 +36,7 @@ public class BotService(ITelegramBotClient botClient) : IBotService
     {
         return await botClient.SendTextMessageAsync(
             ChatId,
-            text,
+            text.Replace("{newline}", Environment.NewLine),
             parseMode: parseMode,
             cancellationToken: cancellationToken);
     }
@@ -48,7 +49,7 @@ public class BotService(ITelegramBotClient botClient) : IBotService
     {
         return await botClient.SendTextMessageAsync(
             ChatId,
-            text,
+            text.Replace("{newline}", Environment.NewLine),
             parseMode: parseMode,
             replyMarkup: replyMarkup,
             cancellationToken: cancellationToken);

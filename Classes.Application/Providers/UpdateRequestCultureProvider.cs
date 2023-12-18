@@ -22,7 +22,7 @@ public class UpdateRequestCultureProvider : IRequestCultureProvider
         var languageCode = update?.Message?.From?.LanguageCode;
         var userCulture = await userService.GetUserCulture(username);
 
-        if (!string.IsNullOrWhiteSpace(userCulture.LanguageCode))
+        if (!string.IsNullOrWhiteSpace(userCulture?.LanguageCode))
             return new ProviderCultureResult(userCulture.LanguageCode);
 
         // case before user is registered

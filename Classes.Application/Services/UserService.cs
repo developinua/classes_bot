@@ -12,21 +12,19 @@ namespace Classes.Application.Services;
 public interface IUserService
 {
     Task<Result> SaveUser(StartCallbackRequest request, Culture culture);
-    Task<Culture> GetUserCulture(string? username);
+    Task<Culture?> GetUserCulture(string? username);
 }
 
 public class UserService(
-        IUpdateService updateService,
         IUserProfileService userProfileService,
         IUserRepository userRepository,
-        IUserProfileRepository userProfileRepository,
         PostgresDbContext dbContext,
         ILogger<UserService> logger)
     : IUserService
 {
     public async Task<Result> SaveUser(StartCallbackRequest request, Culture culture)
     {
-        var username = updateService.GetUsername(request.CallbackQuery);
+        var username = request.CallbackQuery.From.Username ?? request.CallbackQuery.From.Id.ToString();
         var userProfile = userProfileService.CreateUserProfile(request.CallbackQuery, culture);
         var userExists = await userRepository.GetByUsername(username) is not null;
         var result = userExists
@@ -36,32 +34,29 @@ public class UserService(
         return result;
     }
 
-    public Task<Culture> GetUserCulture(string? username)
-    {
-        // todo: get from db
-        return Task.FromResult(new Culture());
-    }
+    public async Task<Culture?> GetUserCulture(string? username) =>
+        await userRepository.GetUserCultureByUsername(username);
 
     private async Task<Result> CreateUser(UserProfile userProfile, string nickname)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
-            var profileCreateResult = await userProfileRepository.CreateAsync(userProfile);
+            var profileCreate = await userProfileService.Create(userProfile);
 
-            if (profileCreateResult.IsFailure())
+            if (profileCreate.IsFailure())
             {
                 await transaction.RollbackAsync();
                 return Result.Failure().WithMessage("Failed to create user profile");
             }
             
-            var userCreateResult = await userRepository.CreateAsync(new User
+            var userCreate = await userRepository.CreateAsync(new User
             {
                 NickName = nickname,
                 UserProfile = userProfile
             });
 
-            if (userCreateResult.IsFailure())
+            if (userCreate.IsFailure())
             {
                 await transaction.RollbackAsync();
                 return Result.Failure().WithMessage("Failed to create user");

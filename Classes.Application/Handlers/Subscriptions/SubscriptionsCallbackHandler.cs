@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Classes.Application.Extensions;
 using Classes.Application.Services;
 using Classes.Domain.Models.Enums;
 using Classes.Domain.Requests;
@@ -47,7 +46,7 @@ public class SubscriptionsCallbackHandler(
     {
         botService.UseChat(request.ChatId);
         await botService.SendTextMessageWithReplyAsync(
-            localizer.GetString("ChooseSubscriptionPeriod").WithNewLines(),
+            localizer.GetString("ChooseSubscriptionPeriod"),
             replyMarkup: replyMarkupService.GetSubscriptionPeriods(request.CallbackQuery.Data!),
             cancellationToken: cancellationToken);
         return Result.Success();
@@ -67,19 +66,15 @@ public class SubscriptionsCallbackHandler(
         
         if (subscription.Data is null)
         {
-            await botService.SendTextMessageAsync(
-                localizer.GetString("NoAvailableSubscriptions").WithNewLines(),
-                cancellationToken);
+            await botService.SendTextMessageAsync(localizer.GetString("NoAvailableSubscriptions"), cancellationToken);
             return Result.Failure().WithMessage("No available subscriptions were founded.");
         }
 
         await botService.SendTextMessageWithReplyAsync(
-            localizer["BuySubscription", subscription.Data.GetPriceWithDiscount()].WithNewLines(),
+            localizer["BuySubscription", subscription.Data.GetPriceWithDiscount()],
             replyMarkupService.GetBuySubscription(subscription.Data.Id),
             cancellationToken);
-        await botService.SendTextMessageAsync(
-            localizer.GetString("BuySubscriptionApproval").WithNewLines(),
-            cancellationToken);
+        await botService.SendTextMessageAsync(localizer.GetString("BuySubscriptionApproval"), cancellationToken);
         
         return Result.Success();
     }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using Classes.Data.Repositories;
 using Classes.Domain.Models;
 using ResultNet;
@@ -13,7 +14,7 @@ public interface IUserProfileService
     Task<Result> Create(UserProfile userProfile);
 }
 
-public class UserProfileService(IUserProfileRepository userProfileRepository) : IUserProfileService
+public class UserProfileService(IUserProfileRepository userProfileRepository, IMapper mapper) : IUserProfileService
 {
     public UserProfile CreateUserProfile(CallbackQuery callbackQuery, Culture culture)
     {
@@ -31,9 +32,13 @@ public class UserProfileService(IUserProfileRepository userProfileRepository) : 
     public async Task<Result> UpdateUserProfile(UserProfile userProfile)
     {
         var userProfileDb = await userProfileRepository.GetUserProfileByChatId(userProfile.ChatId);
-        return userProfileDb.Data is null
-            ? await userProfileRepository.CreateAsync(userProfile)
-            : await userProfileRepository.UpdateAsync(userProfileDb.Data);
+
+        if (userProfileDb.Data is null)
+            return await userProfileRepository.CreateAsync(userProfile);
+        
+        var updatedUserProfile = mapper.Map(userProfileDb.Data, userProfile);
+        
+        return await userProfileRepository.UpdateAsync(updatedUserProfile);
     }
 
     public async Task<Result> Create(UserProfile userProfile) =>

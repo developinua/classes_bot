@@ -26,6 +26,7 @@ public class UserProfileRepository(
         {
             return await dbContext.UsersProfiles
                 .AsNoTracking()
+                .Include(x => x.Culture)
                 .FirstOrDefaultAsync(x => x.ChatId == chatId);
         }
         catch(Exception ex)

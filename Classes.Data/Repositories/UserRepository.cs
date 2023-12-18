@@ -30,7 +30,7 @@ public class UserRepository(
 
             return Result.Success();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             logger.LogError(ex, ex.Message);
             return Result.Failure().WithMessage("User hasn't been created.");
@@ -40,9 +40,10 @@ public class UserRepository(
     public async Task<Culture?> GetUserCultureByUsername(string? username)
     {
         return await dbContext.Users
-            .Include(x => x.UserProfile.Culture)
+            .Include(x => x.UserProfile)
+            .ThenInclude(up => up.Culture)
             .Where(x => x.NickName == username)
-            .Select(x => x.UserProfile.Culture)
+            .Select(x => x.UserProfile != null ? x.UserProfile.Culture : null)
             .SingleOrDefaultAsync();
     }
 
@@ -50,11 +51,11 @@ public class UserRepository(
     {
         try
         {
-           return await dbContext.Users
+            return await dbContext.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.NickName.Equals(username));
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             logger.LogError(ex, ex.Message);
             return Result.Failure<User?>().WithMessage("Can't get user by username.");

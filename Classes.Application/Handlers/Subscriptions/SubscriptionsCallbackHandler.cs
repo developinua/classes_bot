@@ -6,6 +6,7 @@ using Classes.Domain.Requests;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using ResultNet;
 using Telegram.Bot.Types;
 
@@ -17,7 +18,8 @@ public class SubscriptionsCallbackHandler(
         IReplyMarkupService replyMarkupService,
         ICallbackExtractorService callbackExtractorService,
         IStringLocalizer<SubscriptionsHandler> localizer,
-        IValidator<CallbackQuery> validator)
+        IValidator<CallbackQuery> validator,
+        ILogger<SubscriptionsCallbackHandler> logger)
     : IRequestHandler<SubscriptionsCallbackRequest, Result>
 {
     public async Task<Result> Handle(SubscriptionsCallbackRequest request, CancellationToken cancellationToken)
@@ -67,7 +69,9 @@ public class SubscriptionsCallbackHandler(
         if (subscription.Data is null)
         {
             await botService.SendTextMessageAsync(localizer.GetString("NoAvailableSubscriptions"), cancellationToken);
-            return Result.Failure().WithMessage("No available subscriptions were founded.");
+            logger.LogInformation("No available subscriptions were founded.");
+
+            return Result.Success();
         }
 
         await botService.SendTextMessageWithReplyAsync(

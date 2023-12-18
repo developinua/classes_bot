@@ -34,7 +34,7 @@
         <value>*Which subscription period do you prefer\?{newline}*</value>
     </data>
     <data name="NoAvailableSubscriptions" xml:space="preserve">
-        <value>*No available subscriptions were founded\.{newline}Please contact @nazikBro*</value>
+        <value>*This subscription is not available\.{newline}Please contact @nazikBro*</value>
     </data>
     <data name="BuySubscription" xml:space="preserve">
         <value>*Price*: {0}{newline}*P\.S\.* Please send your username and subscription in payment description\.</value>

@@ -34,7 +34,7 @@
         <value>*Який вибираєш період підпискиr\?{newline}*</value>
     </data>
     <data name="NoAvailableSubscriptions" xml:space="preserve">
-        <value>*Не знайшли активних підписок\.{newline}Зв'яжіться з @nazikBro*</value>
+        <value>*Ця підписка не активна\.{newline}Зв'яжіться з @nazikBro*</value>
     </data>
     <data name="BuySubscription" xml:space="preserve">
         <value>*Ціна*: {0}{newline}*P\.S\.* Будь ласка надішли свій нікнейм та підписку в опис до платежу\.</value>

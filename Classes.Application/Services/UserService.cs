@@ -24,18 +24,21 @@ public class UserService(
 {
     public async Task<Result> SaveUser(StartCallbackRequest request, Culture culture)
     {
-        var username = request.CallbackQuery.From.Username ?? request.CallbackQuery.From.Id.ToString();
+        var username = GetUsernameFromRequest(request);
         var userProfile = userProfileService.CreateUserProfile(request.CallbackQuery, culture);
-        var userExists = await userRepository.GetByUsername(username) is not null;
-        var result = userExists
+        var user = await userRepository.GetByUsername(username);
+        var response = user.Data is not null
             ? await userProfileService.UpdateUserProfile(userProfile)
             : await CreateUser(userProfile, username);
 
-        return result;
+        return response;
     }
 
     public async Task<Culture?> GetUserCulture(string? username) =>
         await userRepository.GetUserCultureByUsername(username);
+    
+    private static string GetUsernameFromRequest(StartCallbackRequest request) =>
+        request.CallbackQuery.From.Username ?? request.CallbackQuery.From.Id.ToString();
 
     private async Task<Result> CreateUser(UserProfile userProfile, string nickname)
     {

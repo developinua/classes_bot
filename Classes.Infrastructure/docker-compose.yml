@@ -30,6 +30,19 @@ services:
         networks:
             - classes_net
 
+    db:
+        image: postgres
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ports:
+            - "5432:5432"
+        volumes:
+            - my_dbdata:/var/lib/postgresql/data
+        networks:
+            - classes_net
+
 networks:
     classes_net:
         driver: bridge

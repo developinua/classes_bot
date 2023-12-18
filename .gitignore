@@ -62,3 +62,6 @@ Publish/
 # ssl keys for nginx configuration
 Classes.Api/Certificates/*
 Classes.Infrastructure/nginx/ssl/*
+
+# env files
+Classes.Infrastructure/*.env

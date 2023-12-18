@@ -19,7 +19,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="ChooseSubscription" xml:space="preserve">
-        <value>*Яку підписку вибираєш\\?\n*</value>
+        <value>*Яку підписку вибираєш\?{newline}*</value>
     </data>
     <data name="YourSubscriptions" xml:space="preserve">
         <value>*Твої підписки:*</value>
@@ -28,18 +28,18 @@
         <value>*Твоя підписка:*</value>
     </data>
     <data name="DoYouWantToCheckin" xml:space="preserve">
-        <value>*Ти хочеш відмітитись /checkin на класі\\?*</value>
+        <value>*Ти хочеш відмітитись /checkin на класі\?*</value>
     </data>
     <data name="ChooseSubscriptionPeriod" xml:space="preserve">
-        <value>*Який вибираєш період підпискиr\\?\n*</value>
+        <value>*Який вибираєш період підпискиr\?{newline}*</value>
     </data>
     <data name="NoAvailableSubscriptions" xml:space="preserve">
-        <value>*Не знайшли активних підписок\\.\nЗв'яжіться з @nazikBro*</value>
+        <value>*Не знайшли активних підписок\.{newline}Зв'яжіться з @nazikBro*</value>
     </data>
     <data name="BuySubscription" xml:space="preserve">
-        <value>*Ціна*: {0}\n*P\\.S\\.* Будь ласка надішли свій нікнейм та підписку в опис до платежу\\.</value>
+        <value>*Ціна*: {0}{newline}*P\.S\.* Будь ласка надішли свій нікнейм та підписку в опис до платежу\.</value>
     </data>
     <data name="BuySubscriptionApproval" xml:space="preserve">
-        <value>*Після того, як підписка буде підтверджена викладачем\nЗможеш відмічатись /checkin на класах\\.*</value>
+        <value>*Після того, як підписка буде підтверджена викладачем{newline}Зможеш відмічатись /checkin на класах\.*</value>
     </data>
 </root>

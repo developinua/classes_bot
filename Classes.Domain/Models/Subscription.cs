@@ -26,6 +26,7 @@ public class Subscription : BaseModel
             ? Price
             : Price - Price * DiscountPercent / 100;
 
+    // todo: localize
     public override string ToString()
     {
         var priceText = DiscountPercent == 0

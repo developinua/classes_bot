@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Classes.Application.Extensions;
 using Classes.Application.Services;
 using Classes.Domain.Requests;
 using MediatR;
@@ -26,8 +27,7 @@ public class StartHandler(
         }
 
         await botService.SendTextMessageWithReplyAsync(
-            // localizer.GetString("CommunicationLanguage"),
-            "*\ud83d\ude0a Hi\\!*\n\n*What language do you want to communicate in\\?*",
+            localizer["CommunicationLanguage"].WithNewLines(),
             replyMarkupService.GetStartMarkup(),
             cancellationToken);
         

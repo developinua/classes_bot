@@ -46,10 +46,7 @@
     <EmbeddedResource Update="Resources\Handlers\Checkin\CheckinHandler.en-US.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CheckinHandler.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Handlers\Checkin\CheckinHandler-uk-UA.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CheckinHandler-uk-UA.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Handlers\Start\StartHandler.en-US.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -67,6 +64,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SubscriptionsHandler.uk-UA.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Handlers\Checkin\CheckinHandler.ua-UA.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckinHandler.ua-UA.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Handlers\Checkin\CheckinHandler.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckinHandler.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Handlers\Checkin\CheckinHandler.uk-UA.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CheckinHandler.uk-UA.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -74,11 +84,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CheckinHandler.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Handlers\Checkin\CheckinHandler-uk-UA.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CheckinHandler-uk-UA.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Handlers\Start\StartHandler.en-US.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -99,6 +104,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SubscriptionsHandler.uk-UA.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Handlers\Checkin\CheckinHandler.ua-UA.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CheckinHandler.ua-UA.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Handlers\Checkin\CheckinHandler.en-US.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CheckinHandler.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Handlers\Checkin\CheckinHandler.uk-UA.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CheckinHandler.uk-UA.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 

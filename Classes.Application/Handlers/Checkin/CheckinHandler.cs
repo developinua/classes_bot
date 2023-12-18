@@ -62,6 +62,7 @@ public class CheckinHandler(
         
         async Task SendSubscriptionTitle()
         {
+            // todo: localize
             var replyMessage = userSubscriptions.Data.Any()
                 ? userSubscriptions.Data.Count == 1 ? "*Your subscription:*" : "*Your subscriptions:*"
                 : "You have no subscriptions. Press /subscriptions to buy one.";
@@ -74,6 +75,7 @@ public class CheckinHandler(
 
         async Task SendSubscriptionDetails(UserSubscription userSubscription)
         {
+            // todo: localize
             var replyText =
                 "*Subscription:\n*" +
                 $"Name: {userSubscription.Subscription.Name}\n" +
@@ -90,6 +92,7 @@ public class CheckinHandler(
         {
             if (!userSubscriptions.Data.Any()) return;
         
+            // todo: localize
             await botService.SendTextMessageAsync(
                 "*Press check-in button on the subscription where you want the class to be taken from*",
                 cancellationToken);

@@ -19,7 +19,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="ChooseSubscription" xml:space="preserve">
-        <value>*Which subscription do you want to choose\\?\n*</value>
+        <value>*Which subscription do you want to choose\?{newline}*</value>
     </data>
     <data name="YourSubscriptions" xml:space="preserve">
         <value>*Your subscriptions:*</value>
@@ -28,18 +28,18 @@
         <value>*Your subscription:*</value>
     </data>
     <data name="DoYouWantToCheckin" xml:space="preserve">
-        <value>*Do you want to /checkin class\\?*</value>
+        <value>*Do you want to /checkin class\?*</value>
     </data>
     <data name="ChooseSubscriptionPeriod" xml:space="preserve">
-        <value>*Which subscription period do you prefer\\?\n*</value>
+        <value>*Which subscription period do you prefer\?{newline}*</value>
     </data>
     <data name="NoAvailableSubscriptions" xml:space="preserve">
-        <value>*No available subscriptios were founded\\.\nPlease contact @nazikBro*</value>
+        <value>*No available subscriptions were founded\.{newline}Please contact @nazikBro*</value>
     </data>
     <data name="BuySubscription" xml:space="preserve">
-        <value>*Price*: {0}\n*P\\.S\\.* Please send your username and subscription in payment description\\.</value>
+        <value>*Price*: {0}{newline}*P\.S\.* Please send your username and subscription in payment description\.</value>
     </data>
     <data name="BuySubscriptionApproval" xml:space="preserve">
-        <value>*After your subscription will be approved by teacher\nYou will be able to /checkin on classes\\.*</value>
+        <value>*After your subscription will be approved by teacher{newline}You will be able to /checkin on classes\.*</value>
     </data>
 </root>

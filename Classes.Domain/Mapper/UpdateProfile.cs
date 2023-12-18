@@ -1,4 +1,3 @@
-using System;
 using System.Linq.Expressions;
 using AutoMapper;
 using Classes.Domain.Mapper.Converter;

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Classes.Application.Extensions;
 using Classes.Application.Services;
 using Classes.Domain.Requests;
 using FluentValidation;
@@ -28,13 +29,16 @@ public class StartCallbackHandler(
         await botService.SendChatActionAsync(cancellationToken);
         
         var cultureName = callbackExtractorService.GetCultureNameFromCallbackQuery(
-            request.CallbackQuery.Data, request.CallbackPattern);
+            request.CallbackQuery.Data,
+            request.CallbackPattern);
         var culture = await cultureService.GetByName(cultureName);
         var result = await userService.SaveUser(request, culture);
         
         if (result.IsFailure()) return result;
         
-        await botService.SendTextMessageAsync(localizer.GetString("ManageClassSubscriptions"), cancellationToken);
+        await botService.SendTextMessageAsync(
+            localizer.GetString("ManageClassSubscriptions").WithNewLines(),
+            cancellationToken);
         
         return Result.Success();
     }

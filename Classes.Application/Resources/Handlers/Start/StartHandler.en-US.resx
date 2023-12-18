@@ -22,9 +22,9 @@
         <value>Fill in the *username* in your account settings and then press again /start</value>
     </data>
     <data name="CommunicationLanguage" xml:space="preserve">
-        <value>*\ud83d\ude0a Hi\\!*\n\n*What language do you want to communicate in\\?*</value>
+        <value>*😊 Hi\!{newline}{newline}What language do you want to communicate in\?*</value>
     </data>
     <data name="ManageClassSubscriptions" xml:space="preserve">
-        <value>*\ud83d\ude0a Successfully\\!  \ud83d\ude0a*\nPress /subscriptions to manage your classes\\.</value>
+        <value>*😊Successfully\! 😊*{newline}Press /subscriptions to manage your classes\.</value>
     </data>
 </root>

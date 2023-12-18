@@ -18,19 +18,4 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="NoAvailableClasses" xml:space="preserve">
-        <value>Немає куплених класів. Натисни /subscriptions щоб керувати своїми класами.</value>
-    </data>
-    <data name="ClassCheckinProblem" xml:space="preserve">
-        <value>Були проблеми із відміченням на класі.  Будь ласка напиши @nazikBro для уточнення деталей.</value>
-    </data>
-    <data name="SubscriptionNotFound" xml:space="preserve">
-        <value>Ви не купили цей клас. Будь ласка напиши @nazikBro для уточнення деталей.</value>
-    </data>
-    <data name="SendLocation" xml:space="preserve">
-        <value>Надішли мені будь ласка своє . розташування, щоб я міг перевірити чи ти зараз на класі. </value>
-    </data>
-    <data name="SendLocationRequest" xml:space="preserve">
-        <value>Надіслати місце розташування</value>
-    </data>
 </root>

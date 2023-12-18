@@ -26,7 +26,8 @@ public class StartHandler(
         }
 
         await botService.SendTextMessageWithReplyAsync(
-            localizer.GetString("CommunicationLanguage"),
+            // localizer.GetString("CommunicationLanguage"),
+            "*\ud83d\ude0a Hi\\!*\n\n*What language do you want to communicate in\\?*",
             replyMarkupService.GetStartMarkup(),
             cancellationToken);
         

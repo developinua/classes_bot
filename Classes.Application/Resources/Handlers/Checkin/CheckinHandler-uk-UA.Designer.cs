@@ -44,35 +44,5 @@ namespace Classes.Application.Resources.Handlers.Checkin {
                 resourceCulture = value;
             }
         }
-        
-        internal static string NoAvailableClasses {
-            get {
-                return ResourceManager.GetString("NoAvailableClasses", resourceCulture);
-            }
-        }
-        
-        internal static string ClassCheckinProblem {
-            get {
-                return ResourceManager.GetString("ClassCheckinProblem", resourceCulture);
-            }
-        }
-        
-        internal static string SubscriptionNotFound {
-            get {
-                return ResourceManager.GetString("SubscriptionNotFound", resourceCulture);
-            }
-        }
-        
-        internal static string SendLocation {
-            get {
-                return ResourceManager.GetString("SendLocation", resourceCulture);
-            }
-        }
-        
-        internal static string SendLocationRequest {
-            get {
-                return ResourceManager.GetString("SendLocationRequest", resourceCulture);
-            }
-        }
     }
 }

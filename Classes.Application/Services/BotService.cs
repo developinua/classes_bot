@@ -13,12 +13,12 @@ public interface IBotService
     Task<Message> SendTextMessageAsync(
         string text,
         CancellationToken cancellationToken,
-        ParseMode parseMode = ParseMode.Markdown);
+        ParseMode parseMode = ParseMode.MarkdownV2);
     Task<Message> SendTextMessageWithReplyAsync(
         string text,
         IReplyMarkup replyMarkup,
         CancellationToken cancellationToken,
-        ParseMode parseMode = ParseMode.Markdown);
+        ParseMode parseMode = ParseMode.MarkdownV2);
     Task SendChatActionAsync(CancellationToken cancellationToken, ChatAction typing = ChatAction.Typing);
 }
 
@@ -31,7 +31,7 @@ public class BotService(ITelegramBotClient botClient) : IBotService
     public async Task<Message> SendTextMessageAsync(
         string text,
         CancellationToken cancellationToken,
-        ParseMode parseMode = ParseMode.Markdown)
+        ParseMode parseMode = ParseMode.MarkdownV2)
     {
         return await botClient.SendTextMessageAsync(
             ChatId,
@@ -44,7 +44,7 @@ public class BotService(ITelegramBotClient botClient) : IBotService
         string text,
         IReplyMarkup replyMarkup,
         CancellationToken cancellationToken,
-        ParseMode parseMode = ParseMode.Markdown)
+        ParseMode parseMode = ParseMode.MarkdownV2)
     {
         return await botClient.SendTextMessageAsync(
             ChatId,

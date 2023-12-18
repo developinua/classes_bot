@@ -7,10 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddAppServices()
     .AddDatabase(builder.Configuration)
+    .AddCustomLocalizations()
     .AddMediator()
     .AddAutoMapper()
     .AddBotRequests()
-    .AddCustomLocalizations()
     .AddControllers()
     .AddNewtonsoftJson(options => options.UseMemberCasing());
 
@@ -19,9 +19,9 @@ await builder.Services.SetTelegramBotWebHook(builder.Configuration);
 var app = builder.Build();
 
 app
-    .UseCustomRequestLocalization()
     .UseHttpsRedirection()
-    .UseRouting();
+    .UseRouting()
+    .UseCustomRequestLocalization();
 app.MapControllers();
 
 app.Run();

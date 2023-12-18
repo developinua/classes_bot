@@ -1,8 +1,0 @@
-version: 2
-authtoken: 2XaeoTzLqCztU2SmZ8wViB9hItP_jo3a35MTNtxoYh276GK9
-
-tunnels:
-  web:
-    proto: http
-    addr: 4000
-    hostname: classes.ngrok.io

@@ -2,8 +2,8 @@ version: "3.8"
 
 services:
     classes.api:
-        image: classes.api
         container_name: classes.api
+        image: classes.api
         build:
             context: ../
             dockerfile: Classes.Infrastructure/api/Dockerfile
@@ -15,11 +15,13 @@ services:
             - ASPNETCORE_URLS=https://+:4001;http://+:4000
             - ASPNETCORE_Kestrel__Certificates__Default__Path=Certificates/classes.pem
             - ASPNETCORE_Kestrel__Certificates__Default__KeyPath=Certificates/classes.key
+            - TelegramBot__Token=${TelegramBot_Token}
+            - ConnectionStrings__DefaultConnection=${ConnectionStrings_DefaultConnection}
         networks:
             - classes_net
 
-    classes.nginx:
-        container_name: classes.nginx
+    classes.reverse_proxy:
+        container_name: classes.reverse_proxy
         build:
             context: ./nginx
             dockerfile: Dockerfile
@@ -30,7 +32,8 @@ services:
         networks:
             - classes_net
 
-    db:
+    classes.db:
+        container_name: classes.db
         image: postgres
         restart: unless-stopped
         environment:
@@ -42,6 +45,9 @@ services:
             - my_dbdata:/var/lib/postgresql/data
         networks:
             - classes_net
+
+volumes:
+    my_dbdata:
 
 networks:
     classes_net:

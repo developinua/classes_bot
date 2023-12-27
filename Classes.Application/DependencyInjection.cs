@@ -134,6 +134,13 @@ public static class DependencyInjection
 
         return app;
     }
+    
+    public static IApplicationBuilder UseMiddlewares(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<UsernameMustBeFilledInMiddleware>();
+
+        return app;
+    }
 
     public static async Task SetTelegramBotWebHook(this IServiceCollection services, IConfiguration configuration)
     {

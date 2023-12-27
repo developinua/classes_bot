@@ -1,5 +1,4 @@
 using Classes.Application;
-using Classes.Application.Middleware;
 using Classes.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +26,7 @@ app
     .UseRouting()
     .UseCustomRequestLocalization()
     .UseExceptionHandler()
-    .UseMiddleware<UsernameMustBeFilledInMiddleware>();
+    .UseMiddlewares();
 app.MapControllers();
 
 await app.MigrateDbAsync();

@@ -7,7 +7,7 @@ namespace Classes.Domain.Requests;
 
 public class CheckinCallbackRequest : BotCallbackRequest, IRequest<Result>
 {
-    public override string CallbackPattern => "(?i)(?<query>check-in-subscription-id):(?<data>.*)";
+    public override string CallbackPattern => "(?i)(?<query>user-subscription-id):(?<data>.*)";
     public long ChatId { get; set; }
     public CallbackQuery CallbackQuery { get; set; } = null!;
 }

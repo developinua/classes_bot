@@ -11,8 +11,9 @@ namespace Classes.Application.Services;
 
 public interface IUserService
 {
-    Task<Result> SaveUser(StartCallbackRequest request, Culture culture);
-    Task<Culture?> GetUserCulture(string? username);
+    Task<Result> SaveUser(StartRequest request, Culture culture);
+    Task<Result<User?>> GetByUsername(string? username);
+    Task<bool> UserAlreadyRegistered(string username);
 }
 
 public class UserService(
@@ -22,23 +23,26 @@ public class UserService(
         ILogger<UserService> logger)
     : IUserService
 {
-    public async Task<Result> SaveUser(StartCallbackRequest request, Culture culture)
+    public async Task<Result> SaveUser(StartRequest request, Culture culture)
     {
-        var username = GetUsernameFromRequest(request);
-        var userProfile = userProfileService.CreateUserProfile(request.CallbackQuery, culture);
-        var user = await userRepository.GetByUsername(username);
-        var response = user.Data is not null
-            ? await userProfileService.UpdateUserProfile(userProfile)
-            : await CreateUser(userProfile, username);
+        var user = await userRepository.GetByUsername(request.Username);
+        var userProfile = userProfileService.GetUserProfileFromMessage(request.Message, culture);
 
-        return response;
+        return user.Data is null
+            ? await CreateUser(userProfile, request.Username)
+            : await userProfileService.UpdateUserProfile(userProfile);
     }
 
-    public async Task<Culture?> GetUserCulture(string? username) =>
-        await userRepository.GetUserCultureByUsername(username);
-    
-    private static string GetUsernameFromRequest(StartCallbackRequest request) =>
-        request.CallbackQuery.From.Username ?? request.CallbackQuery.From.Id.ToString();
+    public async Task<Result<User?>> GetByUsername(string? username)
+    {
+        if (string.IsNullOrEmpty(username))
+            return Result.Failure<User?>().WithMessage("Username must be filled in");
+
+        return await userRepository.GetByUsername(username);
+    }
+
+    public async Task<bool> UserAlreadyRegistered(string username) =>
+        await userRepository.UserExists(username);
 
     private async Task<Result> CreateUser(UserProfile userProfile, string nickname)
     {
@@ -73,7 +77,7 @@ public class UserService(
         catch (Exception ex)
         {
             await transaction.RollbackAsync();
-            logger.LogCritical(ex, "Failed to create user");
+            logger.LogCritical(ex, "Failed to create user: {Username}.", nickname);
 
             return Result.Failure().WithMessage("Failed to create user");
         }

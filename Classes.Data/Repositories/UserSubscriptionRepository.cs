@@ -15,10 +15,13 @@ namespace Classes.Data.Repositories;
 public interface IUserSubscriptionRepository
 {
     Task<Result> Add(UserSubscription userSubscription);
+    Task<Result> AddRange(IReadOnlyCollection<UserSubscription> userSubscriptions);
     Task<Result<UserSubscription?>> GetById(long id);
     Task<Result<IReadOnlyCollection<UserSubscription>>> GetByUsername(string username);
     Task<Result<UserSubscription?>> GetByUsernameAndType(string username, SubscriptionType subscriptionType);
-    Task<Result<IReadOnlyCollection<UserSubscription>>> GetAllActiveWithRemainingClasses(string username);
+    Task<Result<IReadOnlyCollection<UserSubscription>>> GetUserSubscriptions(string username);
+    Task<Result<IReadOnlyCollection<UserSubscription>>> GetUserSubscriptionsByType(
+        string username, SubscriptionType subscriptionType);
     Task<Result> Update(UserSubscription userSubscription);
 }
 
@@ -43,13 +46,29 @@ public class UserSubscriptionRepository(
         }
     }
 
+    public async Task<Result> AddRange(IReadOnlyCollection<UserSubscription> userSubscriptions)
+    {
+        try
+        {
+            await dbContext.UsersSubscriptions.AddRangeAsync(userSubscriptions);
+            await dbContext.SaveChangesAsync();
+            
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            return Result.Failure().WithMessage("User subscription hasn't been created.");
+        }
+    }
+
     public async Task<Result<UserSubscription?>> GetById(long id)
     {
         try
         {
             var userSubscription = await dbContext.UsersSubscriptions
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id.Equals(id));
+                .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.Subscription.IsActive);
             return Result.Success(userSubscription);
         }
         catch (Exception ex)
@@ -86,7 +105,9 @@ public class UserSubscriptionRepository(
             var response = await dbContext.UsersSubscriptions
                 .FirstOrDefaultAsync(x =>
                     x.User.NickName == username
-                    && x.Subscription.Type == subscriptionType);
+                    && x.Subscription.Type == subscriptionType
+                    && x.RemainingClasses > 0
+                    && x.Subscription.IsActive);
             return Result.Success(response);
         }
         catch (Exception ex)
@@ -97,7 +118,7 @@ public class UserSubscriptionRepository(
         }
     }
 
-    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetAllActiveWithRemainingClasses(string username)
+    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetUserSubscriptions(string username)
     {
         try
         {
@@ -113,7 +134,30 @@ public class UserSubscriptionRepository(
         {
             logger.LogError(ex, ex.Message);
             return Result.Failure<Result<IReadOnlyCollection<UserSubscription>>>()
-                .WithMessage("Can't get all active user subscription by username with remaining classes.");
+                .WithMessage("Can't get active user subscriptions with classes by username.");
+        }
+    }
+
+    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetUserSubscriptionsByType(
+        string username,
+        SubscriptionType subscriptionType)
+    {
+        try
+        {
+            var response = await dbContext.UsersSubscriptions
+                .Where(x =>
+                    x.User.NickName == username
+                    && x.Subscription.Type == subscriptionType
+                    && x.RemainingClasses > 0
+                    && x.Subscription.IsActive)
+                .ToListAsync();
+            return Result.Success(response.AsReadOnlyCollection());
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            return Result.Failure<Result<IReadOnlyCollection<UserSubscription>>>()
+                .WithMessage("Can't get active user subscriptions with classes by username.");
         }
     }
     

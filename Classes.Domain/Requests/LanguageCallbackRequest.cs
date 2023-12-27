@@ -5,7 +5,7 @@ using Telegram.Bot.Types;
 
 namespace Classes.Domain.Requests;
 
-public class StartCallbackRequest : BotCallbackRequest, IRequest<Result>
+public class LanguageCallbackRequest : BotCallbackRequest, IRequest<Result>
 {
     public override string CallbackPattern => @"(?i)(?<query>language):(?<data>\w{2}-\w{2})";
     public long ChatId { get; set; }

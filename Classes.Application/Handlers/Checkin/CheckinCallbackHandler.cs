@@ -27,7 +27,7 @@ public class CheckinCallbackHandler(
 
         await botService.SendChatActionAsync(cancellationToken);
 
-        var userSubscriptionId = callbackExtractorService.GetUserSubscriptionIdFromCallback(
+        var userSubscriptionId = callbackExtractorService.GetUserSubscriptionId(
             request.CallbackQuery.Data!, request.CallbackPattern);
         var userSubscription = await userSubscriptionService.GetById(userSubscriptionId);
 

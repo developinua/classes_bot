@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Classes.Data.Repositories;
 using Classes.Domain.Models;
+using Classes.Domain.Models.Enums;
 using ResultNet;
 
 namespace Classes.Application.Services;
@@ -9,15 +10,24 @@ namespace Classes.Application.Services;
 public interface IUserSubscriptionService
 {
     Task<Result<UserSubscription?>> GetById(long id);
+    Task<Result<IReadOnlyCollection<UserSubscription>>> GetUserSubscriptions(string username);
+    Task<Result<IReadOnlyCollection<UserSubscription>>> GetUserSubscriptionsByType(
+        string username, SubscriptionType subscriptionType);
     Result<bool> CanCheckinOnClass(UserSubscription userSubscription);
     Task<Result> CheckinOnClass(UserSubscription userSubscription);
-    Task<Result<IReadOnlyCollection<UserSubscription>>> GetAllActiveWithRemainingClasses(string username);
 }
 
 public class UserSubscriptionService(IUserSubscriptionRepository userSubscriptionRepository) : IUserSubscriptionService
 {
     public async Task<Result<UserSubscription?>> GetById(long id) =>
         await userSubscriptionRepository.GetById(id);
+
+    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetUserSubscriptions(string username) =>
+        await userSubscriptionRepository.GetUserSubscriptions(username);
+
+    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetUserSubscriptionsByType(
+        string username, SubscriptionType subscriptionType) =>
+        await userSubscriptionRepository.GetUserSubscriptionsByType(username, subscriptionType);
 
     public Result<bool> CanCheckinOnClass(UserSubscription userSubscription) =>
         userSubscription.RemainingClasses == 0
@@ -31,10 +41,5 @@ public class UserSubscriptionService(IUserSubscriptionRepository userSubscriptio
         
         userSubscription.RemainingClasses--;
         return await userSubscriptionRepository.Update(userSubscription);
-    }
-
-    public async Task<Result<IReadOnlyCollection<UserSubscription>>> GetAllActiveWithRemainingClasses(string username)
-    {
-        return await userSubscriptionRepository.GetAllActiveWithRemainingClasses(username);
     }
 }

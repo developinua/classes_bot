@@ -65,7 +65,7 @@ public class CheckinHandler(
             // todo: localize
             var replyMessage = userSubscriptions.Data.Any()
                 ? userSubscriptions.Data.Count == 1 ? "*Your subscription:*" : "*Your subscriptions:*"
-                : "You have no subscriptions. Press /subscriptions to buy one.";
+                : "You have no subscriptions\\. Press /subscriptions to buy one\\.";
 
             await botService.SendTextMessageWithReplyAsync(
                 replyMessage,

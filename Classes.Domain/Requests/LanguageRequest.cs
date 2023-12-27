@@ -1,14 +1,12 @@
 using Classes.Domain.Requests.Bot;
 using MediatR;
 using ResultNet;
-using Telegram.Bot.Types;
 
 namespace Classes.Domain.Requests;
 
-public class StartRequest : BotMessageRequest, IRequest<Result>
+public class LanguageRequest : BotMessageRequest, IRequest<Result>
 {
-    protected override string Name => "/start";
+    protected override string Name => "/language";
     public long ChatId { get; set; }
     public string Username { get; set; } = null!;
-    public Message Message { get; set; } = null!;
 }

@@ -1,0 +1,3 @@
+dotnet ef migrations add --project Classes.Data --startup-project Classes.Api
+dotnet ef migrations remove --project Classes.Data --startup-project Classes.Api
+dotnet ef database update --project Classes.Data --startup-project Classes.Api

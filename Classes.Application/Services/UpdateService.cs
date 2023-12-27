@@ -1,9 +1,13 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ResultNet;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -13,10 +17,13 @@ namespace Classes.Application.Services;
 public interface IUpdateService
 {
     long GetChatId(Update update);
-    string GetUsername(CallbackQuery callbackQuery);
+    string? GetUsername(Update update);
+    string? GetUsername(CallbackQuery? callbackQuery);
+    string? GetUserCultureName(Message? message);
     Result<IRequest<Result>> GetRequestFromUpdate(Update update);
     Task HandleSuccessResponse(long chatId);
     Task HandleFailureResponse(long chatId, CancellationToken cancellationToken, string? responseMessage = null);
+    Task<Update> GetUpdateFromHttpRequest(HttpContext httpContext);
 }
 
 public class UpdateService(
@@ -28,8 +35,13 @@ public class UpdateService(
     public long GetChatId(Update update) =>
         update.Message?.From?.Id ?? update.CallbackQuery!.From.Id;
 
-    public string GetUsername(CallbackQuery callbackQuery) =>
-        callbackQuery.From.Username ?? callbackQuery.From.Id.ToString();
+    public string? GetUsername(Update update) =>
+        update.Message?.From?.Username ?? GetUsername(update.CallbackQuery!);
+
+    public string? GetUsername(CallbackQuery? callbackQuery) =>
+        callbackQuery?.From.Username ?? callbackQuery?.From.Id.ToString();
+
+    public string? GetUserCultureName(Message? message) => message?.From?.LanguageCode;
 
     public Result<IRequest<Result>> GetRequestFromUpdate(Update update)
     {
@@ -51,7 +63,25 @@ public class UpdateService(
 
         return Result.Failure<IRequest<Result>>().WithMessage("Update handler not found\\.");
     }
-    
+
+    public async Task<Update> GetUpdateFromHttpRequest(HttpContext httpContext)
+    {
+        // Needed to re-read the stream
+        httpContext.Request.EnableBuffering();
+
+        using var reader = new StreamReader(
+            httpContext.Request.Body,
+            encoding: Encoding.UTF8,
+            detectEncodingFromByteOrderMarks: false,
+            leaveOpen: true);
+        var body = await reader.ReadToEndAsync();
+
+        // Reset the stream position for the next middleware
+        httpContext.Request.Body.Position = 0;
+
+        return JsonConvert.DeserializeObject<Update>(body)!;
+    }
+
     public Task HandleSuccessResponse(long chatId)
     {
         logger.LogInformation(
@@ -60,7 +90,7 @@ public class UpdateService(
             DateTime.UtcNow);
         return Task.CompletedTask;
     }
-    
+
     public async Task HandleFailureResponse(
         long chatId,
         CancellationToken cancellationToken,
@@ -70,7 +100,7 @@ public class UpdateService(
             "Chat id: {ChatId}\nMessage:\n{ErrorMessage}\\.",
             chatId.ToString(),
             responseMessage ?? "No message was specified\\.");
-        
+
         botService.UseChat(chatId);
         await botService.SendTextMessageAsync("Can't process the message\\.", cancellationToken);
     }

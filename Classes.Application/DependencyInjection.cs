@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Classes.Application.Handlers.Exceptions;
 using Classes.Application.Handlers.Start;
+using Classes.Application.Middleware;
 using Classes.Application.Providers;
 using Classes.Application.Services;
 using Classes.Data.Context;
@@ -52,6 +53,13 @@ public static class DependencyInjection
         services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
         services.AddScoped<ICultureRepository, CultureRepository>();
         
+        return services;
+    }
+
+    public static IServiceCollection AddMiddlewares(this IServiceCollection services)
+    {
+        services.AddScoped<UsernameMustBeFilledInMiddleware>();
+
         return services;
     }
 

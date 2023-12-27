@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Classes.Data.Context;
 using Classes.Domain.Models;
@@ -13,7 +12,7 @@ public interface IUserRepository
 {
     Task<Result<User?>> GetByUsername(string username);
     Task<Result> CreateAsync(User user);
-    Task<Culture?> GetUserCultureByUsername(string? username);
+    Task<bool> UserExists(string username);
 }
 
 public class UserRepository(
@@ -37,15 +36,8 @@ public class UserRepository(
         }
     }
 
-    public async Task<Culture?> GetUserCultureByUsername(string? username)
-    {
-        return await dbContext.Users
-            .Include(x => x.UserProfile)
-            .ThenInclude(up => up.Culture)
-            .Where(x => x.NickName == username)
-            .Select(x => x.UserProfile != null ? x.UserProfile.Culture : null)
-            .SingleOrDefaultAsync();
-    }
+    public async Task<bool> UserExists(string username) =>
+        await dbContext.Users.AnyAsync(x => x.NickName == username);
 
     public async Task<Result<User?>> GetByUsername(string username)
     {
@@ -53,6 +45,7 @@ public class UserRepository(
         {
             return await dbContext.Users
                 .AsNoTracking()
+                .Include(x => x.UserProfile.Culture)
                 .FirstOrDefaultAsync(x => x.NickName.Equals(username));
         }
         catch (Exception ex)

@@ -8,16 +8,14 @@ namespace Classes.Application.Services;
 
 public interface ICallbackExtractorService
 {
-    string GetCultureNameFromCallbackQuery(string? callbackData, string callbackPattern);
-    long GetUserSubscriptionIdFromCallback(string callbackData, string callbackPattern);
-    SubscriptionType GetSubscriptionType(string callbackData);
-    SubscriptionPeriod GetSubscriptionPeriod(string callbackData);
-    SubscriptionsCallbackQueryType GetSubscriptionCallbackQueryType(string callbackData);
+    string GetCultureNameFrom(string? callbackData, string callbackPattern);
+    long GetUserSubscriptionId(string callbackData, string callbackPattern);
+    SubscriptionType GetSubscriptionType(string callbackData, string callbackPattern);
 }
 
 public class CallbackExtractorService(ILogger<CallbackExtractorService> logger) : ICallbackExtractorService
 {
-    public string GetCultureNameFromCallbackQuery(string? callbackData, string callbackPattern)
+    public string GetCultureNameFrom(string? callbackData, string callbackPattern)
     {
         var cultureName = string.Empty;
         var cultureMatch = Regex.Match(callbackData ?? "", callbackPattern);
@@ -31,7 +29,7 @@ public class CallbackExtractorService(ILogger<CallbackExtractorService> logger) 
         return new Culture().Name;
     }
     
-    public long GetUserSubscriptionIdFromCallback(string callbackData, string callbackPattern)
+    public long GetUserSubscriptionId(string callbackData, string callbackPattern)
     {
         var userSubscriptionIdGroup = string.Empty;
         var userSubscriptionIdGroupMatch = Regex.Match(callbackData, callbackPattern);
@@ -39,49 +37,24 @@ public class CallbackExtractorService(ILogger<CallbackExtractorService> logger) 
         var userSubscriptionIdGroupMatchData = userSubscriptionIdGroupMatch.Groups["data"].Value;
 
         if (userSubscriptionIdGroupMatch.Success
-            && userSubscriptionIdGroupMatchQuery.Equals("checkinUserSubscriptionId"))
+            && userSubscriptionIdGroupMatchQuery.Equals("user-subscription-id"))
             userSubscriptionIdGroup = userSubscriptionIdGroupMatchData;
 
         return long.Parse(userSubscriptionIdGroup);
     }
     
-    public SubscriptionType GetSubscriptionType(string callbackData)
+    public SubscriptionType GetSubscriptionType(string callbackData, string callbackPattern)
     {
         var subscriptionTypeString = string.Empty;
-        var subscriptionTypeMatch = Regex.Match(callbackData, @"(?i)(?<query>subsGroup):(?<data>\w+)");
+        var subscriptionTypeMatch = Regex.Match(callbackData, callbackPattern);
         var subscriptionTypeMatchQuery = subscriptionTypeMatch.Groups["query"].Value;
         var subscriptionTypeMatchData = subscriptionTypeMatch.Groups["data"].Value;
 
-        if (subscriptionTypeMatch.Success && subscriptionTypeMatchQuery.Equals("subsGroup"))
+        if (subscriptionTypeMatch.Success && subscriptionTypeMatchQuery.Equals("subscription"))
             subscriptionTypeString = subscriptionTypeMatchData;
 
         Enum.TryParse(subscriptionTypeString, true, out SubscriptionType subscriptionType);
 
         return subscriptionType;
     }
-
-    public SubscriptionPeriod GetSubscriptionPeriod(string callbackData)
-    {
-        var subscriptionPeriodString = string.Empty;
-        var subscriptionPeriodMatch = Regex.Match(callbackData, @"(?i)(?<query>subsPeriod):(?<data>\w+)");
-        var subscriptionPeriodMatchQuery = subscriptionPeriodMatch.Groups["query"].Value;
-        var subscriptionPeriodMatchData = subscriptionPeriodMatch.Groups["data"].Value;
-
-        if (subscriptionPeriodMatch.Success && subscriptionPeriodMatchQuery.Equals("subsPeriod"))
-            subscriptionPeriodString = subscriptionPeriodMatchData;
-        
-        Enum.TryParse(subscriptionPeriodString, true, out SubscriptionPeriod subscriptionPeriod);
-
-        return subscriptionPeriod;
-    }
-    
-    public SubscriptionsCallbackQueryType GetSubscriptionCallbackQueryType(string callbackData) =>
-        callbackData switch
-        {
-            _ when callbackData.Contains("subsGroup") && !callbackData.Contains("subsPeriod") =>
-                SubscriptionsCallbackQueryType.Group,
-            _ when callbackData.Contains("subsGroup") && callbackData.Contains("subsPeriod") =>
-                SubscriptionsCallbackQueryType.Period,
-            _ => SubscriptionsCallbackQueryType.None
-        };
 }

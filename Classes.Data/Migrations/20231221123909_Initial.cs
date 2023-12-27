@@ -13,7 +13,7 @@ namespace Classes.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Commands",
+                name: "Command",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -25,27 +25,27 @@ namespace Classes.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Commands", x => x.Id);
+                    table.PrimaryKey("PK_Command", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cultures",
+                name: "Culture",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    LanguageCode = table.Column<string>(type: "text", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cultures", x => x.Id);
+                    table.PrimaryKey("PK_Culture", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subscriptions",
+                name: "Subscription",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -65,11 +65,11 @@ namespace Classes.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
+                    table.PrimaryKey("PK_Subscription", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsersProfiles",
+                name: "UserProfile",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -85,17 +85,17 @@ namespace Classes.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsersProfiles", x => x.Id);
+                    table.PrimaryKey("PK_UserProfile", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UsersProfiles_Cultures_CultureId",
+                        name: "FK_UserProfile_Culture_CultureId",
                         column: x => x.CultureId,
-                        principalTable: "Cultures",
+                        principalTable: "Culture",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -107,17 +107,17 @@ namespace Classes.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_UsersProfiles_UserProfileId",
+                        name: "FK_User_UserProfile_UserProfileId",
                         column: x => x.UserProfileId,
-                        principalTable: "UsersProfiles",
+                        principalTable: "UserProfile",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsersSubscriptions",
+                name: "UserSubscription",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -130,39 +130,39 @@ namespace Classes.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsersSubscriptions", x => x.Id);
+                    table.PrimaryKey("PK_UserSubscription", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UsersSubscriptions_Subscriptions_SubscriptionId",
+                        name: "FK_UserSubscription_Subscription_SubscriptionId",
                         column: x => x.SubscriptionId,
-                        principalTable: "Subscriptions",
+                        principalTable: "Subscription",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UsersSubscriptions_Users_UserId",
+                        name: "FK_UserSubscription_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_UserProfileId",
-                table: "Users",
+                name: "IX_User_UserProfileId",
+                table: "User",
                 column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsersProfiles_CultureId",
-                table: "UsersProfiles",
+                name: "IX_UserProfile_CultureId",
+                table: "UserProfile",
                 column: "CultureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsersSubscriptions_SubscriptionId",
-                table: "UsersSubscriptions",
+                name: "IX_UserSubscription_SubscriptionId",
+                table: "UserSubscription",
                 column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsersSubscriptions_UserId",
-                table: "UsersSubscriptions",
+                name: "IX_UserSubscription_UserId",
+                table: "UserSubscription",
                 column: "UserId");
         }
 
@@ -170,22 +170,22 @@ namespace Classes.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Commands");
+                name: "Command");
 
             migrationBuilder.DropTable(
-                name: "UsersSubscriptions");
+                name: "UserSubscription");
 
             migrationBuilder.DropTable(
-                name: "Subscriptions");
+                name: "Subscription");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "UsersProfiles");
+                name: "UserProfile");
 
             migrationBuilder.DropTable(
-                name: "Cultures");
+                name: "Culture");
         }
     }
 }

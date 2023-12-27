@@ -9,22 +9,36 @@ namespace Classes.Application.Services;
 
 public interface IUserProfileService
 {
-    UserProfile CreateUserProfile(CallbackQuery callbackQuery, Culture culture);
+    UserProfile GetUserProfileFromMessage(Message message, Culture culture);
+    UserProfile GetUserProfileFromCallback(CallbackQuery callback, Culture culture);
     Task<Result> UpdateUserProfile(UserProfile userProfile);
     Task<Result> Create(UserProfile userProfile);
 }
 
 public class UserProfileService(IUserProfileRepository userProfileRepository, IMapper mapper) : IUserProfileService
 {
-    public UserProfile CreateUserProfile(CallbackQuery callbackQuery, Culture culture)
+    public UserProfile GetUserProfileFromMessage(Message message, Culture culture)
     {
         return new UserProfile
         {
-            ChatId = callbackQuery.From.Id,
-            FirstName = callbackQuery.From.FirstName,
-            LastName = callbackQuery.From.LastName,
-            IsPremium = callbackQuery.From.IsPremium.GetValueOrDefault(),
-            IsBot = callbackQuery.From.IsBot,
+            ChatId = message.From!.Id,
+            FirstName = message.From.FirstName,
+            LastName = message.From.LastName,
+            IsPremium = message.From.IsPremium.GetValueOrDefault(),
+            IsBot = message.From.IsBot,
+            Culture = culture
+        };
+    }
+
+    public UserProfile GetUserProfileFromCallback(CallbackQuery callback, Culture culture)
+    {
+        return new UserProfile
+        {
+            ChatId = callback.From.Id,
+            FirstName = callback.From.FirstName,
+            LastName = callback.From.LastName,
+            IsPremium = callback.From.IsPremium.GetValueOrDefault(),
+            IsBot = callback.From.IsBot,
             Culture = culture
         };
     }

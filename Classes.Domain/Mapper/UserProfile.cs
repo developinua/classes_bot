@@ -14,7 +14,7 @@ public class UserProfile : Profile
                 {
                     Id = dest.Culture.Id,
                     Name = dest.Culture.Name,
-                    LanguageCode = dest.Culture.LanguageCode,
+                    Code = dest.Culture.Code,
                     CreatedAt = src.Culture.CreatedAt,
                     UpdatedAt = DateTime.UtcNow
                 };

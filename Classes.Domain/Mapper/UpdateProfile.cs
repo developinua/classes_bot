@@ -12,17 +12,24 @@ public class UpdateProfile : Profile
 {
     public UpdateProfile()
     {
+        CreateMap<StartRequest, LanguageRequest>();
+        
         CreateMap<Message, StartRequest>()
             .ForMember(dest => dest.ChatId, opt => opt.MapFrom(GetMessageChatId()))
+            .ForMember(dest => dest.Username, opt => opt.MapFrom(GetUsername()))
+            .ForMember(dest => dest.Message, opt => opt.MapFrom(src => src));
+        
+        CreateMap<Message, LanguageRequest>()
+            .ForMember(dest => dest.ChatId, opt => opt.MapFrom(GetMessageChatId()))
             .ForMember(dest => dest.Username, opt => opt.MapFrom(GetUsername()));
-        CreateMap<CallbackQuery, StartCallbackRequest>()
+        CreateMap<CallbackQuery, LanguageCallbackRequest>()
             .ForMember(dest => dest.ChatId, opt => opt.MapFrom(GetCallbackChatId()))
             .ForMember(dest => dest.CallbackQuery, opt => opt.MapFrom(src => src));
         
         CreateMap<Message, SubscriptionsRequest>()
             .ForMember(dest => dest.ChatId, opt => opt.MapFrom(GetMessageChatId()))
             .ForMember(dest => dest.Username, opt => opt.MapFrom(GetUsername()));
-        CreateMap<CallbackQuery, SubscriptionsCallbackRequest>()
+        CreateMap<CallbackQuery, SubscriptionsDetailedInformationCallbackRequest>()
             .ForMember(dest => dest.ChatId, opt => opt.MapFrom(GetCallbackChatId()))
             .ForMember(dest => dest.CallbackQuery, opt => opt.MapFrom(src => src));
         

@@ -1,4 +1,5 @@
-﻿using Classes.Domain.Models.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using Classes.Domain.Models.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -6,12 +7,15 @@ namespace Classes.Domain.Models;
 
 public class Subscription : BaseModel
 {
+    [StringLength(250)]
     public string Name { get; set; } = string.Empty;
-    public string NameCode { get; set; } = null!;
-    public string DescriptionCode { get; set; } = null!;
+    [StringLength(1000)]
     public string? Description { get; set; }
+    [Range(0, int.MaxValue)]
     public decimal Price { get; set; }
+    [Range(0, 100)]
     public decimal DiscountPercent { get; set; }
+    [Range(0, 100)]
     public int ClassesCount { get; set; }
     public bool IsActive { get; set; }
 

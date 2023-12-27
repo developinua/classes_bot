@@ -1,4 +1,5 @@
 using Classes.Application;
+using Classes.Application.Middleware;
 using Classes.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddExceptionHandlers()
     .AddAppServices()
+    .AddMiddlewares()
     .AddDatabase(builder.Configuration)
     .AddCustomLocalizations()
     .AddMediator()
@@ -24,7 +26,8 @@ app
     .UseHttpsRedirection()
     .UseRouting()
     .UseCustomRequestLocalization()
-    .UseExceptionHandler();
+    .UseExceptionHandler()
+    .UseMiddleware<UsernameMustBeFilledInMiddleware>();
 app.MapControllers();
 
 await app.MigrateDbAsync();

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Classes.Data.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20231218231447_Initial")]
+    [Migration("20231221123909_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -48,7 +48,7 @@ namespace Classes.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Commands");
+                    b.ToTable("Command", (string)null);
                 });
 
             modelBuilder.Entity("Classes.Domain.Models.Culture", b =>
@@ -59,12 +59,12 @@ namespace Classes.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LanguageCode")
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -75,7 +75,7 @@ namespace Classes.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cultures");
+                    b.ToTable("Culture", (string)null);
                 });
 
             modelBuilder.Entity("Classes.Domain.Models.Subscription", b =>
@@ -127,7 +127,7 @@ namespace Classes.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscription", (string)null);
                 });
 
             modelBuilder.Entity("Classes.Domain.Models.User", b =>
@@ -155,7 +155,7 @@ namespace Classes.Data.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Users");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("Classes.Domain.Models.UserProfile", b =>
@@ -194,7 +194,7 @@ namespace Classes.Data.Migrations
 
                     b.HasIndex("CultureId");
 
-                    b.ToTable("UsersProfiles");
+                    b.ToTable("UserProfile", (string)null);
                 });
 
             modelBuilder.Entity("Classes.Domain.Models.UserSubscription", b =>
@@ -226,7 +226,7 @@ namespace Classes.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersSubscriptions");
+                    b.ToTable("UserSubscription", (string)null);
                 });
 
             modelBuilder.Entity("Classes.Domain.Models.User", b =>

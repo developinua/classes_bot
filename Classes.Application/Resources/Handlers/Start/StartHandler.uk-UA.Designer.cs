@@ -51,15 +51,9 @@ namespace Classes.Application.Resources.Handlers.Start {
             }
         }
         
-        internal static string CommunicationLanguage {
+        internal static string BotAlreadyStarted {
             get {
-                return ResourceManager.GetString("CommunicationLanguage", resourceCulture);
-            }
-        }
-        
-        internal static string ManageClassSubscriptions {
-            get {
-                return ResourceManager.GetString("ManageClassSubscriptions", resourceCulture);
+                return ResourceManager.GetString("BotAlreadyStarted", resourceCulture);
             }
         }
     }

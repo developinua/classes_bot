@@ -5,18 +5,45 @@ namespace Classes.Data.Context;
 
 public class PostgresDbContext(DbContextOptions<PostgresDbContext> options) : DbContext(options)
 {
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<Subscription> Subscriptions { get; set; } = null!;
-    public DbSet<UserProfile> UsersProfiles { get; set; } = null!;
-    public DbSet<UserSubscription> UsersSubscriptions { get; set; } = null!;
-    public DbSet<Culture> Cultures { get; set; } = null!;
-    public DbSet<Command> Commands { get; set; } = null!;
+    public DbSet<User> Users { get; init; } = null!;
+    public DbSet<Subscription> Subscriptions { get; init; } = null!;
+    public DbSet<UserProfile> UsersProfiles { get; init; } = null!;
+    public DbSet<UserSubscription> UsersSubscriptions { get; init; } = null!;
+    public DbSet<Culture> Cultures { get; init; } = null!;
+    public DbSet<Command> Commands { get; init; } = null!;
     
-    // // Configure your models (if needed)
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     base.OnModelCreating(modelBuilder);
-    //
-    //     // Model configuration goes here
-    // }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<User>()
+            .ToTable("User")
+            .HasQueryFilter(x => x.IsActive)
+            .HasKey(k => k.Id);
+        
+        builder.Entity<Subscription>()
+            .ToTable("Subscription")
+            .HasQueryFilter(x => x.IsActive)
+            .HasKey(k => k.Id);
+        
+        builder.Entity<UserProfile>()
+            .ToTable("UserProfile")
+            .HasKey(k => k.Id);
+        
+        builder.Entity<UserSubscription>()
+            .ToTable("UserSubscription")
+            .HasQueryFilter(x =>
+                x.Subscription.IsActive
+                && x.RemainingClasses > 0)
+            .HasKey(k => k.Id);
+        
+        builder.Entity<Culture>()
+            .ToTable("Culture")
+            .HasKey(k => k.Id);
+        
+        builder.Entity<Command>()
+            .ToTable("Command")
+            .HasQueryFilter(x => x.IsActive)
+            .HasKey(k => k.Id);
+    }
 }

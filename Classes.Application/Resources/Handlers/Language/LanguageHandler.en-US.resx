@@ -18,10 +18,10 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="UsernameIsNotFilledIn" xml:space="preserve">
-        <value>Fill in the *username* in your account settings and then press again /start</value>
+    <data name="CommunicationLanguage" xml:space="preserve">
+        <value>*😊 Hi\!{newline}{newline}What language do you want to communicate in\?*</value>
     </data>
-    <data name="BotAlreadyStarted" xml:space="preserve">
-        <value>*Press /subscriptions to manage your classes\.*</value>
+    <data name="ManageClasses" xml:space="preserve">
+        <value>*😊Successfully\! 😊*{newline}Press /subscriptions to manage your classes\.</value>
     </data>
 </root>

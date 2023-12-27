@@ -19,7 +19,7 @@ public class AdminHandler(IBotService botService) : IRequestHandler<AdminRequest
             await botService.SendTextMessageAsync("Access denied. You can't execute this command.", cancellationToken);
         }
 
-        var responseMessage = $"/seed /paymentlink /manage-subscriptions";
+        var responseMessage = $"/seed /payment-link /manage-subscriptions";
         
         return Result.Success();
     }

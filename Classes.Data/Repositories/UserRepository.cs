@@ -46,7 +46,7 @@ public class UserRepository(
             return await dbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserProfile.Culture)
-                .FirstOrDefaultAsync(x => x.NickName.Equals(username));
+                .FirstOrDefaultAsync(x => x.NickName == username);
         }
         catch (Exception ex)
         {

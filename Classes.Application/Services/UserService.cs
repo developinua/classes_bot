@@ -25,7 +25,7 @@ public class UserService(
 {
     public async Task<Result> SaveUser(StartRequest request, Culture culture)
     {
-        var user = await userRepository.GetByUsername(request.Username);
+        var user = await GetByUsername(request.Username);
         var userProfile = userProfileService.GetUserProfileFromMessage(request.Message, culture);
 
         return user.Data is null

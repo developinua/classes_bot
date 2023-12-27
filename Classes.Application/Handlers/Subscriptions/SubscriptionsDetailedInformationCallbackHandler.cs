@@ -19,7 +19,9 @@ public class SubscriptionsDetailedInformationCallbackHandler(
         IValidator<CallbackQuery> validator)
     : IRequestHandler<SubscriptionsDetailedInformationCallbackRequest, Result>
 {
-    public async Task<Result> Handle(SubscriptionsDetailedInformationCallbackRequest request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(
+        SubscriptionsDetailedInformationCallbackRequest request,
+        CancellationToken cancellationToken)
     {
         if ((await validator.ValidateAsync(request.CallbackQuery, cancellationToken)).IsValid)
             Result.Failure().WithMessage("No valid callback query.");
@@ -37,8 +39,12 @@ public class SubscriptionsDetailedInformationCallbackHandler(
             return Result.Success();
         }
 
-        // render
-        
+        // todo: add delete previous saved information message
+        await botService.SendTextMessageWithReplyAsync(
+            userSubscriptionService.GetUserSubscriptionInformation(userSubscription.Data),
+            replyMarkup: replyMarkupService.GetBackToSubscriptions(userSubscription.Data),
+            cancellationToken: cancellationToken);
+        // todo: add save message when press any of choice button to delete it next
         
         return Result.Success();
     }

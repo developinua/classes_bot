@@ -42,4 +42,19 @@
     <data name="BuySubscriptionApproval" xml:space="preserve">
         <value>*Після того, як підписка буде підтверджена викладачем{newline}Зможеш відмічатись /checkin на класах\.*</value>
     </data>
+    <data name="NoSubscriptions" xml:space="preserve">
+        <value>*У тебе поки немає активних підписок, але ти можеш це змінити /buy*</value>
+    </data>
+    <data name="ChooseSubscriptionType" xml:space="preserve">
+        <value>*Вибери тип підписки*</value>
+    </data>
+    <data name="SubscriptionClasses" xml:space="preserve">
+        <value>Класи</value>
+    </data>
+    <data name="SubscriptionCourses" xml:space="preserve">
+        <value>Курси</value>
+    </data>
+    <data name="BackToSubscriptions" xml:space="preserve">
+        <value>*Усі підписки*</value>
+    </data>
 </root>

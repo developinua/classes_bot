@@ -13,9 +13,6 @@ namespace Classes.Data.Repositories;
 
 public interface ISubscriptionRepository
 {
-    Task<Result<Subscription?>> GetActiveByTypeAndPeriod(
-        SubscriptionType subscriptionType,
-        SubscriptionPeriod subscriptionPeriod);
     Task<Result> Add(IEnumerable<Subscription> subscriptions);
     Task<Result> RemoveAllActive();
 }
@@ -25,26 +22,6 @@ public class SubscriptionRepository(
         ILogger<SubscriptionRepository> logger) 
     : ISubscriptionRepository
 {
-    public async Task<Result<Subscription?>> GetActiveByTypeAndPeriod(
-        SubscriptionType subscriptionType,
-        SubscriptionPeriod subscriptionPeriod)
-    {
-        try
-        {
-            var subscription = await dbContext.Subscriptions
-                .FirstOrDefaultAsync(x =>
-                    x.IsActive
-                    && x.Type.Equals(subscriptionType)
-                    && x.Period.Equals(subscriptionPeriod));
-            return Result.Success(subscription);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, ex.Message);
-            return Result.Failure<Subscription?>().WithMessage("Can't get active subscription by type and period.");
-        }
-    }
-
     public async Task<Result> Add(IEnumerable<Subscription> subscriptions)
     {
         try

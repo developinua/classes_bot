@@ -63,7 +63,6 @@ public class UpdateProfile : Profile
         Expression<Func<Message, string?>> GetMessageUsername() => src =>
             src.From == null ? string.Empty : src.From.Username;
         //todo: check GetCallbackUsername src.From is null
-        Expression<Func<CallbackQuery, string?>> GetCallbackUsername() => src =>
-            src.From == null ? string.Empty : src.From.Username;
+        Expression<Func<CallbackQuery, string?>> GetCallbackUsername() => src => src.From.Username;
     }
 }

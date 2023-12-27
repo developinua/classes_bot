@@ -92,5 +92,35 @@ namespace Classes.Application.Resources.Handlers.Subscriptions {
                 return ResourceManager.GetString("BuySubscriptionApproval", resourceCulture);
             }
         }
+        
+        internal static string NoSubscriptions {
+            get {
+                return ResourceManager.GetString("NoSubscriptions", resourceCulture);
+            }
+        }
+        
+        internal static string ChooseSubscriptionType {
+            get {
+                return ResourceManager.GetString("ChooseSubscriptionType", resourceCulture);
+            }
+        }
+        
+        internal static string SubscriptionClasses {
+            get {
+                return ResourceManager.GetString("SubscriptionClasses", resourceCulture);
+            }
+        }
+        
+        internal static string SubscriptionCourses {
+            get {
+                return ResourceManager.GetString("SubscriptionCourses", resourceCulture);
+            }
+        }
+        
+        internal static string BackToSubscriptions {
+            get {
+                return ResourceManager.GetString("BackToSubscriptions", resourceCulture);
+            }
+        }
     }
 }

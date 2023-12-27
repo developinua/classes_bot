@@ -34,7 +34,7 @@ public class UserSubscriptionRepository(
     {
         try
         {
-            await dbContext.UsersSubscriptions.AddAsync(userSubscription);
+            await dbContext.UserSubscriptions.AddAsync(userSubscription);
             await dbContext.SaveChangesAsync();
             
             return Result.Success();
@@ -50,7 +50,7 @@ public class UserSubscriptionRepository(
     {
         try
         {
-            await dbContext.UsersSubscriptions.AddRangeAsync(userSubscriptions);
+            await dbContext.UserSubscriptions.AddRangeAsync(userSubscriptions);
             await dbContext.SaveChangesAsync();
             
             return Result.Success();
@@ -66,7 +66,7 @@ public class UserSubscriptionRepository(
     {
         try
         {
-            var userSubscription = await dbContext.UsersSubscriptions
+            var userSubscription = await dbContext.UserSubscriptions
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.Subscription.IsActive);
             return Result.Success(userSubscription);
@@ -83,7 +83,7 @@ public class UserSubscriptionRepository(
     {
         try
         {
-            var userSubscriptions = await dbContext.UsersSubscriptions
+            var userSubscriptions = await dbContext.UserSubscriptions
                 .Where(x => x.User.NickName.Equals(username) && x.RemainingClasses > 0)
                 .ToListAsync();
             return Result.Success(userSubscriptions.AsReadOnlyCollection());
@@ -102,7 +102,7 @@ public class UserSubscriptionRepository(
     {
         try
         {
-            var response = await dbContext.UsersSubscriptions
+            var response = await dbContext.UserSubscriptions
                 .FirstOrDefaultAsync(x =>
                     x.User.NickName == username
                     && x.Subscription.Type == subscriptionType
@@ -122,7 +122,7 @@ public class UserSubscriptionRepository(
     {
         try
         {
-            var response = await dbContext.UsersSubscriptions
+            var response = await dbContext.UserSubscriptions
                 .Where(x =>
                     x.User.NickName == username
                     && x.RemainingClasses > 0
@@ -144,7 +144,9 @@ public class UserSubscriptionRepository(
     {
         try
         {
-            var response = await dbContext.UsersSubscriptions
+            var response = await dbContext.UserSubscriptions
+                .Include(x => x.Subscription)
+                .Include(x => x.User)
                 .Where(x =>
                     x.User.NickName == username
                     && x.Subscription.Type == subscriptionType
@@ -165,7 +167,7 @@ public class UserSubscriptionRepository(
     {
         try
         {
-            dbContext.UsersSubscriptions.Update(userSubscription);
+            dbContext.UserSubscriptions.Update(userSubscription);
             await dbContext.SaveChangesAsync();
             
             return Result.Success();

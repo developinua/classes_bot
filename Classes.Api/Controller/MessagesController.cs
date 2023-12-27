@@ -21,7 +21,7 @@ public class MessagesController(IUpdateService updateService, IMediator mediator
         if (request.IsFailure())
         {
             await updateService.HandleFailureResponse(chatId, cancellationToken);
-            return Results.BadRequest();
+            return Results.Ok();
         }
 	
         var response = await mediator.Send(request.Data, cancellationToken);
@@ -29,7 +29,7 @@ public class MessagesController(IUpdateService updateService, IMediator mediator
         if (response.IsFailure())
         {
             await updateService.HandleFailureResponse(chatId, cancellationToken, response.Message);
-            return Results.BadRequest();
+            return Results.Ok();
         }
 
         await updateService.HandleSuccessResponse(chatId);

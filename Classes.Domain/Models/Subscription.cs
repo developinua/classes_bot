@@ -17,13 +17,9 @@ public class Subscription : BaseModel
     public decimal DiscountPercent { get; set; }
     [Range(0, 100)]
     public int ClassesCount { get; set; }
-    public bool IsActive { get; set; }
-
     [JsonConverter(typeof(StringEnumConverter))]
     public SubscriptionType Type { get; set; }
-
-    [JsonConverter(typeof(StringEnumConverter))]
-    public SubscriptionPeriod Period { get; set; }
+    public bool IsActive { get; set; }
 
     public decimal GetPriceWithDiscount() =>
         DiscountPercent == 0

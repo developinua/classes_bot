@@ -42,7 +42,6 @@ public static class DependencyInjection
         services.AddScoped<ICallbackExtractorService, CallbackExtractorService>();
         
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<ISubscriptionService, SubscriptionService>();
         services.AddScoped<IUserSubscriptionService, UserSubscriptionService>();
         services.AddScoped<IUserProfileService, UserProfileService>();
         services.AddScoped<ICultureService, CultureService>();

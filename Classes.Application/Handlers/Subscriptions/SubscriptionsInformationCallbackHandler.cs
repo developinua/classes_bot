@@ -40,10 +40,13 @@ public class SubscriptionsInformationCallbackHandler(
             return Result.Success();
         }
 
+        // todo: add delete previous saved detailed information message (if such exists)
         await botService.SendTextMessageWithReplyAsync(
             localizer.GetString("YourSubscriptions"),
             replyMarkup: replyMarkupService.GetSubscriptionsInformation(userSubscriptions.Data),
             cancellationToken: cancellationToken);
+        // todo: add save message when press any of choice button to delete it next
+        
         return Result.Success();
     }
 }

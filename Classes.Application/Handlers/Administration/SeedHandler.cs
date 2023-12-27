@@ -32,9 +32,8 @@ public class SeedHandler(
         }
 
         var processSubscriptions = await AddDefaultSubscriptions();
-        var processUserSubscriptions = await AddAdminSubscription();
         
-        if (processSubscriptions.IsFailure() || processUserSubscriptions.IsFailure())
+        if (processSubscriptions.IsFailure())
             return Result.Failure().WithMessage("Error while seeding data.");
 
         await botService.SendTextMessageAsync("*Successfully seeded*", cancellationToken);
@@ -65,7 +64,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 0,
                 Type = SubscriptionType.None,
-                Period = SubscriptionPeriod.None,
                 IsActive = true
             },
 
@@ -81,7 +79,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 1,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Day,
                 IsActive = true
             },
             new()
@@ -92,7 +89,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 2,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -103,7 +99,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 4,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -114,7 +109,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 8,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Month,
                 IsActive = true
             },
             new()
@@ -125,7 +119,6 @@ public class SeedHandler(
                 DiscountPercent = 15,
                 ClassesCount = 16,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.ThreeMonth,
                 IsActive = true
             },
 
@@ -141,7 +134,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 1,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Day,
                 IsActive = true
             },
             new()
@@ -152,7 +144,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 2,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -163,7 +154,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 4,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -174,7 +164,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 8,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Month,
                 IsActive = true
             },
             new()
@@ -185,7 +174,6 @@ public class SeedHandler(
                 DiscountPercent = 15,
                 ClassesCount = 16,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.ThreeMonth,
                 IsActive = true
             },
 
@@ -201,7 +189,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 1,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Day,
                 IsActive = true
             },
             new()
@@ -212,7 +199,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 2,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -223,7 +209,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 4,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -234,7 +219,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 8,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Month,
                 IsActive = true
             },
             new()
@@ -245,7 +229,6 @@ public class SeedHandler(
                 DiscountPercent = 15,
                 ClassesCount = 16,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.ThreeMonth,
                 IsActive = true
             },
 
@@ -261,7 +244,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 1,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Day,
                 IsActive = true
             },
             new()
@@ -272,7 +254,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 2,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -283,7 +264,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 4,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -294,7 +274,6 @@ public class SeedHandler(
                 DiscountPercent = 0,
                 ClassesCount = 8,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Month,
                 IsActive = true
             },
             new()
@@ -305,7 +284,6 @@ public class SeedHandler(
                 DiscountPercent = 15,
                 ClassesCount = 16,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.ThreeMonth,
                 IsActive = true
             },
 
@@ -321,7 +299,6 @@ public class SeedHandler(
                 DiscountPercent = 5,
                 ClassesCount = 12,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -332,7 +309,6 @@ public class SeedHandler(
                 DiscountPercent = 5,
                 ClassesCount = 24,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.HalfMonth,
                 IsActive = true
             },
             new()
@@ -343,7 +319,6 @@ public class SeedHandler(
                 DiscountPercent = 10,
                 ClassesCount = 48,
                 Type = SubscriptionType.Class,
-                Period = SubscriptionPeriod.Month,
                 IsActive = true
             },
             new()
@@ -354,7 +329,6 @@ public class SeedHandler(
                 DiscountPercent = 15,
                 ClassesCount = 144,
                 Type = SubscriptionType.Course,
-                Period = SubscriptionPeriod.ThreeMonth,
                 IsActive = true
             }
 
@@ -376,31 +350,6 @@ public class SeedHandler(
         }).AsReadOnlyCollection();
         
         await userSubscriptionRepository.AddRange(userSubscriptions);
-        
-        return Result.Success();
-    }
-
-    private async Task<Result> AddAdminSubscription()
-    {
-        var userNazar = await userRepository.GetByUsername("nazikBro");
-        var subscriptionPremiumMonth = await subscriptionRepository.GetActiveByTypeAndPeriod(
-            SubscriptionType.Class, SubscriptionPeriod.Month);
-
-        if (userNazar.Data is null || subscriptionPremiumMonth.Data is null)
-            return Result.Failure().WithMessage("Invalid admin subscriptions data in db.");
-        
-        var userSubscriptionPremiumMonth = new UserSubscription
-        {
-            User = userNazar.Data!,
-            Subscription = subscriptionPremiumMonth.Data,
-            RemainingClasses = subscriptionPremiumMonth.Data.ClassesCount
-        };
-        var premiumSubscriptionInDb = await userSubscriptionRepository.GetByUsernameAndType(
-                userSubscriptionPremiumMonth.User.NickName,
-                userSubscriptionPremiumMonth.Subscription.Type);
-
-        if (premiumSubscriptionInDb.Data is null)
-            await userSubscriptionRepository.Add(userSubscriptionPremiumMonth);
         
         return Result.Success();
     }

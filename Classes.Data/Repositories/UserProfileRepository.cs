@@ -24,7 +24,7 @@ public class UserProfileRepository(
     {
         try
         {
-            return await dbContext.UsersProfiles
+            return await dbContext.UserProfiles
                 .AsNoTracking()
                 .Include(x => x.Culture)
                 .FirstOrDefaultAsync(x => x.ChatId == chatId);
@@ -40,7 +40,7 @@ public class UserProfileRepository(
     {
         try
         {
-            await dbContext.UsersProfiles.AddAsync(userProfile);
+            await dbContext.UserProfiles.AddAsync(userProfile);
             await dbContext.SaveChangesAsync();
 
             return Result.Success();
@@ -56,7 +56,7 @@ public class UserProfileRepository(
     {
         try
         {
-            dbContext.UsersProfiles.Update(userProfile);
+            dbContext.UserProfiles.Update(userProfile);
             await dbContext.SaveChangesAsync();
 
             return Result.Success();

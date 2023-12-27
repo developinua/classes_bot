@@ -7,8 +7,8 @@ public class PostgresDbContext(DbContextOptions<PostgresDbContext> options) : Db
 {
     public DbSet<User> Users { get; init; } = null!;
     public DbSet<Subscription> Subscriptions { get; init; } = null!;
-    public DbSet<UserProfile> UsersProfiles { get; init; } = null!;
-    public DbSet<UserSubscription> UsersSubscriptions { get; init; } = null!;
+    public DbSet<UserProfile> UserProfiles { get; init; } = null!;
+    public DbSet<UserSubscription> UserSubscriptions { get; init; } = null!;
     public DbSet<Culture> Cultures { get; init; } = null!;
     public DbSet<Command> Commands { get; init; } = null!;
     

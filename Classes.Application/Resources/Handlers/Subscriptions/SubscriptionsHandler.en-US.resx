@@ -42,4 +42,19 @@
     <data name="BuySubscriptionApproval" xml:space="preserve">
         <value>*After your subscription will be approved by teacher{newline}You will be able to /checkin on classes\.*</value>
     </data>
+    <data name="NoSubscriptions" xml:space="preserve">
+        <value>*You have no subscriptions for now but you can change it /buy*</value>
+    </data>
+    <data name="ChooseSubscriptionType" xml:space="preserve">
+        <value>*Choose subcription type*</value>
+    </data>
+    <data name="SubscriptionClasses" xml:space="preserve">
+        <value>Classes</value>
+    </data>
+    <data name="SubscriptionCourses" xml:space="preserve">
+        <value>Courses</value>
+    </data>
+    <data name="BackToSubscriptions" xml:space="preserve">
+        <value>*Back to subscriptions*</value>
+    </data>
 </root>

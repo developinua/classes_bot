@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Classes.Application.Handlers.Subscriptions;
 using Classes.Application.Utils;
 using Classes.Domain.Models;
+using Classes.Domain.Models.Enums;
 using Microsoft.Extensions.Localization;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -10,12 +12,12 @@ public interface IReplyMarkupService
 {
     IReplyMarkup GetStartMarkup();
     IReplyMarkup GetSubscriptions();
+    IReplyMarkup GetBackToSubscriptions(UserSubscription userSubscription);
     IReplyMarkup GetSubscriptionsInformation(IReadOnlyCollection<UserSubscription> userSubscriptions);
-    IReplyMarkup GetSubscriptionPeriods(string subscriptionGroup);
     IReplyMarkup GetBuySubscription(long subscriptionId);
 }
 
-public class ReplyMarkupService(IStringLocalizer<ReplyMarkupService> localizer) : IReplyMarkupService
+public class ReplyMarkupService(IStringLocalizer<SubscriptionsHandler> localizer) : IReplyMarkupService
 {
     public IReplyMarkup GetStartMarkup()
     {
@@ -28,8 +30,17 @@ public class ReplyMarkupService(IStringLocalizer<ReplyMarkupService> localizer) 
     public IReplyMarkup GetSubscriptions()
     {
         var replyKeyboardMarkup = InlineKeyboardBuilder.Create()
-            .AddButton(localizer["SubscriptionClasses"], "subscription:class")
+            .AddButton(localizer["SubscriptionClasses"], "subscription:class").NewLine()
             .AddButton(localizer["SubscriptionCourses"], "subscription:course");
+        return replyKeyboardMarkup.Build();
+    }
+
+    public IReplyMarkup GetBackToSubscriptions(UserSubscription userSubscription)
+    {
+        var type = userSubscription.Subscription.Type == SubscriptionType.Class ? "class" : "course";
+        var replyKeyboardMarkup = InlineKeyboardBuilder.Create()
+            .AddButton(localizer["BackToSubscriptions"], $"subscription:{type}");
+
         return replyKeyboardMarkup.Build();
     }
 
@@ -40,29 +51,11 @@ public class ReplyMarkupService(IStringLocalizer<ReplyMarkupService> localizer) 
         foreach (var userSubscription in userSubscriptions)
         {
             // todo: get localized name from the Localization db
-            var name = localizer[
-                "SubscriptionName",
-                userSubscription.Subscription.Name,
-                userSubscription.RemainingClasses];
-            replyKeyboardMarkup.AddButton(name, $"user-subscription:{userSubscription.Id}").NewLine();
+            var name = $"{userSubscription.Subscription.Name} ({userSubscription.RemainingClasses})";
+            replyKeyboardMarkup.AddButton(name, $"user-subscription-id:{userSubscription.Id}").NewLine();
         }
 
         return replyKeyboardMarkup.Build();
-    }
-
-    public IReplyMarkup GetSubscriptionPeriods(string subscriptionGroup)
-    {
-        var subscriptionPeriods = InlineKeyboardBuilder.Create();
-
-        if (!subscriptionGroup.Contains("Premium"))
-            subscriptionPeriods.AddButton("Day", $"{subscriptionGroup}?subsPeriod:day").NewLine();
-
-        subscriptionPeriods.AddButton("Week", $"{subscriptionGroup}?subsPeriod:week").NewLine()
-            .AddButton("Two weeks", $"{subscriptionGroup}?subsPeriod:two-weeks").NewLine()
-            .AddButton("Month", $"{subscriptionGroup}?subsPeriod:month").NewLine()
-            .AddButton("Three months", $"{subscriptionGroup}?subsPeriod:three-months");
-
-        return subscriptionPeriods.Build();
     }
 
     public IReplyMarkup GetBuySubscription(long subscriptionId)
